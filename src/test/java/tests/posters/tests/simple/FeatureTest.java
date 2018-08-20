@@ -7,6 +7,7 @@ import static bddtester.api.BddSuite.withData;
 
 import org.junit.Test;
 
+import bddtester.api.AbstractExtentReportTest;
 import pom.posters.pageobjects.pages.browsing.HomePage;
 import pom.posters.pageobjects.pages.browsing.RegisterPage;
 import pom.posters.util.PosterUtils;
@@ -17,7 +18,7 @@ import tests.posters.testdata.LoginData;
  * 
  * @author ckeiner
  */
-public class FeatureTest
+public class FeatureTest extends AbstractExtentReportTest
 {
     // TODO better description
     /**
