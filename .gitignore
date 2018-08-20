@@ -1,0 +1,6 @@
+/bin/
+/target/
+/build/
+.allure/
+allure-results/
+extent.html
