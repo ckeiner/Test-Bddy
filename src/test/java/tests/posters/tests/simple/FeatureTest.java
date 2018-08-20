@@ -11,14 +11,13 @@ import pom.posters.pageobjects.pages.browsing.HomePage;
 import pom.posters.pageobjects.pages.browsing.RegisterPage;
 import pom.posters.util.PosterUtils;
 import tests.posters.testdata.LoginData;
-import tests.posters.tests.AbstractExtentReportTest;
 
 /**
  * Verifies features can be properly defined, tagged, etc.
  * 
  * @author ckeiner
  */
-public class FeatureTest extends AbstractExtentReportTest
+public class FeatureTest
 {
     // TODO better description
     /**

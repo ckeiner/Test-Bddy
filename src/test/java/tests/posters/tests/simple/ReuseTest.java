@@ -6,13 +6,13 @@ import static bddtester.api.BddSuite.scenario;
 
 import org.junit.Test;
 
+import bddtester.api.AbstractExtentReportTest;
 import bddtester.core.bdd.steps.Steps;
 import pom.posters.dataobjects.Product;
 import pom.posters.pageobjects.pages.browsing.CategoryPage;
 import pom.posters.pageobjects.pages.browsing.HomePage;
 import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
 import pom.posters.util.PosterUtils;
-import tests.posters.tests.AbstractExtentReportTest;
 
 /**
  * Verifies that test data, steps, and scenarios can simply be reused. Thus, you

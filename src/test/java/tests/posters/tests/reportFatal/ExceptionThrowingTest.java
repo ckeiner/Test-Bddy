@@ -7,12 +7,12 @@ import static bddtester.api.BddSuite.withData;
 
 import org.junit.Test;
 
+import bddtester.api.AbstractExtentReportTest;
 import bddtester.core.throwables.exceptions.FeatureException;
 import pom.posters.pageobjects.pages.browsing.HomePage;
 import pom.posters.pageobjects.pages.browsing.RegisterPage;
 import pom.posters.util.PosterUtils;
 import tests.posters.testdata.LoginData;
-import tests.posters.tests.AbstractExtentReportTest;
 
 /**
  * Throws an exception. so the generated report has to report a test as fatal.

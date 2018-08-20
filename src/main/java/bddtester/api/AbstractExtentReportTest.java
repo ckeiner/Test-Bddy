@@ -1,4 +1,4 @@
-package tests.posters.tests;
+package bddtester.api;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

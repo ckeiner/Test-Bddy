@@ -6,7 +6,7 @@ import static bddtester.api.BddSuite.withData;
 
 import org.junit.Test;
 
-import tests.posters.tests.AbstractExtentReportTest;
+import bddtester.api.AbstractExtentReportTest;
 
 /**
  * Defines simple features with scenarios, that use test data.

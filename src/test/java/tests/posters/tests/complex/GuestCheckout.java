@@ -9,12 +9,12 @@ import static tests.posters.testdata.Personas.johnExample;
 
 import org.junit.Test;
 
+import bddtester.api.AbstractExtentReportTest;
 import pom.posters.pageobjects.pages.browsing.CartPage;
 import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
 import pom.posters.util.PosterUtils;
 import tests.posters.flows.GuestCheckoutFlow;
 import tests.posters.flows.OpenPdpFlow;
-import tests.posters.tests.AbstractExtentReportTest;
 
 /**
  * Tests the order process.

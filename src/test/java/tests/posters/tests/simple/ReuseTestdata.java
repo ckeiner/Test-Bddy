@@ -6,6 +6,7 @@ import static bddtester.api.BddSuite.withData;
 
 import org.junit.Test;
 
+import bddtester.api.AbstractExtentReportTest;
 import bddtester.core.bdd.steps.TypeSteps;
 import bddtester.core.testdata.TwoDataType;
 import pom.posters.dataobjects.Product;
@@ -13,7 +14,6 @@ import pom.posters.pageobjects.pages.browsing.CategoryPage;
 import pom.posters.pageobjects.pages.browsing.HomePage;
 import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
 import pom.posters.util.PosterUtils;
-import tests.posters.tests.AbstractExtentReportTest;
 
 /**
  * Reuses steps, and scenarios with test data.
