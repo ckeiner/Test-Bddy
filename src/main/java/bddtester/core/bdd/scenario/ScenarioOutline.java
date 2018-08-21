@@ -14,6 +14,7 @@ import bddtester.core.throwables.errors.ScenarioError;
 import bddtester.core.throwables.errors.StepError;
 import bddtester.core.throwables.exceptions.ScenarioException;
 import bddtester.core.throwables.exceptions.StepException;
+import bddtester.core.util.ParameterResolver;
 
 /**
  * Represents a Scenario Outline in the BDD Hierarchy.<br>
@@ -189,7 +190,10 @@ public class ScenarioOutline<T> extends AbstractScenario
         ReportElement scenarioReporter = null;
         if (getReporter() != null)
         {
-            scenarioReporter = getReporter().scenarioOutline(this.getDescription(), testdatum);
+            String reportDescription = new ParameterResolver<T>().resolvePlaceholders(getDescription(), testdatum);
+            // scenarioReporter = getReporter().scenarioOutline(this.getDescription(),
+            // testdatum);
+            scenarioReporter = getReporter().scenarioOutline(reportDescription);
             if (typeSteps.getReporter() == null)
             {
                 typeSteps.setReporter(this.getReporter());

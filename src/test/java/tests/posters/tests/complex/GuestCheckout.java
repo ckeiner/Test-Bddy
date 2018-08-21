@@ -34,25 +34,25 @@ public class GuestCheckout extends AbstractExtentReportTest
         final CartPage cartPage = new CartPage();
         //@formatter:off
         feature("Order a product",
-            () -> scenario("Browsing to a PDP",
+            () -> scenario("Browsing to the PDP <getProductName()>",
                     withData(janeExample())
                                     .given("Homepage is opened", PosterUtils::openHomePage)
                                     .then("Open a PDP", data ->
                                         {
                                             OpenPdpFlow.flow(data.getCategoryName(), data.getProductName());
                                         })
-                    )
+                    ).skip()
             ,
             () -> scenario("Browsing to a PDP with set Data",
                                     given("Homepage is opened", PosterUtils::openHomePage)
                                     .then(OpenPdpFlow.flow("Transportation", "Ikarus 211"))
-                    )
+                    ).skip()
             ,
-            () -> scenario("Ordering a product",
+            () -> scenario("Ordering the product <getProductName()> with address <getAddress()>",
                         withData(janeExample())
                                 .given("Homepage is opened", PosterUtils::openHomePage)
                                 .and(OpenPdpFlow.flow())
-                                .and("Product is added to the cart", data ->
+                                .and("<getProductName> is added to the cart", data ->
                                     {
                                         data.setProduct(productPage.getProduct());
                                         final String size = data.getProduct().getSize();
@@ -113,7 +113,7 @@ public class GuestCheckout extends AbstractExtentReportTest
                                         })
                                     .and(GuestCheckoutFlow.flow())
                                 )
-            ).test();
+            ).ignore().test();
         //@formatter:on
     }
 }

@@ -44,7 +44,7 @@ public class ParameterResolver<T>
     public String resolvePlaceholders(String description, T testdata)
     {
         String output = description;
-        Matcher matcher = Pattern.compile(ENCLOSE_START + ".*" + ENCLOSE_END).matcher(description);
+        Matcher matcher = Pattern.compile(ENCLOSE_START + ".*?" + ENCLOSE_END).matcher(description);
         while (matcher.find())
         {
             String match = matcher.group().replaceAll(ENCLOSE_START, "").replaceAll(ENCLOSE_END, "");

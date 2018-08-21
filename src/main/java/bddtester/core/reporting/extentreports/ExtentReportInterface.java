@@ -127,4 +127,18 @@ public class ExtentReportInterface implements ReportInterface
         extentReports.flush();
     }
 
+    @Override
+    public <T> ReportElement scenarioOutline(String description)
+    {
+        try
+        {
+            ExtentTest scenarioNode = feature.getElement().createNode(new GherkinKeyword("Scenario"), description);
+            scenario = new ExtentElement(scenarioNode);
+        } catch (ClassNotFoundException e)
+        {
+            e.printStackTrace();
+        }
+        return scenario;
+    }
+
 }

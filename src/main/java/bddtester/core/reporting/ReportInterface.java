@@ -42,6 +42,15 @@ public interface ReportInterface
     public <T> ReportElement scenarioOutline(String description, T testdata);
 
     /**
+     * Reports a scenario outline with the given description.
+     * 
+     * @param description
+     *            The description of the scenario outline.
+     * @return A {@link ReportElement} depicting the scenario outline.
+     */
+    public <T> ReportElement scenarioOutline(String description);
+
+    /**
      * Reports a step with the given description.
      * 
      * @param description

@@ -38,11 +38,11 @@ public class GuestCheckoutFlow
                 cartPage.openNewShippingPage();
                 shippingPage.validateStructure();
             })
-            .and("The address is entered", data ->
+            .and("The address <getAddress()> is entered", data ->
             {
                 shippingPage.sendShippingAddressForm(data.getAddress(), true);
             })
-            .and("The payment data is added", data ->
+            .and("The payment data <getCreditCard()> is added", data ->
             {
                 paymentPage.validateStructure();
                 paymentPage.sendPaymentForm(data.getCreditCard());
