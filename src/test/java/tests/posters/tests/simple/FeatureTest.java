@@ -31,9 +31,9 @@ public class FeatureTest extends AbstractExtentReportTest
         final RegisterPage registerPage = new RegisterPage();
         //@formatter:off
         feature("Describe a feature",
-                () -> scenario("Use testdata",
+                () -> scenario("Use testdata <toString()>",
                         withData(new LoginData("Jane", "Doe", "jane@doe.com", "topsecret"))
-                        .given("I have the user <user>", data -> {
+                        .given("I have the user <getUser()>", data -> {
                             System.out.println("Custom String: " + data.getFirstName());
                         })
                         .and("I define an and", () -> {
