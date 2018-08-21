@@ -4,7 +4,9 @@ import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
+import bddtester.core.reporting.ReportElement;
 import bddtester.core.testdata.Testdata;
+import bddtester.core.util.ParameterResolver;
 
 /**
  * Describes a BDD Step with {@link Testdata}.
@@ -52,6 +54,14 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     {
         this.testdata = testdata;
         test();
+    }
+
+    @Override
+    protected ReportElement setUpReporter()
+    {
+        ParameterResolver<T> resolver = new ParameterResolver<>();
+        String resolvedDescription = resolver.resolvePlaceholders(getDescription(), testdata);
+        return setUpReporter(true, resolvedDescription);
     }
 
     // @Override

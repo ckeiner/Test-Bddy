@@ -33,7 +33,7 @@ public class FeatureTest extends AbstractExtentReportTest
         feature("Describe a feature",
                 () -> scenario("Use testdata",
                         withData(new LoginData("Jane", "Doe", "jane@doe.com", "topsecret"))
-                        .given("String", data -> {
+                        .given("I have the user <user>", data -> {
                             System.out.println("Custom String: " + data.getFirstName());
                         })
                         .and("I define an and", () -> {
@@ -43,7 +43,7 @@ public class FeatureTest extends AbstractExtentReportTest
                         .when("I want data in my when", data -> {
                             System.out.println("I get data " + data.toString());
                         })
-                        .and("I open register", homepage::clickRegister)
+                        .and("I open register with <getUser().getPassword()>", homepage::clickRegister)
                         .then("I see the registerPage", registerPage::validateStructure)
                     )
             ,

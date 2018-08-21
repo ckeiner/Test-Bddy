@@ -54,6 +54,14 @@ public class LoginData
         return user.getPassword();
     }
 
+    /**
+     * @return the user
+     */
+    public User getUser()
+    {
+        return user;
+    }
+
     @Override
     public String toString()
     {

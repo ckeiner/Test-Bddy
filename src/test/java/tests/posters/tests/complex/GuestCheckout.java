@@ -63,7 +63,6 @@ public class GuestCheckout extends AbstractExtentReportTest
                                     })
                                 .when("CartPage is opened", data ->
                                     {
-                                        System.out.println(data.getProduct());
                                         productPage.miniCart.openMiniCart();
                                         productPage.miniCart.openCartPage();
                                         cartPage.validateCartItem(1, data.getProduct());

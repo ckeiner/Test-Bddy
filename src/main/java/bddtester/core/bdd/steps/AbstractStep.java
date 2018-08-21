@@ -30,7 +30,7 @@ public abstract class AbstractStep<T> implements Statusable
     /**
      * Describes the step in natural language.
      */
-    final private String description;
+    private String description;
 
     /**
      * Contains the behavior of the step.
@@ -134,6 +134,21 @@ public abstract class AbstractStep<T> implements Statusable
      */
     protected ReportElement setUpReporter(boolean showStatus)
     {
+        return setUpReporter(showStatus, getDescription());
+    }
+
+    /**
+     * Sets the reporter up with a custom description.
+     * 
+     * @param showStatus
+     *            Whether the status should be shown in the report.
+     * @param description
+     *            The description of the {@link ReportElement}.
+     * @return The ReportElement for a Step. <code>null</code> if
+     *         {@link #getReporter()} returns <code>null</code>.
+     */
+    protected ReportElement setUpReporter(boolean showStatus, String description)
+    {
         ReportElement element = null;
         if (reporter != null)
         {
@@ -150,6 +165,11 @@ public abstract class AbstractStep<T> implements Statusable
     public String getDescription()
     {
         return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public T getBehavior()

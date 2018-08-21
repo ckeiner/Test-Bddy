@@ -35,7 +35,7 @@ public class ReuseTestdata extends AbstractExtentReportTest
         final CategoryPage categoryPage = new CategoryPage();
         //@formatter:off
         feature("Go to PDP",
-                () -> scenario("Open Catalog",
+                () -> scenario("Open Category <first> and product <second>",
                             withData(new TwoDataType<String, String>(categoryName, productName))
                             .given(openCategory())
                             .then("CategoryPage should be validated", categoryPage::validateStructure)
@@ -48,7 +48,7 @@ public class ReuseTestdata extends AbstractExtentReportTest
                                     new CategoryPage().clickProductByName(data.getSecond());
                                 })
                             .and(addToCart())
-                            .then("The correct product is in the cart", () ->
+                            .then("The product <second> is in the cart", () ->
                                 {
                                     final Product product = productPage.getProduct();
                                     productPage.miniCart.validateMiniCart(1, product);
