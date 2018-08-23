@@ -5,6 +5,8 @@ import java.util.Set;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
+import com.codeborne.selenide.ex.UIAssertionError;
+import com.xceptance.neodymium.util.SelenideAddons;
 
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.status.Statusable;
@@ -94,11 +96,34 @@ public abstract class AbstractStep<T> implements Statusable
             // Mark the node as failed
             if (element != null)
             {
-                element.fail(e);
+
+                if (this.isUiTest())
+                {
+                    // Rethrow as UIAssertionError
+                    try
+                    {
+                        SelenideAddons.wrapAssertionError(() ->
+                            {
+                                throw e;
+                            });
+                    } catch (UIAssertionError uiAssertionError)
+                    {
+                        element.fail(e, uiAssertionError.getScreenshot());
+                    }
+                }
+                else
+                {
+                    element.fail(e);
+                }
             }
             // Throw an Error
             throw new StepError(e);
         }
+    }
+
+    private boolean isUiTest()
+    {
+        return true;
     }
 
     /**

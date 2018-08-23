@@ -25,12 +25,32 @@ public interface ReportElement
     public void fail(String description);
 
     /**
+     * Reports the element as failed with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     * @param pathToScreenshot
+     *            The path to the screenshot.
+     */
+    public void fail(String description, String pathToScreenshot);
+
+    /**
      * Reports the element as failed due to the given cause.
      *
      * @param throwable
      *            The cause of the failure.
      */
     public void fail(Throwable throwable);
+
+    /**
+     * Reports the element as failed due to the given cause.
+     *
+     * @param throwable
+     *            The cause of the failure.
+     * @param pathToScreenshot
+     *            The path to the screenshot.
+     */
+    public void fail(Throwable throwable, String pathToScreenshot);
 
     /**
      * Reports the element as passed with the additional message.
@@ -49,12 +69,32 @@ public interface ReportElement
     public void fatal(String description);
 
     /**
+     * Reports the element as fatal with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     * @param pathToScreenshot
+     *            The path to the screenshot.
+     */
+    public void fatal(String description, String pathToScreenshot);
+
+    /**
      * Reports the element as fatal due to the given cause.
      *
      * @param throwable
      *            The cause of the fatal error.
      */
     public void fatal(Throwable throwable);
+
+    /**
+     * Reports the element as fatal due to the given cause.
+     *
+     * @param throwable
+     *            The cause of the failure.
+     * @param pathToScreenshot
+     *            The path to the screenshot.
+     */
+    public void fatal(Throwable throwable, String pathToScreenshot);
 
     /**
      * Reports the element as skipped with the additional message.

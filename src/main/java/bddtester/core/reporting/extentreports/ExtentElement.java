@@ -1,7 +1,14 @@
 package bddtester.core.reporting.extentreports;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.junit.runners.model.MultipleFailureException;
+
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.MediaEntityBuilder;
 
 import bddtester.core.reporting.ReportElement;
 
@@ -37,6 +44,18 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
+    public void fail(String description, String pathToScreenshot)
+    {
+        try
+        {
+            extentElement.fail(description, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
+        } catch (IOException e)
+        {
+            extentElement.fail(description + " and no Screenshot due to: " + e.getMessage());
+        }
+    }
+
+    @Override
     public void fatal(String description)
     {
         extentElement.fatal(description);
@@ -61,9 +80,53 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
+    public void fail(Throwable throwable, String pathToScreenshot)
+    {
+        try
+        {
+            extentElement.fail(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
+        } catch (IOException e)
+        {
+            List<Throwable> throwables = new ArrayList<>(2);
+            throwables.add(throwable);
+            throwables.add(e);
+            MultipleFailureException mfe = new MultipleFailureException(throwables);
+            extentElement.fail(mfe);
+        }
+    }
+
+    @Override
     public void fatal(Throwable throwable)
     {
         extentElement.fatal(throwable);
+    }
+
+    @Override
+    public void fatal(String description, String pathToScreenshot)
+    {
+        try
+        {
+            extentElement.fatal(description, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
+        } catch (IOException e)
+        {
+            extentElement.fatal(description + " and no Screenshot due to: " + e.getMessage());
+        }
+    }
+
+    @Override
+    public void fatal(Throwable throwable, String pathToScreenshot)
+    {
+        try
+        {
+            extentElement.fatal(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
+        } catch (IOException e)
+        {
+            List<Throwable> throwables = new ArrayList<>(2);
+            throwables.add(throwable);
+            throwables.add(e);
+            MultipleFailureException mfe = new MultipleFailureException(throwables);
+            extentElement.fatal(mfe);
+        }
     }
 
     public ExtentTest getElement()

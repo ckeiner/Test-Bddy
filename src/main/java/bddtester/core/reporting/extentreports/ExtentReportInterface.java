@@ -43,7 +43,7 @@ public class ExtentReportInterface implements ReportInterface
     private ExtentReportInterface()
     {
         // initialize the HtmlReporter
-        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("extent.html");
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(ReportInterface.PATH + "extent.html");
         // initialize ExtentReports and attach the HtmlReporter
         extentReports = new ExtentReports();
         extentReports.attachReporter(htmlReporter);

@@ -41,12 +41,12 @@ public class GuestCheckout extends AbstractExtentReportTest
                                         {
                                             OpenPdpFlow.flow(data.getCategoryName(), data.getProductName());
                                         })
-                    ).skip()
+                    )
             ,
             () -> scenario("Browsing to a PDP with set Data",
                                     given("Homepage is opened", PosterUtils::openHomePage)
                                     .then(OpenPdpFlow.flow("Transportation", "Ikarus 211"))
-                    ).skip()
+                    )
             ,
             () -> scenario("Ordering the product <getProductName()> with address <getAddress()>",
                         withData(janeExample())
@@ -113,7 +113,7 @@ public class GuestCheckout extends AbstractExtentReportTest
                                         })
                                     .and(GuestCheckoutFlow.flow())
                                 )
-            ).ignore().test();
+            ).test();
         //@formatter:on
     }
 }

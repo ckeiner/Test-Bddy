@@ -12,6 +12,8 @@ import bddtester.core.testdata.Testdata;
  */
 public interface ReportInterface
 {
+    public final static String PATH = "report/";
+
     /**
      * Reports a feature with the given description.
      * 
