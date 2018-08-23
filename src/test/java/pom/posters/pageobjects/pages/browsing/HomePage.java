@@ -7,7 +7,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 import static com.codeborne.selenide.Selenide.$$;
 
-import com.xceptance.neodymium.util.Context;
+import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
 
@@ -58,7 +58,7 @@ public class HomePage extends AbstractBrowsingPage
     public void validateSuccessfulLogin(final String firstName)
     {
         // Verify that you are logged in
-        successMessage.validateSuccessMessage(Context.localizedText("HomePage.validation.successfulLogin"));
+        successMessage.validateSuccessMessage(Neodymium.localizedText("HomePage.validation.successfulLogin"));
         // Verify that the user menu shows your first name
         userMenu.validateLoggedInName(firstName);
 
@@ -67,7 +67,7 @@ public class HomePage extends AbstractBrowsingPage
     @Step("validate sucessful account deletion on home page")
     public void validateSuccessfulDeletedAccount()
     {
-        successMessage.validateSuccessMessage(Context.localizedText("HomePage.validation.successfulAccountDeletion"));
+        successMessage.validateSuccessMessage(Neodymium.localizedText("HomePage.validation.successfulAccountDeletion"));
     }
 
 }

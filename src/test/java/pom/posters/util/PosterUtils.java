@@ -3,7 +3,7 @@ package pom.posters.util;
 import static com.codeborne.selenide.Selenide.clearBrowserCookies;
 import static com.codeborne.selenide.Selenide.open;
 
-import com.xceptance.neodymium.util.Context;
+import com.xceptance.neodymium.util.Neodymium;
 
 import io.qameta.allure.Step;
 import pom.posters.pageobjects.pages.browsing.HomePage;
@@ -17,7 +17,7 @@ public class PosterUtils
         clearBrowserCookies();
 
         // open home page
-        open(Context.get().configuration.url());
+        open(Neodymium.configuration().url());
         final HomePage homePage = new HomePage();
         homePage.isExpectedPage();
         return homePage;

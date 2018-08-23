@@ -8,7 +8,7 @@ import static com.codeborne.selenide.Condition.visible;
 import static com.codeborne.selenide.Selenide.$;
 
 import com.codeborne.selenide.SelenideElement;
-import com.xceptance.neodymium.util.Context;
+import com.xceptance.neodymium.util.Neodymium;
 
 import pom.posters.dataobjects.User;
 
@@ -42,24 +42,24 @@ public class LoginPage extends AbstractBrowsingPage
         // Email field
         // Asserts the Email field has a label displaying the value.
         loginForm.find("label.control-label[for=email]")
-                .shouldHave(exactText(Context.localizedText("AccountPages.yourEmail")));
+                .shouldHave(exactText(Neodymium.localizedText("AccountPages.yourEmail")));
         // Asserts the email field is present.
         emailField.shouldBe(visible);
         // Password field
         // Verifies the password field has a label displaying the value.
         loginForm.find("label.control-label[for=password]")
-                .shouldHave(exactText(Context.localizedText("AccountPages.yourPassword")));
+                .shouldHave(exactText(Neodymium.localizedText("AccountPages.yourPassword")));
         // Asserts the password field is there.
         passwordField.shouldBe(visible);
         // Login button
         // asserts the login button displays the value.
-        signInButton.shouldHave(exactText(Context.localizedText("AccountPages.signIn")));
+        signInButton.shouldHave(exactText(Neodymium.localizedText("AccountPages.signIn")));
         // Register headline
         // Asserts the Headline for the Registration is there.
-        $("#main .h3").shouldHave(exactText(Context.localizedText("AccountPages.newCustomer")));
+        $("#main .h3").shouldHave(exactText(Neodymium.localizedText("AccountPages.newCustomer")));
         // Registration page link
         // Asserts the Register link is there and shows the correct text.
-        registerLink.shouldHave(exactText(Context.localizedText("AccountPages.createNewAccount")));
+        registerLink.shouldHave(exactText(Neodymium.localizedText("AccountPages.createNewAccount")));
     }
 
     public void sendFormWithData(final User persona)
@@ -89,7 +89,7 @@ public class LoginPage extends AbstractBrowsingPage
 
     public void validateWrongEmail(final User persona)
     {
-        errorMessage.validateErrorMessage(Context.localizedText("AccountPages.validation.emailDoesNotExistError"));
+        errorMessage.validateErrorMessage(Neodymium.localizedText("AccountPages.validation.emailDoesNotExistError"));
         emailField.shouldHave(exactValue(persona.getEmail()));
     }
 
