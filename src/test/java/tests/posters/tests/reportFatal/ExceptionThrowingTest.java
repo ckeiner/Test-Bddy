@@ -9,9 +9,9 @@ import org.junit.Test;
 
 import bddtester.api.AbstractExtentReportTest;
 import bddtester.core.throwables.exceptions.FeatureException;
-import pom.posters.pageobjects.pages.browsing.HomePage;
-import pom.posters.pageobjects.pages.browsing.RegisterPage;
-import pom.posters.util.PosterUtils;
+import posters.pom.pageobjects.pages.browsing.HomePage;
+import posters.pom.pageobjects.pages.browsing.RegisterPage;
+import posters.pom.util.PosterUtils;
 import tests.posters.testdata.LoginData;
 
 /**

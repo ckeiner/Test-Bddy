@@ -9,11 +9,11 @@ import org.junit.Test;
 import bddtester.api.AbstractExtentReportTest;
 import bddtester.core.bdd.steps.TypeSteps;
 import bddtester.core.testdata.TwoDataType;
-import pom.posters.dataobjects.Product;
-import pom.posters.pageobjects.pages.browsing.CategoryPage;
-import pom.posters.pageobjects.pages.browsing.HomePage;
-import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
-import pom.posters.util.PosterUtils;
+import posters.pom.dataobjects.Product;
+import posters.pom.pageobjects.pages.browsing.CategoryPage;
+import posters.pom.pageobjects.pages.browsing.HomePage;
+import posters.pom.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pom.util.PosterUtils;
 
 /**
  * Reuses steps, and scenarios with test data.

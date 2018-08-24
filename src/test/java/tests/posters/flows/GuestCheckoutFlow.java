@@ -1,12 +1,12 @@
 package tests.posters.flows;
 
 import bddtester.core.bdd.steps.TypeSteps;
-import pom.posters.dataobjects.Product;
-import pom.posters.pageobjects.pages.browsing.CartPage;
-import pom.posters.pageobjects.pages.browsing.HomePage;
-import pom.posters.pageobjects.pages.checkout.NewPaymentPage;
-import pom.posters.pageobjects.pages.checkout.NewShippingAddressPage;
-import pom.posters.pageobjects.pages.checkout.PlaceOrderPlace;
+import posters.pom.dataobjects.Product;
+import posters.pom.pageobjects.pages.browsing.CartPage;
+import posters.pom.pageobjects.pages.browsing.HomePage;
+import posters.pom.pageobjects.pages.checkout.NewPaymentPage;
+import posters.pom.pageobjects.pages.checkout.NewShippingAddressPage;
+import posters.pom.pageobjects.pages.checkout.PlaceOrderPlace;
 import tests.posters.testdata.OrderData;
 
 /**

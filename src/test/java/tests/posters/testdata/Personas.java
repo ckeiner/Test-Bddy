@@ -1,8 +1,8 @@
 package tests.posters.testdata;
 
-import pom.posters.dataobjects.Address;
-import pom.posters.dataobjects.CreditCard;
-import pom.posters.dataobjects.User;
+import posters.pom.dataobjects.Address;
+import posters.pom.dataobjects.CreditCard;
+import posters.pom.dataobjects.User;
 
 /**
  * Defines some personas as {@link OrderData}.

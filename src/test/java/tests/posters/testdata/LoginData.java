@@ -1,6 +1,6 @@
 package tests.posters.testdata;
 
-import pom.posters.dataobjects.User;
+import posters.pom.dataobjects.User;
 
 /**
  * Describes a persona with login capabilities.

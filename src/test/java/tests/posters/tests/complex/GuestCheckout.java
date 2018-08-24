@@ -10,9 +10,9 @@ import static tests.posters.testdata.Personas.johnExample;
 import org.junit.Test;
 
 import bddtester.api.AbstractExtentReportTest;
-import pom.posters.pageobjects.pages.browsing.CartPage;
-import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
-import pom.posters.util.PosterUtils;
+import posters.pom.pageobjects.pages.browsing.CartPage;
+import posters.pom.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pom.util.PosterUtils;
 import tests.posters.flows.GuestCheckoutFlow;
 import tests.posters.flows.OpenPdpFlow;
 

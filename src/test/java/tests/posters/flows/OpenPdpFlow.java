@@ -2,10 +2,10 @@ package tests.posters.flows;
 
 import bddtester.core.bdd.steps.Steps;
 import bddtester.core.bdd.steps.TypeSteps;
-import pom.posters.pageobjects.pages.browsing.CategoryPage;
-import pom.posters.pageobjects.pages.browsing.HomePage;
-import pom.posters.pageobjects.pages.browsing.ProductdetailPage;
-import pom.posters.util.PosterUtils;
+import posters.pom.pageobjects.pages.browsing.CategoryPage;
+import posters.pom.pageobjects.pages.browsing.HomePage;
+import posters.pom.pageobjects.pages.browsing.ProductdetailPage;
+import posters.pom.util.PosterUtils;
 import tests.posters.testdata.OrderData;
 
 /**
