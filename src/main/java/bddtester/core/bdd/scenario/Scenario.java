@@ -1,7 +1,6 @@
 package bddtester.core.bdd.scenario;
 
 import java.util.List;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import bddtester.core.bdd.background.Background;
@@ -166,8 +165,12 @@ public class Scenario extends AbstractScenario
      * Creates a scenario.<br>
      * Should be used for setting up a Scenario, which should be reused.
      * 
+     * @param description
+     *            The description of the scenario.
+     * @param scenarioSupplier
+     *            The Steps of the scenario.
      * @return A scenario with no reporting.
-     * @see #Scenario(String, Consumer)
+     * @see #Scenario(String, Supplier)
      */
     public static Scenario scenario(final String description, final Supplier<Steps> scenarioSupplier)
     {

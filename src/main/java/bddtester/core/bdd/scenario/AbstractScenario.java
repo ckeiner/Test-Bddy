@@ -51,11 +51,17 @@ public abstract class AbstractScenario implements Statusable
 
     /**
      * Adds all specified backgrounds to the scenario
+     * 
+     * @param backgrounds
+     *            The list of {@link Background}s.
      */
     public abstract void addBackgrounds(List<Background> backgrounds);
 
     /**
      * Adds all specified postSteps to the scenario
+     * 
+     * @param postSteps
+     *            The list of {@link PostStep}s.
      */
     public abstract void addPostSteps(List<PostStep> postSteps);
 

@@ -1,5 +1,7 @@
 package bddtester.core.throwables.exceptions;
 
+import bddtester.core.bdd.scenario.Scenario;
+
 /**
  * Describes an exception that happens in a {@link Scenario}.
  * 
