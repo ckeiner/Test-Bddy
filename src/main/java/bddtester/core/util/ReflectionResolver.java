@@ -1,14 +1,10 @@
 package bddtester.core.util;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
-
-import com.google.common.collect.Lists;
 
 public class ReflectionResolver<T>
 {
@@ -47,10 +43,14 @@ public class ReflectionResolver<T>
         return output;
     }
 
-    private static Iterable<Field> getFieldsUpTo(@Nonnull Class<?> startClass, @Nullable Class<?> exclusiveParent)
+    private static Iterable<Field> getFieldsUpTo(Class<?> startClass, Class<?> exclusiveParent)
     {
 
-        List<Field> currentClassFields = Lists.newArrayList(startClass.getDeclaredFields());
+        List<Field> currentClassFields = new ArrayList<>();
+        for (Field field : startClass.getDeclaredFields())
+        {
+            currentClassFields.add(field);
+        }
         Class<?> parentClass = startClass.getSuperclass();
 
         if (parentClass != null && (exclusiveParent == null || !(parentClass.equals(exclusiveParent))))

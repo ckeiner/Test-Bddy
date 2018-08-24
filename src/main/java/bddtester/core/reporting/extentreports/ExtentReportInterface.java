@@ -1,5 +1,7 @@
 package bddtester.core.reporting.extentreports;
 
+import java.io.File;
+
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
@@ -42,8 +44,14 @@ public class ExtentReportInterface implements ReportInterface
      */
     private ExtentReportInterface()
     {
+        File file = new File("./" + ReportInterface.PATH);
+        // Create directory if it doesn't exist yet
+        if (!file.isDirectory())
+        {
+            file.mkdirs();
+        }
         // initialize the HtmlReporter
-        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter(ReportInterface.PATH + "extent.html");
+        ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("./" + ReportInterface.PATH + "extent.html");
         // initialize ExtentReports and attach the HtmlReporter
         extentReports = new ExtentReports();
         extentReports.attachReporter(htmlReporter);

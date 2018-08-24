@@ -19,7 +19,6 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.21.0</surefire.version>
-        <aspectj.version>1.8.13</aspectj.version> 
         <serenity.version>1.9.8</serenity.version>
         <serenity.maven.version>1.8.0</serenity.maven.version>
         <surefire.rerunFailingTestsCount>3</surefire.rerunFailingTestsCount>
@@ -49,34 +48,6 @@
                             <include>**/reporting/*.java</include>
                     </includes>
                     <testFailureIgnore>true</testFailureIgnore>
-                    <argLine>-javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"</argLine>
-                    <properties>
-                        <property>
-                            <name>listener</name>
-                            <value>io.qameta.allure.junit4.AllureJunit4</value>
-                        </property>
-                    </properties>
-                    <systemPropertyVariables>
-                        <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
-                        <selenide.reports>${project.build.directory}/selenide-results</selenide.reports>
-                        <cucumber.options>--plugin io.qameta.allure.cucumber2jvm.AllureCucumber2Jvm</cucumber.options>
-                    </systemPropertyVariables>
-                </configuration>
-
-                <dependencies>
-                    <dependency>
-                        <groupId>org.aspectj</groupId>
-                        <artifactId>aspectjweaver</artifactId>
-                        <version>${aspectj.version}</version>
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <plugin>
-                <groupId>io.qameta.allure</groupId>
-                <artifactId>allure-maven</artifactId>
-                <version>2.9</version>
-                <configuration>
-                    <reportVersion>2.6.0</reportVersion>
                 </configuration>
             </plugin>
         </plugins>
@@ -92,20 +63,20 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.xceptance</groupId>
-            <artifactId>neodymium-library</artifactId>
-            <version>2.1.0</version>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
         </dependency>
-		<dependency>
-		    <groupId>com.aventstack</groupId>
-		    <artifactId>extentreports</artifactId>
-		    <version>3.1.5</version>
-		</dependency>
-		<dependency>
-		    <groupId>org.beanshell</groupId>
-		    <artifactId>bsh</artifactId>
-		    <version>2.0b5</version>
-		</dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>3.1.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.beanshell</groupId>
+            <artifactId>bsh</artifactId>
+            <version>2.0b5</version>
+        </dependency>
     </dependencies>
     
     <reporting>

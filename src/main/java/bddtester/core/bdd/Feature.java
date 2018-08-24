@@ -27,6 +27,11 @@ import bddtester.core.throwables.exceptions.ScenarioException;
 public class Feature implements Statusable
 {
     /**
+     * The class responsible for reporting.
+     */
+    public static ReportInterface reporter;
+
+    /**
      * The steps to execute before executing a single scenario
      */
     private final List<Background> backgrounds;
@@ -35,11 +40,6 @@ public class Feature implements Statusable
      * The steps to execute after executing a single scenario
      */
     private final List<PostStep> postSteps;
-
-    /**
-     * The class responsible for reporting.
-     */
-    public static ReportInterface reporter;
 
     /**
      * The description of the feature.
@@ -301,5 +301,4 @@ public class Feature implements Statusable
         Feature.reporter = reporter;
         return this;
     }
-
 }
