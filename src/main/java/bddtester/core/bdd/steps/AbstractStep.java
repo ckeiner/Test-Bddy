@@ -96,34 +96,21 @@ public abstract class AbstractStep<T> implements Statusable
             // Mark the node as failed
             if (element != null)
             {
-
-                if (this.isUiTest())
+                // Rethrow as UIAssertionError
+                try
                 {
-                    // Rethrow as UIAssertionError
-                    try
-                    {
-                        SelenideAddons.wrapAssertionError(() ->
-                            {
-                                throw e;
-                            });
-                    } catch (UIAssertionError uiAssertionError)
-                    {
-                        element.fail(e, uiAssertionError.getScreenshot());
-                    }
-                }
-                else
+                    SelenideAddons.wrapAssertionError(() ->
+                        {
+                            throw e;
+                        });
+                } catch (UIAssertionError uiAssertionError)
                 {
-                    element.fail(e);
+                    element.fail(e, uiAssertionError.getScreenshot());
                 }
             }
             // Throw an Error
             throw new StepError(e);
         }
-    }
-
-    private boolean isUiTest()
-    {
-        return true;
     }
 
     /**

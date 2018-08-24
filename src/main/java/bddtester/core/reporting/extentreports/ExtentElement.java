@@ -1,10 +1,6 @@
 package bddtester.core.reporting.extentreports;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.runners.model.MultipleFailureException;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
@@ -87,11 +83,12 @@ public class ExtentElement implements ReportElement
             extentElement.fail(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
         } catch (IOException e)
         {
-            List<Throwable> throwables = new ArrayList<>(2);
-            throwables.add(throwable);
-            throwables.add(e);
-            MultipleFailureException mfe = new MultipleFailureException(throwables);
-            extentElement.fail(mfe);
+            // List<Throwable> throwables = new ArrayList<>(2);
+            // throwables.add(throwable);
+            // throwables.add(e);
+            // MultipleFailureException mfe = new MultipleFailureException(throwables);
+            // extentElement.fatal(mfe);
+            extentElement.fatal(throwable);
         }
     }
 
@@ -121,11 +118,12 @@ public class ExtentElement implements ReportElement
             extentElement.fatal(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
         } catch (IOException e)
         {
-            List<Throwable> throwables = new ArrayList<>(2);
-            throwables.add(throwable);
-            throwables.add(e);
-            MultipleFailureException mfe = new MultipleFailureException(throwables);
-            extentElement.fatal(mfe);
+            // List<Throwable> throwables = new ArrayList<>(2);
+            // throwables.add(throwable);
+            // throwables.add(e);
+            // MultipleFailureException mfe = new MultipleFailureException(throwables);
+            // extentElement.fatal(mfe);
+            extentElement.fatal(throwable);
         }
     }
 
