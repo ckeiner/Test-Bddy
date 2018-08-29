@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Status;
+import bddtester.core.bdd.steps.Step;
 import bddtester.core.bdd.steps.Steps;
 import bddtester.core.reporting.ReportElement;
 import bddtester.core.throwables.errors.ScenarioError;
@@ -107,6 +108,7 @@ public class Scenario extends AbstractScenario
         Throwable throwable = null;
         if (this.postSteps != null)
         {
+            this.postSteps.setReporter(getReporter());
             try
             {
                 this.postSteps.test();
@@ -226,6 +228,10 @@ public class Scenario extends AbstractScenario
     public Scenario postSteps(Supplier<Steps> postSteps)
     {
         this.postSteps = postSteps.get();
+        for (Step step : this.postSteps.getSteps())
+        {
+            step.setDescription("POSTSTEP: " + getDescription());
+        }
         return this;
     }
 

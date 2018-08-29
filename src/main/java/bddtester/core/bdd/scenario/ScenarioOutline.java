@@ -9,6 +9,7 @@ import org.junit.runners.model.MultipleFailureException;
 import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Status;
+import bddtester.core.bdd.steps.TypeStep;
 import bddtester.core.bdd.steps.TypeSteps;
 import bddtester.core.reporting.ReportElement;
 import bddtester.core.throwables.MultipleScenarioWrapperException;
@@ -93,55 +94,104 @@ public class ScenarioOutline<T> extends AbstractScenario
         // For every test data
         for (final T testdatum : this.testdata)
         {
-            // Get the step definition
-            TypeSteps<T> typeSteps = getSteps();
-            // Set the testdata
-            typeSteps = typeSteps.withData(testdatum);
-
-            // Tell the reporter the scenario starts
-            ReportElement scenarioReporter = setUpReporter(typeSteps, testdatum);
-
-            System.out.println("Using testdata:\n" + testdatum.toString());
-            try
-            {
-                executeScenario(scenarioReporter, typeSteps);
-            } catch (StepException e)
-            {
-                // Create a ScenarioError
-                ScenarioException scenarioException = new ScenarioException(
-                        "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
-                // Save the exception
-                scenarioExceptions.add(scenarioException);
-                if (scenarioReporter != null)
-                {
-                    // Mark the scenario as fatal with the exception
-                    scenarioReporter.fatal(scenarioException);
-                }
-            } catch (StepError e)
-            {
-                // Create a ScenarioError
-                ScenarioError scenarioError = new ScenarioError(
-                        "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
-                // Save the error
-                scenarioErrors.add(scenarioError);
-                if (scenarioReporter != null)
-                {
-                    // Mark the scenario as failed with the error
-                    scenarioReporter.fail(scenarioError);
-                }
-            }
-            // Always execute the PostStep after the scenario is done
-            finally
-            {
-                // First we execute the postSteps
-                postStepFailures.add(doPostSteps(testdatum));
-            }
-            System.out.println("\n");
+            postStepFailures = new ArrayList<>();
+            doSingleTest(testdatum, scenarioExceptions, scenarioErrors, postStepFailures);
         }
-
         System.out.println("\n\n");
         finishScenario(scenarioExceptions, scenarioErrors, postStepFailures);
-        // }
+    }
+
+    /**
+     * Executes a test with a single test datum.
+     * 
+     * @param testdatum
+     *            The test datum.
+     * @param scenarioExceptions
+     *            The list of {@link ScenarioException}s.
+     * @param scenarioErrors
+     *            The list of {@link ScenarioError}s.
+     * @param postStepFailures
+     *            The list of {@link Throwable}s.
+     */
+    private void doSingleTest(final T testdatum, final List<ScenarioException> scenarioExceptions,
+            final List<ScenarioError> scenarioErrors, final List<Throwable> postStepFailures)
+    {
+        // Set the testdata
+        TypeSteps<T> typeSteps = getSteps().withData(testdatum);
+        // Tell the reporter the scenario starts
+        ReportElement scenarioReporter = setUpReporter(typeSteps, testdatum);
+
+        System.out.println("Using testdata:\n" + testdatum.toString());
+        try
+        {
+            executeScenario(scenarioReporter, typeSteps);
+        } catch (StepException e)
+        {
+            scenarioExceptions.add(scenarioException(testdatum, e, scenarioReporter));
+        } catch (StepError e)
+        {
+            scenarioErrors.add(scenarioError(testdatum, e, scenarioReporter));
+        }
+        // Always execute the PostStep after the scenario is done
+        finally
+        {
+            // First we execute the postSteps
+            Throwable postStepFailure = doPostSteps(testdatum);
+            if (postStepFailure != null)
+            {
+                postStepFailures.add(postStepFailure);
+            }
+        }
+        System.out.println("\n");
+    }
+
+    /**
+     * Creates and logs a {@link ScenarioError}.
+     * 
+     * @param testdatum
+     *            The used test datum.
+     * @param e
+     *            The {@link StepError} that occured.
+     * @param scenarioReporter
+     *            The reporter for reporting.
+     * @return The ScenarioError with a proper description and the StepError.
+     */
+    private ScenarioError scenarioError(T testdatum, StepError e, ReportElement scenarioReporter)
+    {
+        // Create a ScenarioError
+        ScenarioError scenarioError = new ScenarioError(
+                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
+        if (scenarioReporter != null)
+        {
+            // Mark the scenario as failed with the error
+            scenarioReporter.fail(scenarioError);
+        }
+        return scenarioError;
+    }
+
+    /**
+     * Creates and logs a {@link ScenarioException}
+     * 
+     * @param testdatum
+     *            The used test datum.
+     * @param e
+     *            The {@link StepException} that occured.
+     * @param scenarioReporter
+     *            The reporter for reporting.
+     * @return The ScenarioException with a proper description and the
+     *         StepException.
+     */
+    private ScenarioException scenarioException(T testdatum, StepException e, ReportElement scenarioReporter)
+    {
+        // Create a ScenarioError
+        ScenarioException scenarioException = new ScenarioException(
+                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
+        if (scenarioReporter != null)
+        {
+            // Mark the scenario as fatal with the exception
+            scenarioReporter.fatal(scenarioException);
+        }
+        return scenarioException;
     }
 
     @Override
@@ -288,6 +338,7 @@ public class ScenarioOutline<T> extends AbstractScenario
         Throwable throwable = null;
         if (this.postSteps != null)
         {
+            this.postSteps.setReporter(getReporter());
             this.postSteps.withData(testdatum);
             try
             {
@@ -324,6 +375,10 @@ public class ScenarioOutline<T> extends AbstractScenario
     public ScenarioOutline<T> postSteps(Supplier<TypeSteps<T>> postSteps)
     {
         this.postSteps = postSteps.get();
+        for (TypeStep<T> step : this.postSteps.getSteps())
+        {
+            step.setDescription("POSTSTEP: " + getDescription());
+        }
         return this;
     }
 

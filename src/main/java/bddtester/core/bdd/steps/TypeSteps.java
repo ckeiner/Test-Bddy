@@ -117,6 +117,7 @@ public class TypeSteps<T> implements Statusable
         addAftersToSteps();
         for (final TypeStep<T> step : steps)
         {
+            // Set the reporter at the step
             if (step.getReporter() == null && this.getReporter() != null)
             {
                 step.setReporter(getReporter());
