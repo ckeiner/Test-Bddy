@@ -22,6 +22,11 @@ public class ParameterResolver<T>
     /**
      * The String with which placeholders start
      */
+    public final static String DEFINITION_START = "data";
+
+    /**
+     * The String with which placeholders start
+     */
     public final static String ENCLOSE_START = "<";
 
     /**
@@ -43,6 +48,7 @@ public class ParameterResolver<T>
      */
     public String resolvePlaceholders(String description, T testdata)
     {
+        setInterpreterToData(testdata);
         String output = description;
         Matcher matcher = Pattern.compile(ENCLOSE_START + ".*?" + ENCLOSE_END).matcher(description);
         while (matcher.find())
@@ -69,11 +75,9 @@ public class ParameterResolver<T>
     private String resolvePlaceholder(String placeholder, T testdata)
     {
         String output = placeholder;
-        String testdataPrefix = "$data";
         try
         {
-            interpreter.set(testdataPrefix, testdata);
-            String statement = testdataPrefix + "." + placeholder;
+            String statement = placeholder;
             Object value = interpreter.eval(statement);
             if (value != null)
             {
@@ -89,6 +93,22 @@ public class ParameterResolver<T>
             output = ENCLOSE_START + placeholder + ENCLOSE_END;
         }
         return output;
+    }
+
+    /**
+     * Sets the test datum
+     * 
+     * @param testdata
+     */
+    private void setInterpreterToData(T testdatum)
+    {
+        try
+        {
+            interpreter.set(DEFINITION_START, testdatum);
+        } catch (EvalError e)
+        {
+            e.printStackTrace();
+        }
     }
 
 }

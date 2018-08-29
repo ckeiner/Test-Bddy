@@ -94,7 +94,6 @@ public class ScenarioOutline<T> extends AbstractScenario
         // For every test data
         for (final T testdatum : this.testdata)
         {
-            postStepFailures = new ArrayList<>();
             doSingleTest(testdatum, scenarioExceptions, scenarioErrors, postStepFailures);
         }
         System.out.println("\n\n");
