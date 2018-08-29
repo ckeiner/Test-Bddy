@@ -75,7 +75,10 @@ public class ParameterResolver<T>
             interpreter.set(testdataPrefix, testdata);
             String statement = testdataPrefix + "." + placeholder;
             Object value = interpreter.eval(statement);
-            output = value.toString();
+            if (value != null)
+            {
+                output = value.toString();
+            }
         } catch (EvalError e)
         {
             e.printStackTrace();

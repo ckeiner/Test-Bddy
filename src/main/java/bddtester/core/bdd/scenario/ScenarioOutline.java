@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import org.junit.runners.model.MultipleFailureException;
+
+import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.steps.TypeSteps;
 import bddtester.core.reporting.ReportElement;
@@ -14,7 +16,6 @@ import bddtester.core.throwables.errors.ScenarioError;
 import bddtester.core.throwables.errors.StepError;
 import bddtester.core.throwables.exceptions.ScenarioException;
 import bddtester.core.throwables.exceptions.StepException;
-import bddtester.core.util.ParameterResolver;
 
 /**
  * Represents a Scenario Outline in the BDD Hierarchy.<br>
@@ -29,6 +30,11 @@ import bddtester.core.util.ParameterResolver;
 public class ScenarioOutline<T> extends AbstractScenario
 {
     private TypeSteps<T> steps;
+
+    /**
+     * The steps to always execute after a scenario, even after a failure.
+     */
+    private TypeSteps<T> postSteps;
 
     private final List<T> testdata;
 
@@ -53,15 +59,15 @@ public class ScenarioOutline<T> extends AbstractScenario
     }
 
     @Override
-    public void addBackgrounds(List<Background> backgrounds)
+    public void addBefores(List<Before> befores)
     {
-        getSteps().addBackground(backgrounds);
+        getSteps().addBefore(befores);
     }
 
     @Override
-    public void addPostSteps(List<PostStep> postSteps)
+    public void addAfters(List<After> afters)
     {
-        getSteps().addPostSteps(postSteps);
+        getSteps().addAfters(afters);
     }
 
     /**
@@ -81,6 +87,7 @@ public class ScenarioOutline<T> extends AbstractScenario
         // Initialize needed variables
         List<ScenarioException> scenarioExceptions = new ArrayList<>();
         List<ScenarioError> scenarioErrors = new ArrayList<>();
+        List<Throwable> postStepFailures = new ArrayList<>();
         System.out.println("================\nScenarioOutline: " + getDescription() + "\n================");
 
         // For every test data
@@ -123,11 +130,17 @@ public class ScenarioOutline<T> extends AbstractScenario
                     scenarioReporter.fail(scenarioError);
                 }
             }
+            // Always execute the PostStep after the scenario is done
+            finally
+            {
+                // First we execute the postSteps
+                postStepFailures.add(doPostSteps(testdatum));
+            }
             System.out.println("\n");
         }
 
         System.out.println("\n\n");
-        finishScenario(scenarioExceptions, scenarioErrors);
+        finishScenario(scenarioExceptions, scenarioErrors, postStepFailures);
         // }
     }
 
@@ -165,7 +178,7 @@ public class ScenarioOutline<T> extends AbstractScenario
      *         <code>null</code> if {@link #getReporter()} returns
      *         <code>null</code>.
      */
-    private ReportElement setUpReporter(TypeSteps<T> typeSteps, T testdatum)
+    protected ReportElement setUpReporter(TypeSteps<T> typeSteps, T testdatum)
     {
         return setUpReporter(typeSteps, testdatum, true);
     }
@@ -185,15 +198,18 @@ public class ScenarioOutline<T> extends AbstractScenario
      *         <code>null</code> if {@link #getReporter()} returns
      *         <code>null</code>.
      */
-    private ReportElement setUpReporter(TypeSteps<T> typeSteps, T testdatum, boolean reportStatus)
+    protected ReportElement setUpReporter(TypeSteps<T> typeSteps, T testdatum, boolean reportStatus)
     {
         ReportElement scenarioReporter = null;
         if (getReporter() != null)
         {
-            String reportDescription = new ParameterResolver<T>().resolvePlaceholders(getDescription(), testdatum);
-            // scenarioReporter = getReporter().scenarioOutline(this.getDescription(),
-            // testdatum);
-            scenarioReporter = getReporter().scenarioOutline(reportDescription);
+            // // Resolves placeholders in the description
+            // String reportDescription = new
+            // ParameterResolver<T>().resolvePlaceholders(getDescription(), testdatum);
+            // scenarioReporter = getReporter().scenarioOutline(reportDescription);
+            // We decided, that for a scenario, the test data should simply be printed,
+            // without any placeholders
+            scenarioReporter = getReporter().scenarioOutline(this.getDescription(), testdatum);
             if (typeSteps.getReporter() == null)
             {
                 typeSteps.setReporter(this.getReporter());
@@ -215,7 +231,7 @@ public class ScenarioOutline<T> extends AbstractScenario
      * @param typeSteps
      *            The {@link BddTypeSteps} to execute.
      */
-    private void executeScenario(ReportElement scenarioReporter, TypeSteps<T> typeSteps)
+    protected void executeScenario(ReportElement scenarioReporter, TypeSteps<T> typeSteps)
     {
         if (getStatus().contains(Status.SKIP))
         {
@@ -241,8 +257,10 @@ public class ScenarioOutline<T> extends AbstractScenario
      * @param scenarioErrors
      *            The list of scenarioErrors that happened in the scenario.
      */
-    public void finishScenario(List<ScenarioException> scenarioExceptions, List<ScenarioError> scenarioErrors)
+    private void finishScenario(List<ScenarioException> scenarioExceptions, List<ScenarioError> scenarioErrors,
+            List<Throwable> postStepFailures)
     {
+        // Then we collect the throwables
         MultipleScenarioWrapperException scenarioWrapperException = new MultipleScenarioWrapperException(
                 scenarioExceptions, scenarioErrors);
         // Throw a scenario exception if an exception or exception and error occured
@@ -255,6 +273,31 @@ public class ScenarioOutline<T> extends AbstractScenario
         {
             throw new ScenarioError(scenarioWrapperException);
         }
+        if (postStepFailures != null && !postStepFailures.isEmpty())
+        {
+            MultipleFailureException multipleFailureException = new MultipleFailureException(postStepFailures);
+            throw new ScenarioException(multipleFailureException);
+        }
+    }
+
+    /**
+     * Executes postSteps added by {@link #postSteps(Supplier)}.
+     */
+    protected Throwable doPostSteps(T testdatum)
+    {
+        Throwable throwable = null;
+        if (this.postSteps != null)
+        {
+            this.postSteps.withData(testdatum);
+            try
+            {
+                this.postSteps.test();
+            } catch (Exception | Error e)
+            {
+                throwable = e;
+            }
+        }
+        return throwable;
     }
 
     public List<T> getTestdata()
@@ -270,6 +313,18 @@ public class ScenarioOutline<T> extends AbstractScenario
     public void setSteps(TypeSteps<T> steps)
     {
         this.steps = steps;
+    }
+
+    // public ScenarioOutline<T> postSteps(Supplier<Steps> postSteps)
+    // {
+    // this.postSteps = new TypeSteps<T>().given(postSteps.get());
+    // return this;
+    // }
+
+    public ScenarioOutline<T> postSteps(Supplier<TypeSteps<T>> postSteps)
+    {
+        this.postSteps = postSteps.get();
+        return this;
     }
 
 }

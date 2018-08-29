@@ -5,8 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import bddtester.core.bdd.beforeAfter.Before;
+import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.scenario.AbstractScenario;
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.status.Statusable;
@@ -34,12 +34,12 @@ public class Feature implements Statusable
     /**
      * The steps to execute before executing a single scenario
      */
-    private final List<Background> backgrounds;
+    private final List<Before> befores;
 
     /**
      * The steps to execute after executing a single scenario
      */
-    private final List<PostStep> postSteps;
+    private final List<After> afters;
 
     /**
      * The description of the feature.
@@ -62,18 +62,18 @@ public class Feature implements Statusable
      *
      * @param description
      *            String that describes the Feature.
-     * @param backgrounds
-     *            The list of {@link Background}s to execute before each scenario.
-     * @param postSteps
-     *            The list of {@link PostStep}s to execute after each scenario.
+     * @param befores
+     *            The list of {@link Before}s to execute before each scenario.
+     * @param afters
+     *            The list of {@link After}s to execute after each scenario.
      * @param scenarios
      *            List of {@link AbstractScenario}s that the feature should execute.
      */
-    public Feature(final String description, final List<Background> backgrounds, final List<PostStep> postSteps,
+    public Feature(final String description, final List<Before> befores, final List<After> afters,
             final List<AbstractScenario> scenarios)
     {
-        this.backgrounds = backgrounds;
-        this.postSteps = postSteps;
+        this.befores = befores;
+        this.afters = afters;
         this.description = description;
         this.scenarios = scenarios;
         status = new LinkedHashSet<Status>();
@@ -117,15 +117,15 @@ public class Feature implements Statusable
                 scenario.setReporter(reporter);
             }
             // Add the backgrounds to the scenario
-            if (backgrounds != null && !backgrounds.isEmpty())
+            if (befores != null && !befores.isEmpty())
             {
-                scenario.addBackgrounds(backgrounds);
+                scenario.addBefores(befores);
             }
 
             // Add the postSteps to the scenario
-            if (postSteps != null && !postSteps.isEmpty())
+            if (afters != null && !afters.isEmpty())
             {
-                scenario.addPostSteps(postSteps);
+                scenario.addAfters(afters);
             }
             // Execute the scenario and catch all exceptions and errors
             try

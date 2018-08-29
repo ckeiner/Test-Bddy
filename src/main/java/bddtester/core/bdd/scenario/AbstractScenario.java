@@ -4,8 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.status.Statusable;
 import bddtester.core.reporting.ReportInterface;
@@ -52,18 +52,18 @@ public abstract class AbstractScenario implements Statusable
     /**
      * Adds all specified backgrounds to the scenario
      * 
-     * @param backgrounds
-     *            The list of {@link Background}s.
+     * @param befores
+     *            The list of {@link Before}s.
      */
-    public abstract void addBackgrounds(List<Background> backgrounds);
+    public abstract void addBefores(List<Before> befores);
 
     /**
      * Adds all specified postSteps to the scenario
      * 
-     * @param postSteps
-     *            The list of {@link PostStep}s.
+     * @param afters
+     *            The list of {@link After}s.
      */
-    public abstract void addPostSteps(List<PostStep> postSteps);
+    public abstract void addAfters(List<After> afters);
 
     public String getDescription()
     {

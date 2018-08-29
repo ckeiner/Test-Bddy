@@ -1,15 +1,15 @@
-package bddtester.core.bdd.background;
+package bddtester.core.bdd.beforeAfter;
 
 import bddtester.core.bdd.steps.Steps;
 
-public class PostStep
+public class Before
 {
     /**
      * The steps to execute.
      */
     final private Steps steps;
 
-    public PostStep(final Steps steps)
+    public Before(final Steps steps)
     {
         this.steps = steps;
     }

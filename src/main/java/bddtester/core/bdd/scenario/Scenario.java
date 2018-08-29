@@ -3,8 +3,8 @@ package bddtester.core.bdd.scenario;
 import java.util.List;
 import java.util.function.Supplier;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.steps.Steps;
 import bddtester.core.reporting.ReportElement;
@@ -26,6 +26,11 @@ public class Scenario extends AbstractScenario
      */
     final private Steps bddSteps;
 
+    /**
+     * The steps to always execute after a scenario, even after a failure.
+     */
+    private Steps postSteps;
+
     public Scenario(final String description, final Steps steps)
     {
         this(description, () -> steps);
@@ -45,6 +50,7 @@ public class Scenario extends AbstractScenario
     @Override
     public void test()
     {
+        Throwable throwable;
         if (getStatus().contains(Status.IGNORE))
         {
             return;
@@ -80,8 +86,36 @@ public class Scenario extends AbstractScenario
             }
             // Throws the scenario error
             throw new ScenarioError("Scenario \"" + getDescription() + "\" failed.", e);
+        } finally
+        {
+            throwable = doPostSteps();
         }
         System.out.println("\n\n");
+        // If we are here, then there was some failure in the poststeps, but not in the
+        // main scenario
+        if (throwable != null)
+        {
+            throw new ScenarioError("PostStep of Scenario \"" + getDescription() + "\" failed.", throwable);
+        }
+    }
+
+    /**
+     * Executes postSteps added by {@link #postSteps(Supplier)}.
+     */
+    protected Throwable doPostSteps()
+    {
+        Throwable throwable = null;
+        if (this.postSteps != null)
+        {
+            try
+            {
+                this.postSteps.test();
+            } catch (Exception | Error e)
+            {
+                throwable = e;
+            }
+        }
+        return throwable;
     }
 
     @Override
@@ -178,15 +212,21 @@ public class Scenario extends AbstractScenario
     }
 
     @Override
-    public void addBackgrounds(List<Background> backgrounds)
+    public void addBefores(List<Before> befores)
     {
-        bddSteps.addBackgrounds(backgrounds);
+        bddSteps.addBefores(befores);
     }
 
     @Override
-    public void addPostSteps(List<PostStep> postSteps)
+    public void addAfters(List<After> afters)
     {
-        bddSteps.addPostSteps(postSteps);
+        bddSteps.addAfters(afters);
+    }
+
+    public Scenario postSteps(Supplier<Steps> postSteps)
+    {
+        this.postSteps = postSteps.get();
+        return this;
     }
 
 }

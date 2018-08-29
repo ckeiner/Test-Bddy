@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import bddtester.core.bdd.beforeAfter.Before;
+import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.status.Statusable;
 import bddtester.core.reporting.ReportInterface;
 import bddtester.core.throwables.errors.StepError;
@@ -29,12 +29,12 @@ public class Steps implements Statusable
     /**
      * The steps that happen before all other steps
      */
-    private final List<Background> backgrounds;
+    private final List<Before> befores;
 
     /**
      * The steps that happen after all other steps
      */
-    private final List<PostStep> postSteps;
+    private final List<After> afters;
 
     /**
      * A list of all {@link Step}s
@@ -57,39 +57,39 @@ public class Steps implements Statusable
      */
     public Steps(final List<Step> steps)
     {
-        this(steps, new ArrayList<Background>());
+        this(steps, new ArrayList<Before>());
     }
 
     /**
      * Creates a BddScenario with the specified reporter and list of {@link Step}s,
-     * {@link Background}s and {@link PostStep}s.
+     * {@link Before}s and {@link After}s.
      * 
-     * @param backgrounds
+     * @param befores
      *            The list of steps to execute before each other step.
      * @param steps
      *            The list of BddSteps that specify this BddScenario
      */
-    public Steps(final List<Step> steps, final List<Background> backgrounds)
+    public Steps(final List<Step> steps, final List<Before> befores)
     {
-        this(steps, backgrounds, new ArrayList<PostStep>());
+        this(steps, befores, new ArrayList<After>());
     }
 
     /**
      * Creates a BddScenario with the specified list of {@link Step}s,
-     * {@link Background}s and {@link PostStep}s.
+     * {@link Before}s and {@link After}s.
      * 
      * @param steps
      *            The list of BddSteps that specify this BddScenario
-     * @param backgrounds
+     * @param befores
      *            The list of steps to execute before the steps.
-     * @param postSteps
+     * @param afters
      *            The list of steps to execute after the steps.
      */
-    public Steps(final List<Step> steps, final List<Background> backgrounds, final List<PostStep> postSteps)
+    public Steps(final List<Step> steps, final List<Before> befores, final List<After> afters)
     {
         this.steps = steps;
-        this.backgrounds = backgrounds;
-        this.postSteps = postSteps;
+        this.befores = befores;
+        this.afters = afters;
     }
 
     /**
@@ -166,9 +166,9 @@ public class Steps implements Statusable
     {
         // Get the Steps from the background
         List<Steps> steps = new ArrayList<>();
-        for (Background background : backgrounds)
+        for (Before before : befores)
         {
-            steps.add(background.getSteps());
+            steps.add(before.getSteps());
         }
         // The actual position to add steps depends on the number of steps from the last
         // added Steps
@@ -184,12 +184,12 @@ public class Steps implements Statusable
     /**
      * Adds all backgrounds to the Steps.
      * 
-     * @param backgrounds
-     *            The {@link Background}s to add.
+     * @param befores
+     *            The {@link Before}s to add.
      */
-    public void addBackgrounds(List<Background> backgrounds)
+    public void addBefores(List<Before> befores)
     {
-        this.backgrounds.addAll(backgrounds);
+        this.befores.addAll(befores);
     }
 
     /**
@@ -197,21 +197,21 @@ public class Steps implements Statusable
      */
     private void addPostStepsToSteps()
     {
-        for (PostStep postStep : postSteps)
+        for (After after : afters)
         {
-            addAllSteps(postStep.getSteps());
+            addAllSteps(after.getSteps());
         }
     }
 
     /**
      * Adds all postSteps to the Steps.
      * 
-     * @param postSteps
-     *            The {@link PostStep}s to add.
+     * @param afters
+     *            The {@link After}s to add.
      */
-    public void addPostSteps(List<PostStep> postSteps)
+    public void addAfters(List<After> afters)
     {
-        this.postSteps.addAll(postSteps);
+        this.afters.addAll(afters);
     }
 
     /**

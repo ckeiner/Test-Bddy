@@ -6,8 +6,9 @@ import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.PostStep;
+import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Afters;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Statusable;
 import bddtester.core.reporting.ReportInterface;
 import bddtester.core.throwables.errors.StepError;
@@ -32,12 +33,13 @@ public class TypeSteps<T> implements Statusable
     /**
      * The steps that happen before all other steps
      */
-    private final List<Background> backgrounds;
+    // TODO make this a stream so we only read once
+    private final List<Before> befores;
 
     /**
      * The steps that happen after all other steps
      */
-    private final List<PostStep> postSteps;
+    private final List<After> afters;
 
     /**
      * The list of steps to execute.
@@ -70,35 +72,34 @@ public class TypeSteps<T> implements Statusable
 
     /**
      * Creates a BddTypeScenario with the specified reporter and list of
-     * {@link Step}s and {@link Background}s.
+     * {@link Step}s and {@link Before}s.
      * 
      * @param steps
      *            The list of steps to execute.
-     * @param backgrounds
-     *            The list of {@link Background}s to execute before each other
-     *            steps.
+     * @param befores
+     *            The list of {@link Before}s to execute before each other steps.
      */
-    public TypeSteps(final List<TypeStep<T>> steps, final List<Background> backgrounds)
+    public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores)
     {
-        this(steps, backgrounds, new ArrayList<>());
+        this(steps, befores, new ArrayList<>());
     }
 
     /**
      * Creates a BddTypeScenario with the specified reporter and list of
-     * {@link Step}s, {@link Background}s and {@link PostStep}s.
+     * {@link Step}s, {@link Before}s and {@link After}s.
      * 
      * @param steps
      *            The list of steps to execute.
-     * @param backgrounds
-     *            The list of {@link Background}s to execute before the other steps.
-     * @param postSteps
-     *            The list of {@link PostSteps}s to execute after the other steps.
+     * @param befores
+     *            The list of {@link Before}s to execute before the other steps.
+     * @param afters
+     *            The list of {@link Afters}s to execute after the other steps.
      */
-    public TypeSteps(final List<TypeStep<T>> steps, final List<Background> backgrounds, final List<PostStep> postSteps)
+    public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores, final List<After> afters)
     {
         this.steps = steps;
-        this.backgrounds = backgrounds;
-        this.postSteps = postSteps;
+        this.befores = befores;
+        this.afters = afters;
     }
 
     /**
@@ -112,8 +113,8 @@ public class TypeSteps<T> implements Statusable
     {
         StepException stepException = null;
         StepError stepError = null;
-        addBackgroundToSteps();
-        addPostStepsToSteps();
+        addBeforeToSteps();
+        addAftersToSteps();
         for (final TypeStep<T> step : steps)
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -162,37 +163,50 @@ public class TypeSteps<T> implements Statusable
     }
 
     /**
-     * Adds all {@link Background}s to the list of steps.
+     * Adds all {@link Before}s to the list of steps.
      */
     // TODO should I rather return a new list of steps, so if you look at this
     // class, the background is still separated from the list of steps?
-    private void addBackgroundToSteps()
+    private void addBeforeToSteps()
     {
-        // Get the Steps from the background
-        List<Steps> steps = new ArrayList<>();
-        for (Background background : backgrounds)
+        if (befores != null && !befores.isEmpty())
         {
-            steps.add(background.getSteps());
-        }
-        // The actual position to add steps depends on the number of steps from the last
-        // added Steps
-        int index = 0;
-        for (Steps actualSteps : steps)
-        {
-            addAllSteps(index, actualSteps);
-            // Increase the index by the number of steps added
-            index += actualSteps.getSteps().size();
+            if (!getSteps().get(0).getDescription()
+                    .equals(befores.get(0).getSteps().getSteps().get(0).getDescription()))
+            {
+                // Get the Steps from the background
+                List<Steps> steps = new ArrayList<>();
+                for (Before before : befores)
+                {
+                    steps.add(before.getSteps());
+                }
+                // The actual position to add steps depends on the number of steps from the last
+                // added Steps
+                int index = 0;
+                for (Steps actualSteps : steps)
+                {
+                    addAllSteps(index, actualSteps);
+                    // Increase the index by the number of steps added
+                    index += actualSteps.getSteps().size();
+                }
+            }
         }
     }
 
     /**
-     * Adds all {@link PostStep}s to the list of steps.
+     * Adds all {@link After}s to the list of steps.
      */
-    private void addPostStepsToSteps()
+    private void addAftersToSteps()
     {
-        for (PostStep postStep : postSteps)
+        if (afters != null && !afters.isEmpty())
         {
-            addAllSteps(postStep.getSteps());
+            if (!getSteps().get(0).getDescription().equals(afters.get(0).getSteps().getSteps().get(0).getDescription()))
+            {
+                for (After after : afters)
+                {
+                    addAllSteps(after.getSteps());
+                }
+            }
         }
     }
 
@@ -617,15 +631,15 @@ public class TypeSteps<T> implements Statusable
     }
 
     // public void addBackground(Background background)
-    public void addBackground(List<Background> backgrounds)
+    public void addBefore(List<Before> befores)
     {
-        this.backgrounds.addAll(backgrounds);
+        this.befores.addAll(befores);
     }
 
     // public void addBackground(Background background)
-    public void addPostSteps(List<PostStep> postSteps)
+    public void addAfters(List<After> afters)
     {
-        this.postSteps.addAll(postSteps);
+        this.afters.addAll(afters);
     }
 
     @Override

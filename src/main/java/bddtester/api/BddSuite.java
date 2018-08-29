@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import bddtester.core.bdd.Feature;
-import bddtester.core.bdd.background.Background;
-import bddtester.core.bdd.background.Backgrounds;
-import bddtester.core.bdd.background.PostStep;
-import bddtester.core.bdd.background.PostSteps;
+import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Afters;
+import bddtester.core.bdd.beforeAfter.Before;
+import bddtester.core.bdd.beforeAfter.Befores;
 import bddtester.core.bdd.scenario.AbstractScenario;
 import bddtester.core.bdd.scenario.OutlineDescriptor;
 import bddtester.core.bdd.scenario.Scenario;
@@ -20,39 +20,39 @@ import bddtester.core.reporting.ReportInterface;
 public class BddSuite
 {
     /**
-     * Specifies a list of {@link Background}s out of a multitude of {@link Steps}.
+     * Specifies a list of {@link Before}s out of a multitude of {@link Steps}.
      * 
      * @param stepsSuppliers
      *            {@link Supplier} of Steps, which specify the background.
      * @return A Background as specified by the Steps in the stepsSupplier.
      */
     @SafeVarargs
-    public static Backgrounds background(Supplier<Steps>... backgroundSuppliers)
+    public static Befores before(Supplier<Steps>... backgroundSuppliers)
     {
-        Backgrounds backgrounds = new Backgrounds(new ArrayList<>(backgroundSuppliers.length));
+        Befores befores = new Befores(new ArrayList<>(backgroundSuppliers.length));
         for (Supplier<Steps> backgroundSupplier : backgroundSuppliers)
         {
-            backgrounds.addBackground(new Background(backgroundSupplier.get()));
+            befores.addBefore(new Before(backgroundSupplier.get()));
         }
-        return backgrounds;
+        return befores;
     }
 
     /**
-     * Specifies a list of {@link PostStep}s out of a multitude of {@link Steps}.
+     * Specifies a list of {@link After}s out of a multitude of {@link Steps}.
      * 
      * @param stepsSuppliers
      *            {@link Supplier} of Steps, which specify the background.
      * @return A Background as specified by the Steps in the stepsSupplier.
      */
     @SafeVarargs
-    public static PostSteps postSteps(Supplier<Steps>... postStepSuppliers)
+    public static Afters afters(Supplier<Steps>... postStepSuppliers)
     {
-        PostSteps postSteps = new PostSteps(new ArrayList<>(postStepSuppliers.length));
+        Afters afters = new Afters(new ArrayList<>(postStepSuppliers.length));
         for (Supplier<Steps> postStepSupplier : postStepSuppliers)
         {
-            postSteps.addPostStep(new PostStep(postStepSupplier.get()));
+            afters.addAfter(new After(postStepSupplier.get()));
         }
-        return postSteps;
+        return afters;
     }
 
     /**
@@ -86,9 +86,9 @@ public class BddSuite
      * 
      * @param description
      *            The description of the Feature.
-     * @param backgrounds
-     *            The {@link Backgrounds} containing the {@link Background}s for
-     *            each AbstractScenario.
+     * @param befores
+     *            The {@link Befores} containing the {@link Before}s for each
+     *            AbstractScenario.
      * @param scenarioSupplier
      *            The Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
@@ -97,10 +97,10 @@ public class BddSuite
      * @see #feature(String, Supplier, Supplier, Supplier...)
      */
     @SafeVarargs
-    public static Feature feature(final String description, final Backgrounds backgrounds,
+    public static Feature feature(final String description, final Befores befores,
             final Supplier<AbstractScenario>... scenarioSuppliers)
     {
-        return feature(description, backgrounds, null, scenarioSuppliers);
+        return feature(description, befores, null, scenarioSuppliers);
     }
 
     /**
@@ -113,8 +113,8 @@ public class BddSuite
      * 
      * @param description
      *            The description of the Feature.
-     * @param postSteps
-     *            The {@link PostSteps} containing the {@link PostStep}s for each
+     * @param afters
+     *            The {@link Afters} containing the {@link After}s for each
      *            AbstractScenario.
      * @param scenarioSupplier
      *            The Suppliers that contain an AbstractScenario.
@@ -124,10 +124,10 @@ public class BddSuite
      * @see #feature(String, Supplier, Supplier, Supplier...)
      */
     @SafeVarargs
-    public static Feature feature(final String description, final PostSteps postSteps,
+    public static Feature feature(final String description, final Afters afters,
             final Supplier<AbstractScenario>... scenarioSuppliers)
     {
-        return feature(description, null, postSteps, scenarioSuppliers);
+        return feature(description, null, afters, scenarioSuppliers);
     }
 
     /**
@@ -143,10 +143,10 @@ public class BddSuite
      *            The {@link ReportInterface} for reporting.
      * @param description
      *            The description of the Feature.
-     * @param backgrounds
-     *            The {@link Background}s for each AbstractScenario.
-     * @param postSteps
-     *            The {@link PostStep}s for each AbstractScenario.
+     * @param befores
+     *            The {@link Before}s for each AbstractScenario.
+     * @param afters
+     *            The {@link After}s for each AbstractScenario.
      * @param scenarioSuppliers
      *            The Suppliers that contain an AbstractScenario.
      * 
@@ -154,7 +154,7 @@ public class BddSuite
      *         {@link AbstractScenario}s of the supplier.
      */
     @SafeVarargs
-    public static Feature feature(final String description, final Backgrounds backgrounds, final PostSteps postSteps,
+    public static Feature feature(final String description, final Befores befores, final Afters afters,
             final Supplier<AbstractScenario>... scenarioSuppliers)
     {
         // Convert Array of AbstractScenario Suppliers to a list of AbstractScenarios
@@ -163,18 +163,18 @@ public class BddSuite
         {
             scenarios.add(scenarioSupplier.get());
         }
-        List<Background> listOfBackgrounds = new ArrayList<>(1);
-        if (backgrounds != null)
+        List<Before> listOfBefores = new ArrayList<>(1);
+        if (befores != null)
         {
-            listOfBackgrounds.addAll(backgrounds.getBackgrounds());
+            listOfBefores.addAll(befores.getBefores());
         }
-        List<PostStep> listOfPostSteps = new ArrayList<>(1);
-        if (postSteps != null)
+        List<After> listOfAfters = new ArrayList<>(1);
+        if (afters != null)
         {
-            listOfPostSteps.addAll(postSteps.getPostSteps());
+            listOfAfters.addAll(afters.getAfters());
         }
         // Create the feature and return it
-        return new Feature(description, listOfBackgrounds, listOfPostSteps, scenarios);
+        return new Feature(description, listOfBefores, listOfAfters, scenarios);
     }
 
     /**
@@ -220,6 +220,16 @@ public class BddSuite
     public static <T> OutlineDescriptor<T> withData(T... testdata)
     {
         return new OutlineDescriptor<T>(testdata);
+    }
+
+    /**
+     * Creates a {@link OutlineDescriptor} without any test data.
+     * 
+     * @return A OutlineDescriptor with test data.
+     */
+    public static <T> OutlineDescriptor<T> withDataOfType(Class<T> clazz)
+    {
+        return new OutlineDescriptor<T>();
     }
 
     /*

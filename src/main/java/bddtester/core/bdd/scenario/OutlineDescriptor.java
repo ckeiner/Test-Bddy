@@ -1,6 +1,5 @@
 package bddtester.core.bdd.scenario;
 
-import java.sql.Types;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -72,8 +71,8 @@ public class OutlineDescriptor<T> implements Statusable
      * this class.
      * 
      * @param scenario
-     *            The {@link Types} with the steps that should be added to the steps
-     *            of this class.
+     *            The {@link TypeSteps} with the steps that should be added to the
+     *            steps of this class.
      * @return The current OutlineDescriptor.
      */
     public OutlineDescriptor<T> and(final TypeSteps<T> scenario)
