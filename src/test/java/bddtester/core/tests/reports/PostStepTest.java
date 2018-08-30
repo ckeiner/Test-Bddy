@@ -30,7 +30,6 @@ public class PostStepTest extends AbstractExtentReportTest
                             .given("I fail every time <data.toString()>", data -> {
                                 throw new IllegalArgumentException("I have to fail here");
                             })
-                            .getSteps()
                     )
         ).test();
         //@formatter:on
@@ -56,7 +55,6 @@ public class PostStepTest extends AbstractExtentReportTest
                             .given("I am executed all the time", () -> {
                                 
                             })
-                            .getSteps()
                     )
         ).test();
         //@formatter:on

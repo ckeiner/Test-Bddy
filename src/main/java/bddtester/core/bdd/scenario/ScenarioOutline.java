@@ -371,9 +371,9 @@ public class ScenarioOutline<T> extends AbstractScenario
     // return this;
     // }
 
-    public ScenarioOutline<T> postSteps(Supplier<TypeSteps<T>> postSteps)
+    public ScenarioOutline<T> postSteps(Supplier<OutlineDescriptor<T>> postSteps)
     {
-        this.postSteps = postSteps.get();
+        this.postSteps = postSteps.get().getSteps();
         for (TypeStep<T> step : this.postSteps.getSteps())
         {
             step.setDescription("POSTSTEP " + step.getDescription());
