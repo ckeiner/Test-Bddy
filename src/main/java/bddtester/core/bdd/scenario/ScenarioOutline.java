@@ -124,12 +124,12 @@ public class ScenarioOutline<T> extends AbstractScenario
         try
         {
             executeScenario(scenarioReporter, typeSteps);
-        } catch (StepException e)
+        } catch (StepException exception)
         {
-            scenarioExceptions.add(scenarioException(testdatum, e, scenarioReporter));
-        } catch (StepError e)
+            scenarioExceptions.add(scenarioException(testdatum, exception, scenarioReporter));
+        } catch (StepError exception)
         {
-            scenarioErrors.add(scenarioError(testdatum, e, scenarioReporter));
+            scenarioErrors.add(scenarioError(testdatum, exception, scenarioReporter));
         }
         // Always execute the PostStep after the scenario is done
         finally
@@ -376,7 +376,7 @@ public class ScenarioOutline<T> extends AbstractScenario
         this.postSteps = postSteps.get();
         for (TypeStep<T> step : this.postSteps.getSteps())
         {
-            step.setDescription("POSTSTEP: " + getDescription());
+            step.setDescription("POSTSTEP " + step.getDescription());
         }
         return this;
     }
