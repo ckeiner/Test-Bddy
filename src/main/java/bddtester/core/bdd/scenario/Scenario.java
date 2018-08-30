@@ -25,7 +25,7 @@ public class Scenario extends AbstractScenario
     /**
      * The steps to execute.
      */
-    final private Steps bddSteps;
+    final private Steps steps;
 
     /**
      * The steps to always execute after a scenario, even after a failure.
@@ -40,7 +40,7 @@ public class Scenario extends AbstractScenario
     public Scenario(final String description, final Supplier<Steps> stepsSupplier)
     {
         super(description);
-        this.bddSteps = stepsSupplier.get();
+        this.steps = stepsSupplier.get();
     }
 
     /**
@@ -59,9 +59,9 @@ public class Scenario extends AbstractScenario
         // Set up the report for this element
         ReportElement scenarioReporter = setUpReporter();
         // Set up the reporter for the bddSteps if none was supplied
-        if (bddSteps.getReporter() == null && this.getReporter() != null)
+        if (steps.getReporter() == null && this.getReporter() != null)
         {
-            bddSteps.setReporter(this.getReporter());
+            steps.setReporter(this.getReporter());
         }
         // Print some information to the console
         System.out.println("================\nScenario: " + getDescription() + "\n================");
@@ -126,12 +126,12 @@ public class Scenario extends AbstractScenario
         // Set up the report for this element
         ReportElement scenarioReporter = setUpReporter(false);
         // Set up the reporter for the bddSteps if none was supplied
-        if (bddSteps.getReporter() == null && this.getReporter() != null)
+        if (steps.getReporter() == null && this.getReporter() != null)
         {
-            bddSteps.setReporter(this.getReporter());
+            steps.setReporter(this.getReporter());
         }
         // Skip the steps
-        bddSteps.skipSteps();
+        steps.skipSteps();
         scenarioReporter.skip(getDescription());
     }
 
@@ -146,12 +146,12 @@ public class Scenario extends AbstractScenario
     {
         if (getStatus().contains(Status.SKIP))
         {
-            bddSteps.skipSteps();
+            steps.skipSteps();
             scenarioReporter.skip(getDescription());
         }
         else
         {
-            bddSteps.test();
+            steps.test();
             if (scenarioReporter != null)
             {
                 scenarioReporter.pass(getDescription());
@@ -197,32 +197,16 @@ public class Scenario extends AbstractScenario
         return scenarioReporter;
     }
 
-    /**
-     * Creates a scenario.<br>
-     * Should be used for setting up a Scenario, which should be reused.
-     * 
-     * @param description
-     *            The description of the scenario.
-     * @param scenarioSupplier
-     *            The Steps of the scenario.
-     * @return A scenario with no reporting.
-     * @see #Scenario(String, Supplier)
-     */
-    public static Scenario scenario(final String description, final Supplier<Steps> scenarioSupplier)
-    {
-        return new Scenario(description, scenarioSupplier);
-    }
-
     @Override
     public void addBefores(List<Before> befores)
     {
-        bddSteps.addBefores(befores);
+        steps.addBefores(befores);
     }
 
     @Override
     public void addAfters(List<After> afters)
     {
-        bddSteps.addAfters(afters);
+        steps.addAfters(afters);
     }
 
     public Scenario postSteps(Supplier<Steps> postSteps)
