@@ -5,8 +5,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.scenario.AbstractScenario;
 import bddtester.core.bdd.status.Status;
 import bddtester.core.bdd.status.Statusable;

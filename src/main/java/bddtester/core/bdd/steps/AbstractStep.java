@@ -25,7 +25,7 @@ public abstract class AbstractStep<T> implements Statusable
     /**
      * Defines the {@link GherkinKeyword}.
      */
-    final private GherkinKeyword keyword;
+    private final GherkinKeyword keyword;
 
     /**
      * Describes the step in natural language.
@@ -35,7 +35,7 @@ public abstract class AbstractStep<T> implements Statusable
     /**
      * Contains the behavior of the step.
      */
-    final private T behavior;
+    private final T behavior;
 
     public AbstractStep(final GherkinKeyword keyword, final String description, final T behavior)
     {
@@ -78,7 +78,10 @@ public abstract class AbstractStep<T> implements Statusable
             }
             else
             {
-                element.skip(getDescription());
+                if (element != null)
+                {
+                    element.skip(getDescription());
+                }
             }
         } catch (Exception e)
         {

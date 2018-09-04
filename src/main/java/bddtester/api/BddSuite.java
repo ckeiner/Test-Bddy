@@ -173,8 +173,15 @@ public class BddSuite
         {
             listOfAfters.addAll(afters.getAfters());
         }
+        String currentClass = Thread.currentThread().getStackTrace()[2].getClassName();
+        // If this is the current class, then we have the wrong one, so simply take the
+        // next one
+        if (currentClass.equals(BddSuite.class.getName()))
+        {
+            currentClass = Thread.currentThread().getStackTrace()[3].getClassName();
+        }
         // Create the feature and return it
-        return new Feature(description, listOfBefores, listOfAfters, scenarios);
+        return new Feature(currentClass + ": " + description, listOfBefores, listOfAfters, scenarios);
     }
 
     /**
