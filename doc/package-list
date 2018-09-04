@@ -1,0 +1,16 @@
+bddtester.api
+bddtester.core.bdd
+bddtester.core.bdd.beforeAfter
+bddtester.core.bdd.scenario
+bddtester.core.bdd.status
+bddtester.core.bdd.steps
+bddtester.core.bdd.steps.gwat
+bddtester.core.reporting
+bddtester.core.reporting.extentreports
+bddtester.core.runner
+bddtester.core.tests.functional
+bddtester.core.tests.reports
+bddtester.core.throwables
+bddtester.core.throwables.errors
+bddtester.core.throwables.exceptions
+bddtester.core.util

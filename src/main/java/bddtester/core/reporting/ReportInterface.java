@@ -2,8 +2,6 @@ package bddtester.core.reporting;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
-import bddtester.core.testdata.Testdata;
-
 /**
  * The interface for reporting frameworks.
  * 
@@ -38,7 +36,7 @@ public interface ReportInterface
      * @param description
      *            The description of the scenario outline.
      * @param testdata
-     *            The {@link Testdata} for the scenario outline.
+     *            The test data for the scenario outline.
      * @return A {@link ReportElement} depicting the scenario outline.
      */
     public <T> ReportElement scenarioOutline(String description, T testdata);

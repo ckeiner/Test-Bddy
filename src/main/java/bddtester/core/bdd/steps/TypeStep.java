@@ -5,11 +5,10 @@ import java.util.function.Consumer;
 import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.reporting.ReportElement;
-import bddtester.core.testdata.Testdata;
 import bddtester.core.util.ParameterResolver;
 
 /**
- * Describes a BDD Step with {@link Testdata}.
+ * Describes a BDD Step with some test data.
  *
  * @param <T>
  *            The type of the test data.

@@ -15,7 +15,6 @@ import bddtester.core.bdd.scenario.Scenario;
 import bddtester.core.bdd.scenario.ScenarioOutline;
 import bddtester.core.bdd.steps.Step;
 import bddtester.core.bdd.steps.Steps;
-import bddtester.core.reporting.ReportInterface;
 
 public class BddSuite
 {
@@ -27,10 +26,10 @@ public class BddSuite
      * @return A Background as specified by the Steps in the stepsSupplier.
      */
     @SafeVarargs
-    public static Befores before(Supplier<Steps>... backgroundSuppliers)
+    public static Befores before(Supplier<Steps>... stepsSuppliers)
     {
-        Befores befores = new Befores(new ArrayList<>(backgroundSuppliers.length));
-        for (Supplier<Steps> backgroundSupplier : backgroundSuppliers)
+        Befores befores = new Befores(new ArrayList<>(stepsSuppliers.length));
+        for (Supplier<Steps> backgroundSupplier : stepsSuppliers)
         {
             befores.addBefore(new Before(backgroundSupplier.get()));
         }
@@ -45,10 +44,10 @@ public class BddSuite
      * @return A Background as specified by the Steps in the stepsSupplier.
      */
     @SafeVarargs
-    public static Afters afters(Supplier<Steps>... postStepSuppliers)
+    public static Afters afters(Supplier<Steps>... stepsSuppliers)
     {
-        Afters afters = new Afters(new ArrayList<>(postStepSuppliers.length));
-        for (Supplier<Steps> postStepSupplier : postStepSuppliers)
+        Afters afters = new Afters(new ArrayList<>(stepsSuppliers.length));
+        for (Supplier<Steps> postStepSupplier : stepsSuppliers)
         {
             afters.addAfter(new After(postStepSupplier.get()));
         }
@@ -64,11 +63,11 @@ public class BddSuite
      * 
      * @param description
      *            The description of the Feature.
-     * @param scenarioSupplier
+     * @param scenarioSuppliers
      *            The Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
      *         {@link AbstractScenario}s of the supplier.
-     * @see #feature(String, Supplier, Supplier, Supplier...)
+     * @see #feature(String, Befores, Afters, Supplier...)
      */
     @SafeVarargs
     public static Feature feature(final String description, final Supplier<AbstractScenario>... scenarioSuppliers)
@@ -89,12 +88,12 @@ public class BddSuite
      * @param befores
      *            The {@link Befores} containing the {@link Before}s for each
      *            AbstractScenario.
-     * @param scenarioSupplier
+     * @param scenarioSuppliers
      *            The Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
      *         {@link AbstractScenario}s of the supplier and the specified
      *         backgrounds.
-     * @see #feature(String, Supplier, Supplier, Supplier...)
+     * @see #feature(String, Befores, Afters, Supplier...)
      */
     @SafeVarargs
     public static Feature feature(final String description, final Befores befores,
@@ -116,12 +115,12 @@ public class BddSuite
      * @param afters
      *            The {@link Afters} containing the {@link After}s for each
      *            AbstractScenario.
-     * @param scenarioSupplier
+     * @param scenarioSuppliers
      *            The Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
      *         {@link AbstractScenario}s of the supplier and the specified
      *         backgrounds.
-     * @see #feature(String, Supplier, Supplier, Supplier...)
+     * @see #feature(String, Befores, Afters, Supplier...)
      */
     @SafeVarargs
     public static Feature feature(final String description, final Afters afters,
@@ -139,8 +138,6 @@ public class BddSuite
      * {@link Scenario} or {@link ScenarioOutline}. Each other Supplier adds another
      * Scenario or ScenarioOutline to the Feature.
      * 
-     * @param reporter
-     *            The {@link ReportInterface} for reporting.
      * @param description
      *            The description of the Feature.
      * @param befores

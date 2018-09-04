@@ -88,7 +88,6 @@ public class Feature implements Statusable
     public void test()
     {
         // If we ignore the feature, we neither want to execute nor log it
-        // TODO ask if it actually makes a difference how you if this
         if (getStatus().contains(Status.IGNORE))
         {
             return;

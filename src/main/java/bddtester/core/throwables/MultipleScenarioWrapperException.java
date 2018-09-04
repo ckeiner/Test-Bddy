@@ -24,35 +24,13 @@ public class MultipleScenarioWrapperException extends MultipleFailureException
     private static final long serialVersionUID = 58234950048201778L;
 
     /**
-     * Creates a new instance of this class by calling
-     * {@link MultipleScenarioWrapperException#MultipleScenarioWrapperException(List)}
-     * with an empty list.
-     */
-    public MultipleScenarioWrapperException()
-    {
-        this(new ArrayList<ScenarioException>());
-    }
-
-    /**
-     * Converts the argument to a List of Throwables, then calls the super
-     * constructor {@link MultipleFailureException#MultipleFailureException(List)}.
-     * 
-     * @param errors
-     *            A list of {@link ScenarioException}s
-     */
-    public MultipleScenarioWrapperException(List<ScenarioException> exceptions)
-    {
-        super(init(exceptions));
-    }
-
-    /**
      * Combines a list of errors and exceptions, then calls the super constructor
      * {@link MultipleFailureException#MultipleFailureException(List)}.
      * 
      * @param exceptions
-     *            A list of {@link ScenarioException}s
+     *            A list of {@link ScenarioException}s.
      * @param errors
-     *            A list of {@link ScenarioError}s
+     *            A list of {@link ScenarioError}s.
      */
     public MultipleScenarioWrapperException(List<ScenarioException> exceptions, List<ScenarioError> errors)
     {
@@ -60,43 +38,30 @@ public class MultipleScenarioWrapperException extends MultipleFailureException
     }
 
     /**
-     * Converts the list of exceptions to a list of Throwables
-     * 
-     * @param exceptions
-     *            A list of {@link ScenarioException}s
-     * @return A list of Throwables
-     */
-    private static List<Throwable> init(List<ScenarioException> exceptions)
-    {
-        List<Throwable> throwables = new ArrayList<>();
-        for (ScenarioException exception : exceptions)
-        {
-            throwables.add(exception);
-        }
-        return throwables;
-    }
-
-    /**
      * First, it adds all exceptions to a list of Throwables, then it adds all
      * errors to the list.
      * 
      * @param exceptions
-     *            A list of {@link ScenarioException}s
+     *            A list of {@link ScenarioException}s.
      * @param errors
-     *            A list of {@link ScenarioError}s
-     * @return A list of Throwables
+     *            A list of {@link ScenarioError}s.
+     * @return A list of Throwables.
      */
     private static List<Throwable> init(List<ScenarioException> exceptions, List<ScenarioError> errors)
     {
-        List<Throwable> throwables = new ArrayList<>();
+        // Create a list of Throwables with a total capacity of the combined size of the
+        // list of exceptions and errors
+        List<Throwable> throwables = new ArrayList<>(exceptions.size() + errors.size());
+        // Add all exceptions
         throwables.addAll(exceptions);
+        // Add all errors
         throwables.addAll(errors);
         return throwables;
     }
 
     /**
      * Prints the stack trace of every Throwable to the specified
-     * {@link PrintStream}
+     * {@link PrintStream}.
      * 
      * @param out
      *            The PrintStream to print the stack trace to
@@ -104,36 +69,42 @@ public class MultipleScenarioWrapperException extends MultipleFailureException
     @Override
     public void printStackTrace(PrintStream out)
     {
-        int i = 0;
-        for (Throwable t : getFailures())
+        // Initialize variable that counts every throwable
+        int counterOfThrowables = 0;
+        // For each throwable
+        for (Throwable throwable : getFailures())
         {
-            out.println("Error " + i + ": " + t.getMessage());
-            t.printStackTrace(out);
+            // Print the number of the error and the message
+            out.println("Error " + counterOfThrowables + ": " + throwable.getMessage());
+            // Print the stack trace of the throwable
+            throwable.printStackTrace(out);
+            // Insert an empty line
             out.println();
-            i++;
+            // Increment the counter
+            counterOfThrowables++;
         }
     }
 
     /**
      * Returns a String with the stack trace of every Throwable.<br>
-     * Needed by JUnit and ExtentReports to display the error or exception.
+     * Needed by JUnit and ExtentReports to display the errors and exceptions
+     * properly.
      */
     @Override
     public String getMessage()
     {
-        StringBuilder sb = new StringBuilder(String.format("There were %d errors:", getFailures().size()));
+        // Start a StrintBuilder with a string containing the amount of errors
+        StringBuilder messageBuilder = new StringBuilder(String.format("There were %d errors:", getFailures().size()));
         // Iterate over all throwables
         for (Throwable e : getFailures())
         {
             // Print the minimal information
-            sb.append(String.format("\n  %s(%s)", e.getClass().getName(), e.getMessage()));
-            // Get the content of the Throwable
-            String content = stackTrace(e);
-            // Append the content of the stack trace to the string builder
-            sb.append("\n  " + content);
+            messageBuilder.append(String.format("\n  %s(%s)", e.getClass().getName(), e.getMessage()));
+            // Append the stack trace of the throwable to the string builder
+            messageBuilder.append("\n  " + stackTrace(e));
         }
         // Return the String in String Builder
-        return sb.toString();
+        return messageBuilder.toString();
     }
 
     /**
@@ -145,27 +116,28 @@ public class MultipleScenarioWrapperException extends MultipleFailureException
      */
     private String stackTrace(Throwable throwable)
     {
+        // Define a charset
         final Charset charset = StandardCharsets.UTF_8;
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        PrintStream ps = null;
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        PrintStream printStream = null;
         // Try to create the Print Stream
         try
         {
-            ps = new PrintStream(baos, true, charset.name());
+            printStream = new PrintStream(byteArrayOutputStream, true, charset.name());
         } catch (UnsupportedEncodingException e1)
         {
             e1.printStackTrace();
         }
         // Write stack trace to the print stream
-        printStackForOneError(throwable, ps);
+        printStackForOneError(throwable, printStream);
         // Extract the stack trace from the print stream/ByteArrayOutputStream
-        String content = new String(baos.toByteArray(), charset);
+        String content = new String(byteArrayOutputStream.toByteArray(), charset);
         // Close the print stream
-        ps.close();
+        printStream.close();
         // Close the ByteArrayOutputStream
         try
         {
-            baos.close();
+            byteArrayOutputStream.close();
         } catch (IOException e1)
         {
             e1.printStackTrace();
@@ -185,9 +157,13 @@ public class MultipleScenarioWrapperException extends MultipleFailureException
      */
     private void printStackForOneError(Throwable error, PrintStream out)
     {
+        // Get the index of the error
         int i = getFailures().indexOf(error) + 1;
+        // Print the error number and the message
         out.println("Error " + i + ": " + error.getMessage());
+        // Print the stack trace of the error to the PrintStream
         error.printStackTrace(out);
+        // Print an empty line
         out.println();
     }
 
