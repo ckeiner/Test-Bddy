@@ -5,8 +5,8 @@ import java.util.List;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
-import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.beforeAfter.After;
+import bddtester.core.bdd.beforeAfter.Before;
 import bddtester.core.bdd.status.Statusable;
 import bddtester.core.reporting.ReportInterface;
 import bddtester.core.throwables.errors.StepError;
@@ -104,8 +104,17 @@ public class Steps implements Statusable
     {
         StepException stepException = null;
         StepError stepError = null;
-        addBackgroundsToSteps();
-        addPostStepsToSteps();
+        // TODO beautify
+        try
+        {
+            executeBeforeSteps(false);
+        } catch (StepException e)
+        {
+            stepException = e;
+        } catch (StepError e)
+        {
+            stepError = e;
+        }
         for (final Step step : steps)
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -134,11 +143,24 @@ public class Steps implements Statusable
         }
         if (stepException != null)
         {
+            executeAfterSteps(true);
             throw stepException;
         }
         else if (stepError != null)
         {
+            executeAfterSteps(true);
             throw stepError;
+        }
+        // TODO beautify
+        try
+        {
+            executeAfterSteps(false);
+        } catch (StepException e)
+        {
+            stepException = e;
+        } catch (StepError e)
+        {
+            stepError = e;
         }
     }
 
@@ -147,8 +169,7 @@ public class Steps implements Statusable
      */
     public void skipSteps()
     {
-        addBackgroundsToSteps();
-        addPostStepsToSteps();
+        executeBeforeSteps(true);
         for (Step step : getSteps())
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -157,27 +178,40 @@ public class Steps implements Statusable
             }
             step.skipStep();
         }
+        executeAfterSteps(true);
     }
 
-    /**
-     * Adds the backgrounds at the beginning of the steps.
-     */
-    private void addBackgroundsToSteps()
+    private void executeBeforeSteps(boolean skip)
     {
-        // Get the Steps from the background
-        List<Steps> steps = new ArrayList<>();
         for (Before before : befores)
         {
-            steps.add(before.getSteps());
+            Steps steps = before.getSteps();
+            steps.setReporter(this.reporter);
+            if (skip)
+            {
+                steps.skipSteps();
+            }
+            else
+            {
+                steps.test();
+            }
         }
-        // The actual position to add steps depends on the number of steps from the last
-        // added Steps
-        int index = 0;
-        for (Steps actualSteps : steps)
+    }
+
+    private void executeAfterSteps(boolean skip)
+    {
+        for (After after : afters)
         {
-            addAllSteps(index, actualSteps);
-            // Increase the index by the number of steps added
-            index += actualSteps.getSteps().size();
+            Steps steps = after.getSteps();
+            steps.setReporter(this.reporter);
+            if (skip)
+            {
+                steps.skipSteps();
+            }
+            else
+            {
+                steps.test();
+            }
         }
     }
 
@@ -190,17 +224,6 @@ public class Steps implements Statusable
     public void addBefores(List<Before> befores)
     {
         this.befores.addAll(befores);
-    }
-
-    /**
-     * Adds the backgrounds at the end of the steps.
-     */
-    private void addPostStepsToSteps()
-    {
-        for (After after : afters)
-        {
-            addAllSteps(after.getSteps());
-        }
     }
 
     /**
@@ -279,25 +302,6 @@ public class Steps implements Statusable
         for (Step step : scenario.steps)
         {
             addStep(step.getKeyword(), step.getDescription(), step.getBehavior());
-        }
-    }
-
-    /**
-     * Adds all steps of the specified parameter to the steps of this Steps at the
-     * specified index.
-     * 
-     * @param index
-     *            Where the Steps should be added.
-     * @param steps
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     */
-    private void addAllSteps(int index, Steps steps)
-    {
-        for (Step step : steps.getSteps())
-        {
-            // Increase the index for each step
-            addStep(index++, step.getKeyword(), step.getDescription(), step.getBehavior());
         }
     }
 

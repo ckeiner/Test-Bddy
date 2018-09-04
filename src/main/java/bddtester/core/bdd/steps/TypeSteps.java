@@ -113,8 +113,18 @@ public class TypeSteps<T> implements Statusable
     {
         StepException stepException = null;
         StepError stepError = null;
-        addBeforeToSteps();
-        addAftersToSteps();
+        // TODO beautify
+        try
+        {
+            executeBeforeSteps(false);
+        } catch (StepException e)
+        {
+            stepException = e;
+        } catch (StepError e)
+        {
+            stepError = e;
+        }
+
         for (final TypeStep<T> step : steps)
         {
             // Set the reporter at the step
@@ -143,16 +153,30 @@ public class TypeSteps<T> implements Statusable
         }
         if (stepException != null)
         {
+            executeAfterSteps(true);
             throw stepException;
         }
         else if (stepError != null)
         {
+            executeAfterSteps(true);
             throw stepError;
+        }
+        // TODO beautify
+        try
+        {
+            executeAfterSteps(false);
+        } catch (StepException e)
+        {
+            stepException = e;
+        } catch (StepError e)
+        {
+            stepError = e;
         }
     }
 
     public void skipSteps()
     {
+        executeBeforeSteps(true);
         for (final TypeStep<T> step : steps)
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -161,65 +185,39 @@ public class TypeSteps<T> implements Statusable
             }
             step.withData(data).skipStep();
         }
+        executeAfterSteps(true);
     }
 
-    /**
-     * Adds all {@link Before}s to the list of steps.
-     */
-    // TODO should I rather return a new list of steps, so if you look at this
-    // class, the background is still separated from the list of steps?
-    private void addBeforeToSteps()
+    private void executeBeforeSteps(boolean skip)
     {
-        if (befores != null && !befores.isEmpty())
+        for (Before before : befores)
         {
-            // TODO dirty fix for multiplication of before steps when using data mulitple
-            // times
-            if (!getSteps().get(0).getDescription()
-                    .equals(befores.get(0).getSteps().getSteps().get(0).getDescription()))
+            Steps steps = before.getSteps();
+            steps.setReporter(this.reporter);
+            if (skip)
             {
-                // Get the Steps from the background
-                List<Steps> steps = new ArrayList<>();
-                for (Before before : befores)
-                {
-                    steps.add(before.getSteps());
-                }
-                // The actual position to add steps depends on the number of steps from the last
-                // added Steps
-                int index = 0;
-                for (Steps actualSteps : steps)
-                {
-                    addAllSteps(index, actualSteps);
-                    // Increase the index by the number of steps added
-                    index += actualSteps.getSteps().size();
-                }
+                steps.skipSteps();
+            }
+            else
+            {
+                steps.test();
             }
         }
     }
 
-    /**
-     * Adds all {@link After}s to the list of steps.
-     */
-    private void addAftersToSteps()
+    private void executeAfterSteps(boolean skip)
     {
-        if (afters != null && !afters.isEmpty())
+        for (After after : afters)
         {
-            // TODO dirty fix for multiplication of after steps when using data mulitple
-            // times
-            // Calculate the numbers of steps in the after steps
-            int numberOfStepsInAfters = 0;
-            for (After after : afters)
+            Steps steps = after.getSteps();
+            steps.setReporter(this.reporter);
+            if (skip)
             {
-                numberOfStepsInAfters += after.getSteps().getSteps().size();
+                steps.skipSteps();
             }
-            // If the first step in afters is at the correct possition, we most likely
-            // already added the after steps
-            if (!getSteps().get(getSteps().size() - numberOfStepsInAfters).getDescription()
-                    .equals(afters.get(0).getSteps().getSteps().get(0).getDescription()))
+            else
             {
-                for (After after : afters)
-                {
-                    addAllSteps(after.getSteps());
-                }
+                steps.test();
             }
         }
     }
@@ -237,35 +235,6 @@ public class TypeSteps<T> implements Statusable
     private void addStep(GherkinKeyword keyword, String description, Consumer<T> consumer)
     {
         this.steps.add(new TypeStep<T>(keyword, description, consumer));
-    }
-
-    /**
-     * Adds a step to the list of BddSteps.
-     */
-    private void addAllSteps(Steps steps)
-    {
-        for (Step step : steps.getSteps())
-        {
-            this.steps.add(
-                    new TypeStep<T>(step.getKeyword(), step.getDescription(), runnableToConsumer(step.getBehavior())));
-        }
-    }
-
-    /**
-     * Adds a step to the list of BddSteps.
-     * 
-     * @param index
-     *            Where the step should be added.
-     * @param keyword
-     *            The {@link GherkinKeyword} of the step.
-     * @param description
-     *            The description of the step in a natural language.
-     * @param consumer
-     *            The behavior of the step.
-     */
-    private void addStep(int index, GherkinKeyword keyword, String description, Consumer<T> consumer)
-    {
-        this.steps.add(index, new TypeStep<T>(keyword, description, consumer));
     }
 
     /**
@@ -301,24 +270,6 @@ public class TypeSteps<T> implements Statusable
         for (TypeStep<T> step : steps.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), step.getBehavior());
-        }
-    }
-
-    /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
-     * 
-     * @param index
-     *            Where the Steps should be added.
-     * @param steps
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     */
-    private void addAllSteps(int index, Steps steps)
-    {
-        for (Step step : steps.getSteps())
-        {
-            // Increase the index for each step
-            addStep(index++, step.getKeyword(), step.getDescription(), runnableToConsumer(step.getBehavior()));
         }
     }
 
