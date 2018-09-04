@@ -10,6 +10,9 @@ import com.aventstack.extentreports.GherkinKeyword;
  */
 public interface ReportInterface
 {
+    /**
+     * The path where the report should be created
+     */
     public final static String PATH = "report/";
 
     /**

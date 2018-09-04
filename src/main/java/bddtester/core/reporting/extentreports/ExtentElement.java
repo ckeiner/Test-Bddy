@@ -83,11 +83,6 @@ public class ExtentElement implements ReportElement
             extentElement.fail(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
         } catch (IOException e)
         {
-            // List<Throwable> throwables = new ArrayList<>(2);
-            // throwables.add(throwable);
-            // throwables.add(e);
-            // MultipleFailureException mfe = new MultipleFailureException(throwables);
-            // extentElement.fatal(mfe);
             extentElement.fatal(throwable);
         }
     }
@@ -118,11 +113,6 @@ public class ExtentElement implements ReportElement
             extentElement.fatal(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
         } catch (IOException e)
         {
-            // List<Throwable> throwables = new ArrayList<>(2);
-            // throwables.add(throwable);
-            // throwables.add(e);
-            // MultipleFailureException mfe = new MultipleFailureException(throwables);
-            // extentElement.fatal(mfe);
             extentElement.fatal(throwable);
         }
     }

@@ -172,6 +172,8 @@ public class TypeSteps<T> implements Statusable
     {
         if (befores != null && !befores.isEmpty())
         {
+            // TODO dirty fix for multiplication of before steps when using data mulitple
+            // times
             if (!getSteps().get(0).getDescription()
                     .equals(befores.get(0).getSteps().getSteps().get(0).getDescription()))
             {
@@ -201,7 +203,18 @@ public class TypeSteps<T> implements Statusable
     {
         if (afters != null && !afters.isEmpty())
         {
-            if (!getSteps().get(0).getDescription().equals(afters.get(0).getSteps().getSteps().get(0).getDescription()))
+            // TODO dirty fix for multiplication of after steps when using data mulitple
+            // times
+            // Calculate the numbers of steps in the after steps
+            int numberOfStepsInAfters = 0;
+            for (After after : afters)
+            {
+                numberOfStepsInAfters += after.getSteps().getSteps().size();
+            }
+            // If the first step in afters is at the correct possition, we most likely
+            // already added the after steps
+            if (!getSteps().get(getSteps().size() - numberOfStepsInAfters).getDescription()
+                    .equals(afters.get(0).getSteps().getSteps().get(0).getDescription()))
             {
                 for (After after : afters)
                 {
