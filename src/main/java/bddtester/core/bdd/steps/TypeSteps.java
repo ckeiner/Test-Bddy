@@ -9,10 +9,6 @@ import com.aventstack.extentreports.GherkinKeyword;
 import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.beforeAfter.Afters;
 import bddtester.core.bdd.beforeAfter.Before;
-import bddtester.core.bdd.status.Statusable;
-import bddtester.core.reporting.ReportInterface;
-import bddtester.core.throwables.errors.StepError;
-import bddtester.core.throwables.exceptions.StepException;
 
 /**
  * Describes a scenario with only one data set.<br>
@@ -23,28 +19,8 @@ import bddtester.core.throwables.exceptions.StepException;
  * @param <T>
  *            The type of the Testdata.
  */
-public class TypeSteps<T> implements Statusable
+public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
 {
-    /**
-     * The class responsible for reporting.
-     */
-    private ReportInterface reporter;
-
-    /**
-     * The steps that happen before all other steps
-     */
-    private final List<Before> befores;
-
-    /**
-     * The steps that happen after all other steps
-     */
-    private final List<After> afters;
-
-    /**
-     * The list of steps to execute.
-     */
-    private final List<TypeStep<T>> steps;
-
     /**
      * The used test data.
      */
@@ -55,7 +31,7 @@ public class TypeSteps<T> implements Statusable
      */
     public TypeSteps()
     {
-        this(new ArrayList<>());
+        super(new ArrayList<>());
     }
 
     /**
@@ -66,7 +42,7 @@ public class TypeSteps<T> implements Statusable
      */
     public TypeSteps(final List<TypeStep<T>> steps)
     {
-        this(steps, new ArrayList<>());
+        super(steps, new ArrayList<>());
     }
 
     /**
@@ -80,7 +56,7 @@ public class TypeSteps<T> implements Statusable
      */
     public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores)
     {
-        this(steps, befores, new ArrayList<>());
+        super(steps, befores, new ArrayList<>());
     }
 
     /**
@@ -96,121 +72,19 @@ public class TypeSteps<T> implements Statusable
      */
     public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores, final List<After> afters)
     {
-        this.steps = steps;
-        this.befores = befores;
-        this.afters = afters;
+        super(steps, befores, afters);
     }
 
-    /**
-     * Executes the scenario.<br>
-     * If an exception or error occurs in the steps, the steps which weren't
-     * executed yet, are set to be skipped. Afterwards, the exception or error is
-     * re-thrown as {@link StepException} and {@link StepError} respectively.<br>
-     * Should both, an exception and an error, occur, a StepException is thrown.
-     */
-    public void test()
+    @Override
+    protected void testStep(TypeStep<T> step)
     {
-        StepException stepException = null;
-        StepError stepError = null;
-        // TODO beautify
-        try
-        {
-            executeBeforeSteps(false);
-        } catch (StepException e)
-        {
-            stepException = e;
-        } catch (StepError e)
-        {
-            stepError = e;
-        }
-
-        for (final TypeStep<T> step : getSteps())
-        {
-            // Set the reporter at the step
-            if (step.getReporter() == null && this.getReporter() != null)
-            {
-                step.setReporter(getReporter());
-            }
-            try
-            {
-                if (stepException != null || stepError != null)
-                {
-                    step.withData(data).skipStep();
-                }
-                // Test the step with the data
-                else
-                {
-                    step.withData(data).test();
-                }
-            } catch (StepException e)
-            {
-                stepException = e;
-            } catch (StepError e)
-            {
-                stepError = e;
-            }
-        }
-        if (stepException != null)
-        {
-            executeAfterSteps(true);
-            throw stepException;
-        }
-        else if (stepError != null)
-        {
-            executeAfterSteps(true);
-            throw stepError;
-        }
-
-        // If we reached this point, we want to throw the StepException or StepError
-        executeAfterSteps(false);
+        step.withData(data).test();
     }
 
-    public void skipSteps()
+    @Override
+    protected void skipStep(TypeStep<T> step)
     {
-        executeBeforeSteps(true);
-        for (final TypeStep<T> step : steps)
-        {
-            if (step.getReporter() == null && this.getReporter() != null)
-            {
-                step.setReporter(getReporter());
-            }
-            step.withData(data).skipStep();
-        }
-        executeAfterSteps(true);
-    }
-
-    private void executeBeforeSteps(boolean skip)
-    {
-        for (Before before : befores)
-        {
-            Steps steps = before.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
-    }
-
-    private void executeAfterSteps(boolean skip)
-    {
-        for (After after : afters)
-        {
-            Steps steps = after.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
+        step.withData(data).skipStep();
     }
 
     /**
@@ -225,7 +99,7 @@ public class TypeSteps<T> implements Statusable
      */
     private void addStep(GherkinKeyword keyword, String description, Consumer<T> consumer)
     {
-        this.steps.add(new TypeStep<T>(keyword, description, consumer));
+        getSteps().add(new TypeStep<T>(keyword, description, consumer));
     }
 
     /**
@@ -242,7 +116,7 @@ public class TypeSteps<T> implements Statusable
     {
         try
         {
-            this.steps.add(new TypeStep<T>(new GherkinKeyword(keyword), description, consumer));
+            getSteps().add(new TypeStep<T>(new GherkinKeyword(keyword), description, consumer));
         } catch (ClassNotFoundException e)
         {
             throw new IllegalStateException("Unknown Keyword " + keyword, e);
@@ -273,6 +147,7 @@ public class TypeSteps<T> implements Statusable
      *            class.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> and(final Steps scenario)
     {
         for (final Step step : scenario.getSteps())
@@ -325,6 +200,7 @@ public class TypeSteps<T> implements Statusable
      *            The behavior of this step.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> and(final String description, final Runnable runner)
     {
 
@@ -341,6 +217,7 @@ public class TypeSteps<T> implements Statusable
      *            class.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> given(final Steps scenario)
     {
         for (final Step step : scenario.getSteps())
@@ -393,6 +270,7 @@ public class TypeSteps<T> implements Statusable
      *            The behavior of this step.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> given(final String description, final Runnable runner)
     {
         addStep("Given", description, runnableToConsumer(runner));
@@ -409,6 +287,7 @@ public class TypeSteps<T> implements Statusable
      *            class.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> then(final Steps scenario)
     {
         for (final Step step : scenario.getSteps())
@@ -461,6 +340,7 @@ public class TypeSteps<T> implements Statusable
      *            The behavior of this step.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> then(final String description, final Runnable runner)
     {
         addStep("Then", description, runnableToConsumer(runner));
@@ -476,6 +356,7 @@ public class TypeSteps<T> implements Statusable
      *            class.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> when(final Steps scenario)
     {
         for (final Step step : scenario.getSteps())
@@ -528,6 +409,7 @@ public class TypeSteps<T> implements Statusable
      *            The behavior of this step.
      * @return The current BddTypeScenario.
      */
+    @Override
     public TypeSteps<T> when(final String description, final Runnable runner)
     {
         addStep("When", description, runnableToConsumer(runner));
@@ -569,33 +451,6 @@ public class TypeSteps<T> implements Statusable
     public T getData()
     {
         return data;
-    }
-
-    public ReportInterface getReporter()
-    {
-        return reporter;
-    }
-
-    public void setReporter(ReportInterface reporter)
-    {
-        this.reporter = reporter;
-    }
-
-    public List<TypeStep<T>> getSteps()
-    {
-        return steps;
-    }
-
-    // public void addBackground(Background background)
-    public void addBefore(List<Before> befores)
-    {
-        this.befores.addAll(befores);
-    }
-
-    // public void addBackground(Background background)
-    public void addAfters(List<After> afters)
-    {
-        this.afters.addAll(afters);
     }
 
     @Override

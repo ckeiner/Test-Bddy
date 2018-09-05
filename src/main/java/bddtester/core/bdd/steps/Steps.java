@@ -7,10 +7,6 @@ import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.bdd.beforeAfter.After;
 import bddtester.core.bdd.beforeAfter.Before;
-import bddtester.core.bdd.status.Statusable;
-import bddtester.core.reporting.ReportInterface;
-import bddtester.core.throwables.errors.StepError;
-import bddtester.core.throwables.exceptions.StepException;
 
 /**
  * Describes a BDD Scenario.<br>
@@ -19,34 +15,14 @@ import bddtester.core.throwables.exceptions.StepException;
  * @author ckeiner
  *
  */
-public class Steps implements Statusable
+public class Steps extends AbstractSteps<Step>
 {
-    /**
-     * The class responsible for reporting.
-     */
-    private ReportInterface reporter;
-
-    /**
-     * The steps that happen before all other steps
-     */
-    private final List<Before> befores;
-
-    /**
-     * The steps that happen after all other steps
-     */
-    private final List<After> afters;
-
-    /**
-     * A list of all {@link Step}s
-     */
-    private final List<Step> steps;
-
     /**
      * Creates a BddScenario.
      */
     public Steps()
     {
-        this(new ArrayList<>());
+        super(new ArrayList<>());
     }
 
     /**
@@ -57,7 +33,7 @@ public class Steps implements Statusable
      */
     public Steps(final List<Step> steps)
     {
-        this(steps, new ArrayList<Before>());
+        super(steps, new ArrayList<Before>());
     }
 
     /**
@@ -71,7 +47,7 @@ public class Steps implements Statusable
      */
     public Steps(final List<Step> steps, final List<Before> befores)
     {
-        this(steps, befores, new ArrayList<After>());
+        super(steps, befores, new ArrayList<After>());
     }
 
     /**
@@ -87,148 +63,19 @@ public class Steps implements Statusable
      */
     public Steps(final List<Step> steps, final List<Before> befores, final List<After> afters)
     {
-        this.steps = steps;
-        this.befores = befores;
-        this.afters = afters;
+        super(steps, befores, afters);
     }
 
-    /**
-     * Executes the BddScenario by executing each step in {@link #getSteps()}.<br>
-     * 
-     * If an exception or error occurs in the steps, the steps which weren't
-     * executed yet, are set to be skipped. Afterwards, the exception or error is
-     * re-thrown as {@link StepException} and {@link StepError} respectively.<br>
-     * Should both, an exception and an error, occur, a StepException is thrown.
-     */
-    public void test()
+    @Override
+    protected void testStep(Step step)
     {
-        StepException stepException = null;
-        StepError stepError = null;
-        // TODO beautify
-        try
-        {
-            executeBeforeSteps(false);
-        } catch (StepException e)
-        {
-            stepException = e;
-        } catch (StepError e)
-        {
-            stepError = e;
-        }
-
-        for (final Step step : getSteps())
-        {
-            if (step.getReporter() == null && this.getReporter() != null)
-            {
-                step.setReporter(getReporter());
-            }
-            try
-            {
-                // If an exception or error occured in a previous step, skip this step
-                if (stepException != null || stepError != null)
-                {
-                    step.skipStep();
-                }
-                // Otherwise test it
-                else
-                {
-                    step.test();
-                }
-            } catch (StepException e)
-            {
-                stepException = e;
-            } catch (StepError e)
-            {
-                stepError = e;
-            }
-        }
-
-        if (stepException != null)
-        {
-            executeAfterSteps(true);
-            throw stepException;
-        }
-        else if (stepError != null)
-        {
-            executeAfterSteps(true);
-            throw stepError;
-        }
-
-        // If we reached this point, we want to throw the StepException or StepError
-        executeAfterSteps(false);
+        step.test();
     }
 
-    /**
-     * Marks all steps as skipped.
-     */
-    public void skipSteps()
+    @Override
+    protected void skipStep(Step step)
     {
-        executeBeforeSteps(true);
-        for (Step step : getSteps())
-        {
-            if (step.getReporter() == null && this.getReporter() != null)
-            {
-                step.setReporter(getReporter());
-            }
-            step.skipStep();
-        }
-        executeAfterSteps(true);
-    }
-
-    private void executeBeforeSteps(boolean skip)
-    {
-        for (Before before : befores)
-        {
-            Steps steps = before.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
-    }
-
-    private void executeAfterSteps(boolean skip)
-    {
-        for (After after : afters)
-        {
-            Steps steps = after.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
-    }
-
-    /**
-     * Adds all backgrounds to the Steps.
-     * 
-     * @param befores
-     *            The {@link Before}s to add.
-     */
-    public void addBefores(List<Before> befores)
-    {
-        this.befores.addAll(befores);
-    }
-
-    /**
-     * Adds all postSteps to the Steps.
-     * 
-     * @param afters
-     *            The {@link After}s to add.
-     */
-    public void addAfters(List<After> afters)
-    {
-        this.afters.addAll(afters);
+        step.skipStep();
     }
 
     /**
@@ -245,7 +92,7 @@ public class Steps implements Statusable
     {
         try
         {
-            this.steps.add(new Step(new GherkinKeyword(keyword), description, runner));
+            getSteps().add(new Step(new GherkinKeyword(keyword), description, runner));
         } catch (ClassNotFoundException e)
         {
             throw new IllegalStateException("Unknown Keyword " + keyword, e);
@@ -264,7 +111,7 @@ public class Steps implements Statusable
      */
     private void addStep(GherkinKeyword keyword, String description, Runnable runner)
     {
-        this.steps.add(new Step(keyword, description, runner));
+        getSteps().add(new Step(keyword, description, runner));
     }
 
     /**
@@ -276,7 +123,7 @@ public class Steps implements Statusable
      */
     private void addAllSteps(Steps scenario)
     {
-        for (Step step : scenario.steps)
+        for (Step step : scenario.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), step.getBehavior());
         }
@@ -290,6 +137,7 @@ public class Steps implements Statusable
      *            class.
      * @return The current Steps.
      */
+    @Override
     public Steps and(final Steps scenario)
     {
         addAllSteps(scenario);
@@ -307,6 +155,7 @@ public class Steps implements Statusable
      *            The behavior of the step.
      * @return The current Steps.
      */
+    @Override
     public Steps and(final String description, final Runnable runner)
     {
         addStep("And", description, runner);
@@ -321,6 +170,7 @@ public class Steps implements Statusable
      *            class.
      * @return The current Steps.
      */
+    @Override
     public Steps given(final Steps scenario)
     {
         addAllSteps(scenario);
@@ -338,6 +188,7 @@ public class Steps implements Statusable
      *            The behavior of the step.
      * @return The current Scenario.
      */
+    @Override
     public Steps given(final String description, final Runnable runner)
     {
         addStep("Given", description, runner);
@@ -352,6 +203,7 @@ public class Steps implements Statusable
      *            class.
      * @return The current BddScenario.
      */
+    @Override
     public Steps then(final Steps scenario)
     {
         addAllSteps(scenario);
@@ -369,6 +221,7 @@ public class Steps implements Statusable
      *            The behavior of the step.
      * @return The current Scenario.
      */
+    @Override
     public Steps then(final String description, final Runnable runner)
     {
         addStep("Then", description, runner);
@@ -383,6 +236,7 @@ public class Steps implements Statusable
      *            class.
      * @return The current BddScenario.
      */
+    @Override
     public Steps when(final Steps scenario)
     {
         addAllSteps(scenario);
@@ -400,25 +254,11 @@ public class Steps implements Statusable
      *            The behavior of the step.
      * @return The current Scenario.
      */
+    @Override
     public Steps when(final String description, final Runnable runner)
     {
         addStep("When", description, runner);
         return this;
-    }
-
-    public List<Step> getSteps()
-    {
-        return steps;
-    }
-
-    public ReportInterface getReporter()
-    {
-        return reporter;
-    }
-
-    public void setReporter(ReportInterface reporter)
-    {
-        this.reporter = reporter;
     }
 
     @Override

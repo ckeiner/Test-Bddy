@@ -62,7 +62,7 @@ public class ScenarioOutline<T> extends AbstractScenario
     @Override
     public void addBefores(List<Before> befores)
     {
-        getSteps().addBefore(befores);
+        getSteps().addBefores(befores);
     }
 
     @Override
