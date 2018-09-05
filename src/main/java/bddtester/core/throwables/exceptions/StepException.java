@@ -1,9 +1,9 @@
 package bddtester.core.throwables.exceptions;
 
-import bddtester.core.bdd.steps.Step;
+import bddtester.core.bdd.steps.AbstractStep;
 
 /**
- * Describes an exception that happens in a {@link Step}.
+ * Describes an Error that happens in an {@link AbstractStep}.
  * 
  * @author ckeiner
  */

@@ -33,7 +33,6 @@ public class TypeSteps<T> implements Statusable
     /**
      * The steps that happen before all other steps
      */
-    // TODO make this a stream so we only read once
     private final List<Before> befores;
 
     /**
@@ -125,7 +124,7 @@ public class TypeSteps<T> implements Statusable
             stepError = e;
         }
 
-        for (final TypeStep<T> step : steps)
+        for (final TypeStep<T> step : getSteps())
         {
             // Set the reporter at the step
             if (step.getReporter() == null && this.getReporter() != null)
@@ -161,17 +160,9 @@ public class TypeSteps<T> implements Statusable
             executeAfterSteps(true);
             throw stepError;
         }
-        // TODO beautify
-        try
-        {
-            executeAfterSteps(false);
-        } catch (StepException e)
-        {
-            stepException = e;
-        } catch (StepError e)
-        {
-            stepError = e;
-        }
+
+        // If we reached this point, we want to throw the StepException or StepError
+        executeAfterSteps(false);
     }
 
     public void skipSteps()

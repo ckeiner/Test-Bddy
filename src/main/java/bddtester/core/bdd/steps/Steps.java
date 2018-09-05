@@ -115,7 +115,8 @@ public class Steps implements Statusable
         {
             stepError = e;
         }
-        for (final Step step : steps)
+
+        for (final Step step : getSteps())
         {
             if (step.getReporter() == null && this.getReporter() != null)
             {
@@ -141,6 +142,7 @@ public class Steps implements Statusable
                 stepError = e;
             }
         }
+
         if (stepException != null)
         {
             executeAfterSteps(true);
@@ -151,17 +153,9 @@ public class Steps implements Statusable
             executeAfterSteps(true);
             throw stepError;
         }
-        // TODO beautify
-        try
-        {
-            executeAfterSteps(false);
-        } catch (StepException e)
-        {
-            stepException = e;
-        } catch (StepError e)
-        {
-            stepError = e;
-        }
+
+        // If we reached this point, we want to throw the StepException or StepError
+        executeAfterSteps(false);
     }
 
     /**
@@ -271,23 +265,6 @@ public class Steps implements Statusable
     private void addStep(GherkinKeyword keyword, String description, Runnable runner)
     {
         this.steps.add(new Step(keyword, description, runner));
-    }
-
-    /**
-     * Adds a step to the list of {@link Step}s.
-     * 
-     * @param index
-     *            Where you want to add the new Step.
-     * @param keyword
-     *            The {@link GherkinKeyword} of the step.
-     * @param description
-     *            The description of the step in a natural language.
-     * @param runner
-     *            The behavior of the step.
-     */
-    private void addStep(int index, GherkinKeyword keyword, String description, Runnable runner)
-    {
-        this.steps.add(index, new Step(keyword, description, runner));
     }
 
     /**

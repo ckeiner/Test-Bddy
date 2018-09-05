@@ -1,14 +1,9 @@
 package bddtester.core.throwables.errors;
 
-import bddtester.core.bdd.steps.Step;
-import bddtester.core.bdd.steps.Steps;
-import bddtester.core.bdd.steps.TypeStep;
-import bddtester.core.bdd.steps.TypeSteps;
+import bddtester.core.bdd.steps.AbstractStep;
 
-//TODO too implementation specific?
 /**
- * Describes an Error that happens in a {@link Step}, thus in {@link Steps} or
- * {@link TypeStep}, thus in {@link TypeSteps}.
+ * Describes an Error that happens in an {@link AbstractStep}.
  * 
  * @author ckeiner
  */
