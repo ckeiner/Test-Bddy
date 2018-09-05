@@ -1,4 +1,4 @@
-package bddtester.core.tests.functional;
+package bddtester.core.functional;
 
 import static bddtester.api.BddSuite.feature;
 import static bddtester.api.BddSuite.scenario;

@@ -1,4 +1,4 @@
-package bddtester.core.tests.reports;
+package bddtester.core.reports;
 
 import static bddtester.api.BddSuite.feature;
 import static bddtester.api.BddSuite.scenario;

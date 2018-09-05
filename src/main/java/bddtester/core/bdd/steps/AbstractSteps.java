@@ -341,4 +341,13 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
      */
     public abstract AbstractSteps<T> when(final String description, final Runnable runner);
 
+    @Override
+    public abstract AbstractSteps<T> ignore();
+
+    @Override
+    public abstract AbstractSteps<T> wip();
+
+    @Override
+    public abstract AbstractSteps<T> skip();
+
 }

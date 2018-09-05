@@ -219,4 +219,14 @@ public class Scenario extends AbstractScenario
         return this;
     }
 
+    public Steps getSteps()
+    {
+        return steps;
+    }
+
+    public Steps getPostSteps()
+    {
+        return postSteps;
+    }
+
 }
