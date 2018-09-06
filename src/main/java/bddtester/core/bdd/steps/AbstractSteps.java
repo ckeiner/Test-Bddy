@@ -10,6 +10,13 @@ import bddtester.core.reporting.ReportInterface;
 import bddtester.core.throwables.errors.StepError;
 import bddtester.core.throwables.exceptions.StepException;
 
+/**
+ * Describes multiple steps.
+ * 
+ * @param <T>
+ *            The type of the steps.
+ * @author ckeiner
+ */
 public abstract class AbstractSteps<T extends AbstractStep<?>> implements Statusable
 {
     /**
@@ -18,22 +25,22 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     private ReportInterface reporter;
 
     /**
-     * The steps that happen before all other steps
+     * The steps that happen before all other steps.
      */
     private final List<Before> befores;
 
     /**
-     * The steps that happen after all other steps
+     * The steps that happen after all other steps.
      */
     private final List<After> afters;
 
     /**
-     * A list of all {@link Step}s
+     * A list of all {@link Step}s.
      */
     private final List<T> steps;
 
     /**
-     * Creates a BddScenario.
+     * Creates AbstractSteps with the lists initialized as <code>ArrayList</code>.
      */
     public AbstractSteps()
     {
@@ -41,10 +48,10 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Creates a BddScenario with the specified list of {@link Step}s.
+     * Creates AbstractSteps with the specified list of {@link Step}s.
      * 
      * @param steps
-     *            The list of BddSteps that specify this BddScenario
+     *            The list of steps that specify the behavior.
      */
     public AbstractSteps(final List<T> steps)
     {
@@ -52,13 +59,13 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Creates a BddScenario with the specified reporter and list of {@link Step}s,
+     * Creates AbstractSteps with the specified reporter and list of {@link Step}s,
      * {@link Before}s and {@link After}s.
      * 
      * @param befores
      *            The list of steps to execute before each other step.
      * @param steps
-     *            The list of BddSteps that specify this BddScenario
+     *            The list of steps that specify this AbstractSteps
      */
     public AbstractSteps(final List<T> steps, final List<Before> befores)
     {
@@ -66,11 +73,11 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Creates a BddScenario with the specified list of {@link Step}s,
+     * Creates AbstractSteps with the specified list of {@link Step}s,
      * {@link Before}s and {@link After}s.
      * 
      * @param steps
-     *            The list of BddSteps that specify this BddScenario
+     *            The list of steps that specify this AbstractSteps
      * @param befores
      *            The list of steps to execute before the steps.
      * @param afters
@@ -100,11 +107,15 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     protected abstract void skipStep(T step);
 
     /**
-     * Executes the scenario.<br>
+     * Executes the {@link Step}s.<br>
      * If an exception or error occurs in the steps, the steps which weren't
-     * executed yet, are set to be skipped. Afterwards, the exception or error is
-     * re-thrown as {@link StepException} and {@link StepError} respectively.<br>
+     * executed yet, are set to be skipped and the throwable is re-thrown.<br>
      * Should both, an exception and an error, occur, a StepException is thrown.
+     * 
+     * @throws StepException
+     *             If a StepException occured in any Step.
+     * @throws StepError
+     *             If an StepError and no StepExceptions occured in any Step.
      */
     public void test()
     {
@@ -122,6 +133,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
             stepError = e;
         }
 
+        // Execute each step
         for (final T step : getSteps())
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -160,10 +172,14 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
             throw stepError;
         }
 
-        // If we reached this point, we want to throw the StepException or StepError
+        // If we reached this point, we want to throw a StepException or StepError that
+        // occurs in the after steps
         executeAfterSteps(false);
     }
 
+    /**
+     * Doesn't execute the behavior, but shows them in the report as skipped.
+     */
     public void skipSteps()
     {
         executeBeforeSteps(true);
@@ -178,6 +194,14 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
         executeAfterSteps(true);
     }
 
+    /**
+     * Executes the before steps.
+     * 
+     * @param skip
+     *            If true, the steps aren't executed but appear in the report as
+     *            skipped. Else, the steps are executed and they appear in the
+     *            report.
+     */
     protected void executeBeforeSteps(boolean skip)
     {
         for (Before before : befores)
@@ -195,6 +219,14 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
         }
     }
 
+    /**
+     * Executes the after steps.
+     * 
+     * @param skip
+     *            If true, the steps aren't executed but appear in the report as
+     *            skipped. Else, the steps are executed and they appear in the
+     *            report.
+     */
     protected void executeAfterSteps(boolean skip)
     {
         for (After after : afters)
@@ -213,10 +245,10 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Adds all backgrounds to the Steps.
+     * Adds all {@link Before}s to the Steps.
      * 
      * @param befores
-     *            The {@link Before}s to add.
+     *            The list of {@link Before}s to add.
      */
     public void addBefores(List<Before> befores)
     {
@@ -224,10 +256,10 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Adds all postSteps to the Steps.
+     * Adds all {@link After}s to the Steps.
      * 
      * @param afters
-     *            The {@link After}s to add.
+     *            The list of {@link After}s to add.
      */
     public void addAfters(List<After> afters)
     {
@@ -260,20 +292,20 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     public abstract AbstractSteps<T> and(final Steps scenario);
 
     /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "And".
+     * Adds the step, specified by the description and runner, to the list of
+     * {@link #steps}.<br>
+     * The GherkinKeyword for the step is "And".
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return The current Steps.
+     * @return The current {@link AbstractSteps}.
      */
     public abstract AbstractSteps<T> and(final String description, final Runnable runner);
 
     /**
-     * Adds all steps of the specified parameter to the steps of this Steps.
+     * Adds all steps of the specified parameter to {@link #steps}.
      * 
      * @param scenario
      *            The Steps with the steps that should be added to the steps of this

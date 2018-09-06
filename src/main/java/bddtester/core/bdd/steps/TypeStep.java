@@ -16,13 +16,44 @@ import bddtester.core.util.ParameterResolver;
  */
 public class TypeStep<T> extends AbstractStep<Consumer<T>>
 {
+    /**
+     * The testdata for this step.
+     */
     protected T testdata;
 
+    /**
+     * Creates a TypeStep with the specified keyword, description, behavior and
+     * without test data.
+     * 
+     * @param keyword
+     *            The {@link GherkinKeyword} describing whether its a given, when,
+     *            then or and step.
+     * @param description
+     *            A String describing what this step does.
+     * @param behavior
+     *            A consumer containing the behavior.
+     * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     */
     public TypeStep(final GherkinKeyword keyword, final String description, final Consumer<T> behavior)
     {
         this(keyword, description, behavior, null);
     }
 
+    /**
+     * Creates a TypeStep with the specified keyword, description, behavior and test
+     * data.
+     * 
+     * @param keyword
+     *            The {@link GherkinKeyword} describing whether its a given, when,
+     *            then or and step.
+     * @param description
+     *            A String describing what this step does.
+     * @param behavior
+     *            A consumer containing the behavior.
+     * @param testdata
+     *            The test data for this step.
+     * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     */
     public TypeStep(final GherkinKeyword keyword, final String description, final Consumer<T> behavior,
             final T testdata)
     {
@@ -35,7 +66,7 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
      * 
      * @param testdata
      *            The test data of the step.
-     * @return The TypeStep so it's chainable.
+     * @return This TypeStep.
      */
     public TypeStep<T> withData(T testdata)
     {
@@ -55,6 +86,11 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
         test();
     }
 
+    /**
+     * Sets the report element up with the resolved description.<br>
+     * In other words, the report element receives a description, in which all
+     * placeholders have been resolved.
+     */
     @Override
     protected ReportElement setUpReporter()
     {
@@ -74,6 +110,12 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     // }
     // }
 
+    /**
+     * Executes the consumer with {@link #testdata} as parameter.
+     * 
+     * @throws IllegalStateException
+     *             If {@link #testdata} is <code>null</code>.
+     */
     @Override
     protected void executeStep()
     {

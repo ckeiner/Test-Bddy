@@ -3,7 +3,6 @@ package bddtester.core.bdd.steps;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.bdd.status.Status;
@@ -56,7 +55,7 @@ public abstract class AbstractStep<T> implements Statusable
      *            The {@link GherkinKeyword} describing whether its a given, when,
      *            then or and step.
      * @param description
-     *            A sentence describing what this step does.
+     *            A String describing what this step does.
      * @param behavior
      *            Contains the actual execution.
      */
@@ -70,37 +69,44 @@ public abstract class AbstractStep<T> implements Statusable
 
     /**
      * The method called when the step should be executed.<br>
-     * First it creates a node via
-     * {@link ExtentTest#createNode(GherkinKeyword, String)}. Then, it executes the
-     * runner. <br>
-     * If an error or exception occurs, it throws them as either {@link StepError}
-     * or {@link StepException} and marks the node as failed of fatal
-     * respectively.<br>
-     * If {@link #skip} is set, the consumer isn't execute. However, the node is
-     * still created but marked as skipped.
+     * If {@link #reporter} was specified, it first prepares the report. Then, it
+     * executes the behavior. <br>
+     * If {@link #skip} is set, the behavior isn't execute and the report marks the
+     * step as skipped.
+     * 
+     * @throws StepException
+     *             If an Exception occurs. The report shows the step as fatal.
+     * @throws StepError
+     *             If an Error occurs. The report shows the step as failed.
      */
     public void test()
     {
+        // If the status contains the Ignore-Status, simply don't show
         if (getStatus().contains(Status.IGNORE))
         {
             return;
         }
+        // Create the ReportElement
         ReportElement element = setUpReporter();
         // Print the description of the step
-        System.out.println(description);
+        System.out.println(getDescription());
         try
         {
+            // If it shouldn't be skipped
             if (!getStatus().contains(Status.SKIP))
             {
+                // Execute it
                 executeStep();
-                // Mark the node as passed
+                // Mark the node as passed if it exists
                 if (element != null)
                 {
-                    element.pass(description);
+                    element.pass(getDescription());
                 }
             }
+            // If the step should be skipped
             else
             {
+                // Mark the node as skipped
                 if (element != null)
                 {
                     element.skip(getDescription());
@@ -132,6 +138,7 @@ public abstract class AbstractStep<T> implements Statusable
      */
     public void skipStep()
     {
+        // Create the ReportElement
         ReportElement element = setUpReporter(true);
         // Mark the node as skipped
         if (element != null)
@@ -146,7 +153,7 @@ public abstract class AbstractStep<T> implements Statusable
     protected abstract void executeStep();
 
     /**
-     * Sets up the reporter and shows the {@link Status} defined in {@link #status}.
+     * Sets the reporter up and shows the {@link Status} defined in {@link #status}.
      * 
      * @return The {@link ReportElement} representing the step.
      */

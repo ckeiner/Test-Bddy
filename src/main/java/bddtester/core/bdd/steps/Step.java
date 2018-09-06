@@ -10,11 +10,26 @@ import com.aventstack.extentreports.GherkinKeyword;
 public class Step extends AbstractStep<Runnable>
 {
 
+    /**
+     * Creates a Step with the specified keyword, description and behavior.
+     * 
+     * @param keyword
+     *            The {@link GherkinKeyword} describing whether its a given, when,
+     *            then or and step.
+     * @param description
+     *            A String describing what this step does.
+     * @param behavior
+     *            A Runnable containing the behavior.
+     * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     */
     public Step(GherkinKeyword keyword, String description, Runnable behavior)
     {
         super(keyword, description, behavior);
     }
 
+    /**
+     * Runs the Runnable.
+     */
     @Override
     protected void executeStep()
     {
