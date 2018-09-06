@@ -13,6 +13,15 @@ import bddtester.core.reporting.ReportInterface;
 import bddtester.core.throwables.errors.StepError;
 import bddtester.core.throwables.exceptions.StepException;
 
+/**
+ * Describes a step in the BDD Hierarchy.<br>
+ * That means, it contains the actual behavior.
+ * 
+ * @author ckeiner
+ *
+ * @param <T>
+ *            The type of the behavior.
+ */
 public abstract class AbstractStep<T> implements Statusable
 {
     /**
@@ -20,6 +29,9 @@ public abstract class AbstractStep<T> implements Statusable
      */
     private final Set<Status> status;
 
+    /**
+     * The object responsible for reporting.
+     */
     private ReportInterface reporter;
 
     /**
@@ -37,6 +49,17 @@ public abstract class AbstractStep<T> implements Statusable
      */
     private final T behavior;
 
+    /**
+     * Creates an AbstractStep with the specified keyword, description and behavior.
+     * 
+     * @param keyword
+     *            The {@link GherkinKeyword} describing whether its a given, when,
+     *            then or and step.
+     * @param description
+     *            A sentence describing what this step does.
+     * @param behavior
+     *            Contains the actual execution.
+     */
     public AbstractStep(final GherkinKeyword keyword, final String description, final T behavior)
     {
         this.keyword = keyword;
@@ -118,10 +141,15 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * Defines how the step is executed.
+     * Defines how a single step is executed.
      */
     protected abstract void executeStep();
 
+    /**
+     * Sets up the reporter and shows the {@link Status} defined in {@link #status}.
+     * 
+     * @return The {@link ReportElement} representing the step.
+     */
     protected ReportElement setUpReporter()
     {
         return setUpReporter(true);

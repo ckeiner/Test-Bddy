@@ -27,7 +27,7 @@ import bddtester.core.throwables.exceptions.ScenarioException;
 public class Feature implements Statusable
 {
     /**
-     * The class responsible for reporting.
+     * The object responsible for reporting.
      */
     public static ReportInterface reporter;
 
