@@ -10,6 +10,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import bddtester.api.AbstractAllureReportTest;
 import bddtester.core.bdd.scenario.AbstractScenario;
 import bddtester.core.bdd.scenario.Scenario;
 import bddtester.core.bdd.steps.Steps;
@@ -17,7 +18,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
 
-public class FeatureTest
+public class FeatureTest extends AbstractAllureReportTest
 {
     @Test
     public void verifyConstructor()
