@@ -6,7 +6,7 @@ import static bddtester.api.BddSuite.scenario;
 
 import org.junit.Test;
 
-import bddtester.core.reporting.allurereports.AbstractAllureReportTest;
+import bddtester.api.AbstractAllureReportTest;
 
 public class QuickAllureTester extends AbstractAllureReportTest
 {

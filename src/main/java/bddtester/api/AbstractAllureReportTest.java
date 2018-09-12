@@ -1,9 +1,10 @@
-package bddtester.core.reporting.allurereports;
+package bddtester.api;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 import bddtester.core.bdd.Feature;
+import bddtester.core.reporting.allurereports.AllureReportInterface;
 
 /**
  * Sets ExtentReport as reporter for a {@link Feature}.

@@ -4,6 +4,8 @@ import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.reporting.ReportElement;
 import bddtester.core.reporting.ReportInterface;
+import io.qameta.allure.Allure;
+import io.qameta.allure.Epic;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 
@@ -39,7 +41,7 @@ public class AllureReportInterface implements ReportInterface
     }
 
     @Override
-    @Feature("Feature: {description}")
+    @Epic("Feature: {description}")
     public ReportElement feature(String description)
     {
         feature = new AllureElement();
@@ -47,7 +49,7 @@ public class AllureReportInterface implements ReportInterface
     }
 
     @Override
-    @Step("{method}{description}")
+    @Epic("Scenario: \"{description}\"")
     public ReportElement scenario(String description)
     {
         scenario = new AllureElement();
@@ -55,23 +57,27 @@ public class AllureReportInterface implements ReportInterface
     }
 
     @Override
-    @Step("{method}{description} with data {testdata}")
+    @Feature("Scenario Outline:: {description} with data {testdata}")
     public <T> ReportElement scenarioOutline(String description, T testdata)
     {
         return new AllureElement();
     }
 
     @Override
-    @Step("{method}{description}")
+    @Feature("Scenario Outline: {description}")
     public <T> ReportElement scenarioOutline(String description)
     {
         return new AllureElement();
     }
 
+    String gherkinKeyword;
+
     @Override
-    @Step("{keyword}: {description}")
+    @Step("{gherkinKeyword}: {description}")
     public ReportElement step(GherkinKeyword keyword, String description)
     {
+        gherkinKeyword = keyword.toString();
+        Allure.addDescription("some description" + gherkinKeyword);
         step = new AllureElement();
         return step;
     }
