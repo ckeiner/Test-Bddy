@@ -22,6 +22,8 @@ public class ExtentElement implements ReportElement
      */
     public ExtentTest extentElement;
 
+    // public ExtentElement
+
     /**
      * Creates a new instance of this class with the given element.
      * 
