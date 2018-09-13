@@ -35,7 +35,7 @@ public interface ReportElement
     public void fail(String description, String pathToScreenshot);
 
     /**
-     * Reports the element as failed due to the given cause.
+     * Reports the element as failed due to the specified cause.
      *
      * @param throwable
      *            The cause of the failure.
@@ -43,7 +43,7 @@ public interface ReportElement
     public void fail(Throwable throwable);
 
     /**
-     * Reports the element as failed due to the given cause.
+     * Reports the element as failed due to the specified cause.
      *
      * @param throwable
      *            The cause of the failure.
@@ -79,7 +79,7 @@ public interface ReportElement
     public void fatal(String description, String pathToScreenshot);
 
     /**
-     * Reports the element as fatal due to the given cause.
+     * Reports the element as fatal due to the specified cause.
      *
      * @param throwable
      *            The cause of the fatal error.
@@ -87,7 +87,7 @@ public interface ReportElement
     public void fatal(Throwable throwable);
 
     /**
-     * Reports the element as fatal due to the given cause.
+     * Reports the element as fatal due to the specified cause.
      *
      * @param throwable
      *            The cause of the failure.
@@ -105,7 +105,7 @@ public interface ReportElement
     public void skip(String description);
 
     /**
-     * Reports the element as skipped due to the given cause.
+     * Reports the element as skipped due to the specified cause.
      *
      * @param throwable
      *            The cause of being skipped.

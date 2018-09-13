@@ -133,6 +133,7 @@ public class Steps extends AbstractSteps<Step>
      * Adds all steps of the specified parameter to the steps.
      * 
      * @param scenario
+     *            The additional steps to add to the existing steps.<br>
      *            The Steps with the steps that should be added to the steps of this
      *            class.
      * @return The current Steps.

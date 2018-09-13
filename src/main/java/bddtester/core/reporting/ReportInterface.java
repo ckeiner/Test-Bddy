@@ -16,7 +16,7 @@ public interface ReportInterface
     public final static String PATH = "report/";
 
     /**
-     * Reports a feature with the given description.
+     * Reports a feature with the specified description.
      * 
      * @param description
      *            The description of the feature.
@@ -25,7 +25,7 @@ public interface ReportInterface
     public ReportElement feature(String description);
 
     /**
-     * Reports a scenario with the given description.
+     * Reports a scenario with the specified description.
      * 
      * @param description
      *            The description of the scenario.
@@ -34,7 +34,7 @@ public interface ReportInterface
     public ReportElement scenario(String description);
 
     /**
-     * Reports a scenario outline with the given description and testdata.
+     * Reports a scenario outline with the specified description and testdata.
      * 
      * @param description
      *            The description of the scenario outline.
@@ -45,7 +45,7 @@ public interface ReportInterface
     public <T> ReportElement scenarioOutline(String description, T testdata);
 
     /**
-     * Reports a scenario outline with the given description.
+     * Reports a scenario outline with the specified description.
      * 
      * @param description
      *            The description of the scenario outline.
@@ -54,7 +54,7 @@ public interface ReportInterface
     public <T> ReportElement scenarioOutline(String description);
 
     /**
-     * Reports a step with the given description.
+     * Reports a step with the specified description.
      * 
      * @param description
      *            The description of the step.
