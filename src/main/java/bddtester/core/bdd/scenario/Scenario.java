@@ -148,8 +148,7 @@ public class Scenario extends AbstractScenario
         {
             steps.skipSteps();
             scenarioReporter.skip(getDescription());
-        }
-        else
+        } else
         {
             steps.test();
             if (scenarioReporter != null)

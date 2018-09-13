@@ -4,16 +4,11 @@ import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.reporting.ReportElement;
 import bddtester.core.reporting.ReportInterface;
-import io.qameta.allure.Allure;
-import io.qameta.allure.Epic;
-import io.qameta.allure.Feature;
 import io.qameta.allure.Step;
 
 public class AllureReportInterface implements ReportInterface
 {
-    public AllureElement feature;
-    public AllureElement scenario;
-    public AllureElement step;
+    public AllureElement allureElement = new AllureElement();
 
     public AllureReportInterface()
     {
@@ -41,51 +36,86 @@ public class AllureReportInterface implements ReportInterface
     }
 
     @Override
-    @Epic("Feature: {description}")
+    // @Feature("Feature: {description}")
     public ReportElement feature(String description)
     {
-        feature = new AllureElement();
-        return feature;
+        allureElement.allFeatures.allFeature.add(new AllureFeature(description));
+        return allureElement;
     }
 
     @Override
-    @Epic("Scenario: \"{description}\"")
+    // @Story("Scenario: \"{description}\"")
     public ReportElement scenario(String description)
     {
-        scenario = new AllureElement();
-        return scenario;
+        allureElement.allFeatures.getLastFeature().add(description);
+        return allureElement;
     }
 
     @Override
-    @Feature("Scenario Outline:: {description} with data {testdata}")
+    // @Step("Scenario Outline:: {description} with data {testdata}")
     public <T> ReportElement scenarioOutline(String description, T testdata)
     {
-        return new AllureElement();
+        allureElement.allFeatures.getLastFeature().add(description + " with data " + testdata);
+        return allureElement;
     }
 
     @Override
-    @Feature("Scenario Outline: {description}")
+    // @Step("Scenario Outline: {description}")
     public <T> ReportElement scenarioOutline(String description)
     {
-        return new AllureElement();
+        allureElement.allFeatures.getLastFeature().add(description);
+        return allureElement;
     }
 
     String gherkinKeyword;
 
+    // @Feature("my feature")
+    // @Story("my story")
+    // @Step("Step: {description}")
     @Override
-    @Step("{gherkinKeyword}: {description}")
     public ReportElement step(GherkinKeyword keyword, String description)
     {
         gherkinKeyword = keyword.toString();
-        Allure.addDescription("some description" + gherkinKeyword);
-        step = new AllureElement();
-        return step;
+        allureElement.allFeatures.getLastFeature().getLastScenario().add(gherkinKeyword + ": " + description);
+        return allureElement;
+    }
+
+    @Step("{description}")
+    void setStep(AllureStep step, String description)
+    {
+        // TODO : Iterate over all stati
+    }
+
+    @Step("{description}")
+    void setScenario(AllureScenario scenario, String description)
+    {
+        for (AllureStep step : scenario.scenario)
+        {
+            setStep(step, step.description);
+        }
+    }
+
+    @Step("{description}")
+    void setFeature(AllureFeature feature, String description)
+    {
+
+        System.out.println(" Here  feature");
+        for (AllureScenario scenario : feature.feature)
+        {
+            setScenario(scenario, scenario.description);
+        }
     }
 
     @Override
+    @Step("Some Step")
     public void finishReport()
     {
-        // nothing to do here
+        System.out.println(" Here ");
+        // setFeature(allureElement.feature)
+        for (AllureFeature feature : allureElement.allFeatures.allFeature)
+        {
+            setFeature(feature, feature.description);
+        }
     }
 
 }

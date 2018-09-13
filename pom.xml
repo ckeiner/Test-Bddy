@@ -111,6 +111,11 @@
             <artifactId>jaxb-api</artifactId>
             <version>2.3.0</version>
         </dependency>
+        <dependency>
+		    <groupId>com.xceptance</groupId>
+		    <artifactId>neodymium-library</artifactId>
+		    <version>2.1.0</version>
+		</dependency>
     </dependencies>
     
     <reporting>
