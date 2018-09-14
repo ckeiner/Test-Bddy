@@ -5,8 +5,39 @@ import java.util.List;
 
 public class AllureAllFeatures
 {
-    List<AllureFeature> allFeature;
-    String description;
+    private List<AllureFeature> allFeature;
+    private String description;
+    private String allureActualElement;
+
+    public String getAllureActualElement()
+    {
+        return allureActualElement;
+    }
+
+    public void setAllureActualElement(String allureListType)
+    {
+        this.allureActualElement = allureListType;
+    }
+
+    public List<AllureFeature> getAllFeature()
+    {
+        return allFeature;
+    }
+
+    public void setAllFeature(List<AllureFeature> allFeature)
+    {
+        this.allFeature = allFeature;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
     public AllureAllFeatures()
     {

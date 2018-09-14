@@ -1,7 +1,7 @@
 package bddtester.api;
 
 import org.junit.After;
-import org.junit.BeforeClass;
+import org.junit.Before;
 
 //import com.xceptance.neodymium.util.AllureAddons;
 
@@ -20,18 +20,17 @@ public abstract class AbstractAllureReportTest
     /**
      * Sets the reporter of Feature to {@link AllureReportInterface#getInstance()}.
      */
-    @BeforeClass
-    public static void initialize()
+    @Before
+    public void initialize()
     {
-        Feature.reporter = AllureReportInterface.getInstance();
+        Feature.reporter = new AllureReportInterface();
     }
 
     /**
      * Finishes the report and sets the reporter back to <code>null</code>.
      */
     @After
-    // @Step("AfterClassStep")
-    public void finishReport()
+    public void finishReport() throws Throwable
     {
         // AllureAddons.step("mystep", () ->
         // {

@@ -25,9 +25,11 @@ public abstract class AbstractExtentReportTest
 
     /**
      * Finishes the report and sets the reporter back to <code>null</code>.
+     * 
+     * @throws Throwable
      */
     @AfterClass
-    public static void finishReport()
+    public static void finishReport() throws Throwable
     {
         if (Feature.reporter != null)
         {

@@ -66,7 +66,9 @@ public interface ReportInterface
 
     /**
      * Completes the report.
+     * 
+     * @throws Throwable
      */
-    public void finishReport();
+    public void finishReport() throws Throwable;
 
 }

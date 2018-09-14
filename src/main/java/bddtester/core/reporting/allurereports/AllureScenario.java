@@ -3,10 +3,30 @@ package bddtester.core.reporting.allurereports;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllureScenario
+public class AllureScenario extends AbstractAllureListType
 {
-    List<AllureStep> scenario;
-    String description;
+    private List<AllureStep> scenario;
+    private String description;
+
+    public List<AllureStep> getScenario()
+    {
+        return scenario;
+    }
+
+    public void setScenario(List<AllureStep> scenario)
+    {
+        this.scenario = scenario;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
     public AllureScenario(String description)
     {

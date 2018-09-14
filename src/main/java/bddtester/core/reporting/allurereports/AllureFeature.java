@@ -3,10 +3,30 @@ package bddtester.core.reporting.allurereports;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllureFeature
+public class AllureFeature extends AbstractAllureListType
 {
-    List<AllureScenario> feature;
-    String description;
+    private List<AllureScenario> feature;
+    private String description;
+
+    public List<AllureScenario> getFeature()
+    {
+        return feature;
+    }
+
+    public void setFeature(List<AllureScenario> feature)
+    {
+        this.feature = feature;
+    }
+
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
 
     public AllureFeature(String description)
     {
