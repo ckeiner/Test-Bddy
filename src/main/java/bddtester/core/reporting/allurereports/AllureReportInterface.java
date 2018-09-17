@@ -27,6 +27,7 @@ public class AllureReportInterface implements ReportInterface
     {
         allureElement.getAllFeatures().getAllFeature().add(new AllureFeature(description));
         allureElement.getAllFeatures().setAllureActualElement("feature");
+        allureElement.getAllFeatures().getLastFeature().initStatus();
         return allureElement;
     }
 
@@ -36,6 +37,7 @@ public class AllureReportInterface implements ReportInterface
     {
         allureElement.getAllFeatures().getLastFeature().add(description);
         allureElement.getAllFeatures().setAllureActualElement("scenario");
+        allureElement.getAllFeatures().getLastFeature().getLastScenario().initStatus();
         return allureElement;
     }
 
@@ -45,6 +47,7 @@ public class AllureReportInterface implements ReportInterface
     {
         allureElement.getAllFeatures().getLastFeature().add(description + " with data " + testdata);
         allureElement.getAllFeatures().setAllureActualElement("scenario");
+        allureElement.getAllFeatures().getLastFeature().getLastScenario().initStatus();
         return allureElement;
     }
 
@@ -54,6 +57,7 @@ public class AllureReportInterface implements ReportInterface
     {
         allureElement.getAllFeatures().getLastFeature().add(description);
         allureElement.getAllFeatures().setAllureActualElement("scenario");
+        allureElement.getAllFeatures().getLastFeature().getLastScenario().initStatus();
         return allureElement;
     }
 
@@ -65,83 +69,65 @@ public class AllureReportInterface implements ReportInterface
         gherkinKeyword = keyword.toString();
         allureElement.getAllFeatures().getLastFeature().getLastScenario().add(gherkinKeyword + ": " + description);
         allureElement.getAllFeatures().setAllureActualElement("step");
+        allureElement.getAllFeatures().getLastFeature().getLastScenario().getLastStep().initStatus();
         return allureElement;
     }
 
     @Step("{description}")
     void setStep(AllureStep step, String description) throws Throwable
     {
-
         if (step.getStatus() != null)
         {
-            System.out.println("\n\n\n\n status: " + step.getStatus() + " \n\n\n\n");
-            for (AllureStatus status : step.getStatus())
+            for (AllureStatus status : step.getStep())
             {
                 if (status.getStatus().equals("fail"))
                 {
-                    System.out.println("Fail");
+                    Allure.addDescription("some description on failure");
                     if (status.getThrowable() != null)
                     {
-                        try
-                        {
-                            throw status.getThrowable();
-                        } catch (Throwable e)
-                        {
-                            e.printStackTrace();
-                        }
+                        throw status.getThrowable();
                     }
                     Label label = new Label();
+                    label.setValue("some value");
                     label.setName(status.getStatus());
                     Allure.addLabels(label);
                 } else if (status.getStatus().equals("skip"))
                 {
-                    System.out.println("Skip");
                     if (status.getThrowable() != null)
                     {
-                        try
-                        {
-                            throw status.getThrowable();
-                        } catch (Throwable e)
-                        {
-                            e.printStackTrace();
-                        }
+
+                        throw status.getThrowable();
                     }
                     Label label = new Label();
                     label.setName(status.getStatus());
-                    Allure.addLabels(label);
+                    // Allure.addLabels(label);
                 } else if (status.getStatus().equals("fatal"))
                 {
-                    System.out.println("Fatal");
                     if (status.getThrowable() != null)
                     {
-                        try
-                        {
-                            throw status.getThrowable();
-                        } catch (Throwable e)
-                        {
-                            throw e;
-                        }
+
+                        throw status.getThrowable();
                     }
                     Label label = new Label();
                     label.setName(status.getStatus());
-                    Allure.addLabels(label);
+                    // Allure.addLabels(label);
                 } else if (status.getStatus().equals("wip"))
                 {
-                    System.out.println("wip");
                     Label label = new Label();
                     label.setName(status.getStatus());
-                    Allure.addLabels(label);
+                    // Allure.addLabels(label);
                 } else if (status.getStatus().equals("ignore"))
                 {
                     Label label = new Label();
                     label.setName(status.getStatus());
-                    Allure.addLabels(label);
+                    // Allure.addLabels(label);
                 } else
                 {
-                    System.out.println("\n\n\n\n\nPass +++++++++++++++++++" + step.getDescription());
                     Label label = new Label();
+
+                    Allure.addDescription("some description on passing");
                     label.setName(status.getStatus());
-                    Allure.addLabels(label);
+                    // Allure.addLabels(label);
                 }
             }
         }

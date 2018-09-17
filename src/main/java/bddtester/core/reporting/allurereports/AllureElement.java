@@ -46,8 +46,6 @@ public class AllureElement implements ReportElement
         } else if (allFeatures.getAllureActualElement().equals("step"))
         {
             allFeatures.getLastFeature().getLastScenario().getLastStep().add(status);
-            System.out.println(allFeatures.getLastFeature().getLastScenario().getLastStep().getStatus()
-                    + "\n \n \n \n \n \n \n \n \n" + status);
             allFeatures.getLastFeature().getLastScenario().getLastStep().getLastStatus().setThrowable(throwable);
         }
     }
@@ -132,13 +130,13 @@ public class AllureElement implements ReportElement
     @Override
     public void assignCategory(String... name)
     {
-        if (name != null)
-        {
-            for (int i = 0; i < name.length; i++)
-            {
-                // if name[i]
-            }
-        }
+        // if (name != null)
+        // {
+        // for (int i = 0; i < name.length; i++)
+        // {
+        // // if name[i]
+        // }
+        // }
     }
 
 }

@@ -16,6 +16,11 @@ public abstract class AbstractAllureListType
             return null;
     }
 
+    public void initStatus()
+    {
+        status = new ArrayList<AllureStatus>();
+    }
+
     public List<AllureStatus> getStatus()
     {
         return status;
