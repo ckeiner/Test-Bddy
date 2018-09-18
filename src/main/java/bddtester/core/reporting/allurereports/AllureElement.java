@@ -4,50 +4,28 @@ import bddtester.core.reporting.ReportElement;
 
 public class AllureElement implements ReportElement
 {
-    private AllureAllFeatures allFeatures = new AllureAllFeatures();
+    private AllureAllFeatures allFeatures;
+
+    public AllureElement()
+    {
+        allFeatures = new AllureAllFeatures();
+    }
 
     public AllureAllFeatures getAllFeatures()
     {
         return allFeatures;
     }
 
-    public void setAllFeatures(AllureAllFeatures allFeatures)
-    {
-        this.allFeatures = allFeatures;
-    }
-
     public void setStatus(String status, String description)
     {
-        if (allFeatures.getAllureActualElement().equals("feature"))
-        {
-            allFeatures.getLastFeature().setStatus(status);
-            allFeatures.getLastFeature().getLastStatus().setFailure(description);
-        } else if (allFeatures.getAllureActualElement().equals("scenario"))
-        {
-            allFeatures.getLastFeature().getLastScenario().setStatus(status);
-            allFeatures.getLastFeature().getLastScenario().getLastStatus().setFailure(description);
-        } else if (allFeatures.getAllureActualElement().equals("step"))
-        {
-            allFeatures.getLastFeature().getLastScenario().getLastStep().add(status);
-            allFeatures.getLastFeature().getLastScenario().getLastStep().getLastStatus().setFailure(description);
-        }
+        allFeatures.getActualElement().addStatus(status);
+        allFeatures.getActualElement().getLastStatus().setFailure(description);
     }
 
     public void setStatus(String status, Throwable throwable)
     {
-        if (allFeatures.getAllureActualElement().equals("feature"))
-        {
-            allFeatures.getLastFeature().setStatus(status);
-            allFeatures.getLastFeature().getLastStatus().setThrowable(throwable);
-        } else if (allFeatures.getAllureActualElement().equals("scenario"))
-        {
-            allFeatures.getLastFeature().getLastScenario().setStatus(status);
-            allFeatures.getLastFeature().getLastScenario().getLastStatus().setThrowable(throwable);
-        } else if (allFeatures.getAllureActualElement().equals("step"))
-        {
-            allFeatures.getLastFeature().getLastScenario().getLastStep().add(status);
-            allFeatures.getLastFeature().getLastScenario().getLastStep().getLastStatus().setThrowable(throwable);
-        }
+        allFeatures.getActualElement().addStatus(status);
+        allFeatures.getActualElement().getLastStatus().setThrowable(throwable);
     }
 
     @Override

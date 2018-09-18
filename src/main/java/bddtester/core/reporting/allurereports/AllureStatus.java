@@ -3,7 +3,9 @@ package bddtester.core.reporting.allurereports;
 public class AllureStatus
 {
     private String status = "";
+
     private String failure = "";
+
     private Throwable throwable = null;
 
     public Throwable getThrowable()

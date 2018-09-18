@@ -5,20 +5,21 @@ import java.util.List;
 
 public abstract class AbstractAllureListType
 {
-    protected List<AllureStatus> status = new ArrayList<AllureStatus>();
+    protected List<AllureStatus> status;
+
+    public AbstractAllureListType()
+    {
+        status = new ArrayList<AllureStatus>();
+    }
 
     public AllureStatus getLastStatus()
     {
-        if (!status.equals(null))
+        if (status != null && !status.isEmpty())
         {
             return status.get(status.size() - 1);
-        } else
+        }
+        else
             return null;
-    }
-
-    public void initStatus()
-    {
-        status = new ArrayList<AllureStatus>();
     }
 
     public List<AllureStatus> getStatus()
@@ -26,7 +27,7 @@ public abstract class AbstractAllureListType
         return status;
     }
 
-    public void setStatus(String status)
+    public void addStatus(String status)
     {
         this.status.add(new AllureStatus(status));
     }

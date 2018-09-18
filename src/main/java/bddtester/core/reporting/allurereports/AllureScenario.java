@@ -3,9 +3,12 @@ package bddtester.core.reporting.allurereports;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.qameta.allure.Step;
+
 public class AllureScenario extends AbstractAllureListType
 {
     private List<AllureStep> scenario;
+
     private String description;
 
     public List<AllureStep> getScenario()
@@ -34,13 +37,33 @@ public class AllureScenario extends AbstractAllureListType
         this.description = description;
     }
 
-    public void add(String step)
+    public void add(AllureStep step)
     {
-        scenario.add(new AllureStep(step));
+        scenario.add(step);
     }
 
     public AllureStep getLastStep()
     {
         return scenario.get(scenario.size() - 1);
+    }
+
+    @Step("Scenario: {description}")
+    public void report(String description) throws Throwable
+    {
+        Throwable throwableError = null;
+        for (AllureStep step : getScenario())
+        {
+            try
+            {
+                step.report(step.getDescription());
+            } catch (Throwable e)
+            {
+                throwableError = e;
+            }
+        }
+        if (throwableError != null)
+        {
+            throw throwableError;
+        }
     }
 }

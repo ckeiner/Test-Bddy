@@ -8,7 +8,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import bddtester.api.AbstractAllureReportTest;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
 import io.qameta.allure.model.Label;
@@ -61,8 +60,8 @@ public class AllureReportTest extends AbstractAllureReportTest
         Label label = new Label();
         label.setValue("some value");
         label.setName("some name");
-         Allure.addLabels(label);
-         Allure.addDescription("some description on failure");
+//         Allure.addLabels(label);
+//         Allure.addDescription("some description on failure");
     }
 
     @Test

@@ -1,22 +1,10 @@
 package bddtester.core.reporting.allurereports;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.qameta.allure.Step;
 
 public class AllureStep extends AbstractAllureListType
 {
-    private List<AllureStatus> step;
     private String description;
-
-    public List<AllureStatus> getStep()
-    {
-        return step;
-    }
-
-    public void setStep(List<AllureStatus> step)
-    {
-        this.step = step;
-    }
 
     public String getDescription()
     {
@@ -30,17 +18,27 @@ public class AllureStep extends AbstractAllureListType
 
     public AllureStep(String description)
     {
-        this.step = new ArrayList<AllureStatus>();
         this.description = description;
     }
 
-    public void add(String status)
+    @Step("Step: {description}")
+    public void report(String description) throws Throwable
     {
-        step.add(new AllureStatus(status));
-    }
-
-    public AllureStatus getLastStatus()
-    {
-        return step.get(step.size() - 1);
+        Throwable throwableError = null;
+        if (getStatus() != null)
+        {
+            for (AllureStatus status : getStatus())
+            {
+                // setStatus(status.getStatus());
+                if (status.getThrowable() != null)
+                {
+                    throwableError = status.getThrowable();
+                }
+            }
+        }
+        if (throwableError != null)
+        {
+            throw throwableError;
+        }
     }
 }

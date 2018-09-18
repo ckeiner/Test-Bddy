@@ -5,52 +5,37 @@ import java.util.List;
 
 public class AllureAllFeatures
 {
-    private List<AllureFeature> allFeature;
-    private String description;
-    private String allureActualElement;
+    private List<AllureFeature> allureFeatures;
 
-    public String getAllureActualElement()
+    private AbstractAllureListType actualElement;
+
+    public AllureAllFeatures()
     {
-        return allureActualElement;
+        this.allureFeatures = new ArrayList<AllureFeature>();
     }
 
-    public void setAllureActualElement(String allureListType)
+    public AbstractAllureListType getActualElement()
     {
-        this.allureActualElement = allureListType;
+        return actualElement;
+    }
+
+    public void setActualElement(AbstractAllureListType actualElement)
+    {
+        this.actualElement = actualElement;
     }
 
     public List<AllureFeature> getAllFeature()
     {
-        return allFeature;
+        return allureFeatures;
     }
 
-    public void setAllFeature(List<AllureFeature> allFeature)
+    public void add(String description)
     {
-        this.allFeature = allFeature;
-    }
-
-    public String getDescription()
-    {
-        return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-
-    public AllureAllFeatures()
-    {
-        this.allFeature = new ArrayList<AllureFeature>();
-    }
-
-    public void add(String feature)
-    {
-        allFeature.add(new AllureFeature(feature));
+        allureFeatures.add(new AllureFeature(description));
     }
 
     public AllureFeature getLastFeature()
     {
-        return allFeature.get(allFeature.size() - 1);
+        return allureFeatures.get(allureFeatures.size() - 1);
     }
 }
