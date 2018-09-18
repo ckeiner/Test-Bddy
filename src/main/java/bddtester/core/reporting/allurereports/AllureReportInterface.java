@@ -1,12 +1,12 @@
 package bddtester.core.reporting.allurereports;
 
+import java.util.List;
+
 import com.aventstack.extentreports.GherkinKeyword;
 
 import bddtester.core.reporting.ReportElement;
 import bddtester.core.reporting.ReportInterface;
-import io.qameta.allure.Allure;
 import io.qameta.allure.Step;
-import io.qameta.allure.model.Label;
 
 public class AllureReportInterface implements ReportInterface
 {
@@ -73,81 +73,87 @@ public class AllureReportInterface implements ReportInterface
         return allureElement;
     }
 
-    @Step("{description}")
-    void setStep(AllureStep step, String description) throws Throwable
+    @Step("{status}")
+    void setStatus(String status)
     {
+
+    }
+
+    @Step("Step: {description}")
+    void setStep(AllureStep step, String description, List<AllureStatus> statusList) throws Throwable
+    {
+        Throwable throwableError = null;
         if (step.getStatus() != null)
         {
             for (AllureStatus status : step.getStep())
             {
-                if (status.getStatus().equals("fail"))
-                {
-                    Allure.addDescription("some description on failure");
-                    if (status.getThrowable() != null)
-                    {
-                        throw status.getThrowable();
-                    }
-                    Label label = new Label();
-                    label.setValue("some value");
-                    label.setName(status.getStatus());
-                    Allure.addLabels(label);
-                } else if (status.getStatus().equals("skip"))
+                setStatus(status.getStatus());
+                try
                 {
                     if (status.getThrowable() != null)
-                    {
-
                         throw status.getThrowable();
-                    }
-                    Label label = new Label();
-                    label.setName(status.getStatus());
-                    // Allure.addLabels(label);
-                } else if (status.getStatus().equals("fatal"))
+                } catch (Throwable e)
                 {
-                    if (status.getThrowable() != null)
-                    {
-
-                        throw status.getThrowable();
-                    }
-                    Label label = new Label();
-                    label.setName(status.getStatus());
-                    // Allure.addLabels(label);
-                } else if (status.getStatus().equals("wip"))
-                {
-                    Label label = new Label();
-                    label.setName(status.getStatus());
-                    // Allure.addLabels(label);
-                } else if (status.getStatus().equals("ignore"))
-                {
-                    Label label = new Label();
-                    label.setName(status.getStatus());
-                    // Allure.addLabels(label);
-                } else
-                {
-                    Label label = new Label();
-
-                    Allure.addDescription("some description on passing");
-                    label.setName(status.getStatus());
-                    // Allure.addLabels(label);
+                    throwableError = e;
                 }
             }
         }
-    }
-
-    @Step("{description}")
-    public void setScenario(AllureScenario scenario, String description) throws Throwable
-    {
-        for (AllureStep step : scenario.getScenario())
+        if (throwableError != null)
         {
-            setStep(step, step.getDescription());
+            throw throwableError;
         }
     }
 
-    @Step("{description}")
+    @Step("Scenario: {description}")
+    public void setScenario(AllureScenario scenario, String description) throws Throwable
+    {
+        Throwable throwableError = null;
+        for (AllureStep step : scenario.getScenario())
+        {
+
+            setStep(step, step.getDescription(), step.getStatus());
+        }
+        try
+        {
+
+        } catch (Throwable e)
+        {
+            throwableError = e;
+        }
+        if (throwableError != null)
+        {
+            throw throwableError;
+        }
+    }
+
+    @Step("Feature: {description}")
     public void setFeature(AllureFeature feature, String description) throws Throwable
     {
+        Throwable scenarioError = null;
+        // List<String> noStatusRepetition = new ArrayList<String>();
+
         for (AllureScenario scenario : feature.getFeature())
         {
-            setScenario(scenario, scenario.getDescription());
+            for (AllureStatus status : scenario.getStatus())
+            {
+                // noStatusRepetition.add(status.getStatus());
+                // for (String statusCheck : noStatusRepetition) {
+                // if (status.equals(status.getStatus()))
+                // }
+                setStatus(status.getStatus());
+            }
+            try
+            {
+                setScenario(scenario, scenario.getDescription());
+            } catch (Throwable e)
+            {
+                scenarioError = e;
+            }
+
+        }
+        if (scenarioError != null)
+        {
+            throw scenarioError;
         }
     }
 
@@ -157,6 +163,10 @@ public class AllureReportInterface implements ReportInterface
         // setFeature(allureElement.feature)
         for (AllureFeature feature : allureElement.getAllFeatures().getAllFeature())
         {
+            for (AllureStatus status : feature.getStatus())
+            {
+                setStatus(status.getStatus());
+            }
             setFeature(feature, feature.getDescription());
         }
     }

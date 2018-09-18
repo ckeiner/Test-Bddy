@@ -130,13 +130,13 @@ public class AllureElement implements ReportElement
     @Override
     public void assignCategory(String... name)
     {
-        // if (name != null)
-        // {
-        // for (int i = 0; i < name.length; i++)
-        // {
-        // // if name[i]
-        // }
-        // }
+        if (name != null)
+        {
+            for (int i = 0; i < name.length; i++)
+            {
+                setStatus(name[i], "");
+            }
+        }
     }
 
 }
