@@ -266,6 +266,16 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
         this.afters.addAll(afters);
     }
 
+    public List<Before> getBefores()
+    {
+        return befores;
+    }
+
+    public List<After> getAfters()
+    {
+        return afters;
+    }
+
     public ReportInterface getReporter()
     {
         return reporter;
