@@ -39,23 +39,23 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     private final List<T> testdata;
 
-    @SafeVarargs
-    public ScenarioOutline(final String description, Supplier<TypeSteps<T>> scenarioSupplier,
-            Supplier<T>... testdataSupplier)
-    {
-        super(description);
-        setSteps(scenarioSupplier.get());
-        this.testdata = new ArrayList<>(testdataSupplier.length);
-        for (Supplier<T> supplier : testdataSupplier)
-        {
-            testdata.add(supplier.get());
-        }
-    }
+    // @SafeVarargs
+    // public ScenarioOutline(final String description, TypeSteps<T> stepSupplier,
+    // Supplier<T>... testdataSupplier)
+    // {
+    // super(description);
+    // setSteps(stepSupplier);
+    // this.testdata = new ArrayList<>(testdataSupplier.length);
+    // for (Supplier<T> supplier : testdataSupplier)
+    // {
+    // testdata.add(supplier.get());
+    // }
+    // }
 
-    public ScenarioOutline(String description, Supplier<TypeSteps<T>> stepSupplier, List<T> testdata)
+    public ScenarioOutline(String description, TypeSteps<T> stepSupplier, List<T> testdata)
     {
         super(description);
-        setSteps(stepSupplier.get());
+        setSteps(stepSupplier);
         this.testdata = testdata;
     }
 

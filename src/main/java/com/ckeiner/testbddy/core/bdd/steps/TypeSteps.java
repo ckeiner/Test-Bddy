@@ -437,6 +437,10 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      */
     private Consumer<T> runnableToConsumer(final Runnable runner)
     {
+        if (runner == null)
+        {
+            return null;
+        }
         return new Consumer<T>()
             {
                 @Override

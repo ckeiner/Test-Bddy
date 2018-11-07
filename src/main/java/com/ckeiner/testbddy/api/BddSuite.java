@@ -196,7 +196,7 @@ public class BddSuite
      */
     public static <T> ScenarioOutline<T> scenario(String description, OutlineDescriptor<T> descriptor)
     {
-        return new ScenarioOutline<T>(description, () -> descriptor.getSteps(), descriptor.getTestdata());
+        return new ScenarioOutline<T>(description, descriptor.getSteps(), descriptor.getTestdata());
     }
 
     /**
