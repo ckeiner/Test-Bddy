@@ -1,15 +1,15 @@
 package bddtester.core.reports;
 
-import static bddtester.api.BddSuite.feature;
-import static bddtester.api.BddSuite.scenario;
-import static bddtester.api.BddSuite.withData;
-import static bddtester.api.BddSuite.withDataOfType;
+import static com.ckeiner.testbddy.api.BddSuite.feature;
+import static com.ckeiner.testbddy.api.BddSuite.scenario;
+import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.withDataOfType;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import bddtester.api.AbstractExtentReportTest;
-import bddtester.core.throwables.errors.FeatureError;
+import com.ckeiner.testbddy.api.AbstractExtentReportTest;
+import com.ckeiner.testbddy.core.throwables.errors.FeatureError;
 
 public class PostStepTest extends AbstractExtentReportTest
 {

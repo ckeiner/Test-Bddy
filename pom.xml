@@ -3,12 +3,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ckeiner.bdd</groupId>
-    <artifactId>bdd-tester</artifactId>
-    <version>0.0.6-SNAPSHOT</version>
+    <groupId>com.ckeiner</groupId>
+    <artifactId>test-bddy</artifactId>
+    <version>0.0.6</version>
     <packaging>jar</packaging>
     
-    <name>tools-poster</name>
+    <name>test-bddy</name>
     <organization>
         <name>Xceptance Software Technologies</name>
         <url>https://www.xceptance.com/</url>

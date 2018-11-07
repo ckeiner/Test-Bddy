@@ -1,8 +1,8 @@
 package bddtester.core.functional;
 
-import static bddtester.api.BddSuite.feature;
-import static bddtester.api.BddSuite.scenario;
-import static bddtester.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.feature;
+import static com.ckeiner.testbddy.api.BddSuite.scenario;
+import static com.ckeiner.testbddy.api.BddSuite.withData;
 
 import org.junit.Assert;
 import org.junit.Test;

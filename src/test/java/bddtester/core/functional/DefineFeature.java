@@ -1,21 +1,21 @@
 package bddtester.core.functional;
 
-import static bddtester.api.BddSuite.feature;
-import static bddtester.api.BddSuite.given;
-import static bddtester.api.BddSuite.scenario;
-import static bddtester.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.feature;
+import static com.ckeiner.testbddy.api.BddSuite.given;
+import static com.ckeiner.testbddy.api.BddSuite.scenario;
+import static com.ckeiner.testbddy.api.BddSuite.withData;
 
 import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import bddtester.core.bdd.Feature;
-import bddtester.core.bdd.scenario.AbstractScenario;
-import bddtester.core.bdd.scenario.Scenario;
-import bddtester.core.bdd.scenario.ScenarioOutline;
-import bddtester.core.bdd.steps.Step;
-import bddtester.core.bdd.steps.TypeStep;
+import com.ckeiner.testbddy.core.bdd.Feature;
+import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
+import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
+import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
+import com.ckeiner.testbddy.core.bdd.steps.Step;
+import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 
 public class DefineFeature
 {
