@@ -2,6 +2,7 @@ package bddtester.core.bdd.steps;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -171,6 +172,151 @@ public class TypeStepsTest
         TypeSteps<Object> steps = new TypeSteps<Object>();
         // Add a then step
         steps.then(stepDescription, (Runnable) null);
+        // Assert the list isn't empty
+        Assert.assertFalse(steps.getSteps().isEmpty());
+        // Assert the list has one step
+        Assert.assertEquals(1, steps.getSteps().size());
+        // Get the step
+        TypeStep<Object> step = steps.getSteps().get(0);
+        // Assert the step description is correct
+        Assert.assertEquals(stepDescription, step.getDescription());
+        // Assert that the keyword is correct
+        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Then);
+        // Assert the behavior is null
+        Assert.assertNull(step.getBehavior());
+        // Assert the status of the step is empty
+        Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
+     * {@link TypeSteps#given(String, Consumer)}.
+     */
+    @Test
+    // TODO How to handle this case?
+    public void canContainAConsumerStepWithNullList()
+    {
+        // Create instance of steps
+        TypeSteps<Object> steps = new TypeSteps<Object>(null);
+        Assert.assertNull(steps.getSteps());
+
+        String stepDescription = "A given step";
+        // Add a given step
+        steps.given(stepDescription, (Consumer<Object>) null);
+        // Assert that the list isn't null anymore
+        Assert.assertTrue(steps.getSteps() != null);
+        // Assert the list isn't empty
+        Assert.assertFalse(steps.getSteps().isEmpty());
+        // Assert the list has one step
+        Assert.assertEquals(1, steps.getSteps().size());
+        // Get the step
+        TypeStep<Object> step = steps.getSteps().get(0);
+        // Assert the step description is correct
+        Assert.assertEquals(stepDescription, step.getDescription());
+        // Assert that the keyword is correct
+        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Given);
+        // Assert the behavior is null
+        Assert.assertNull(step.getBehavior());
+        // Assert the status of the step is empty
+        Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
+     * {@link TypeSteps#given(String, Consumer)}.
+     */
+    @Test
+    public void canContainAConsumerGivenStep()
+    {
+        String stepDescription = "A given step";
+        // Create instance of steps
+        TypeSteps<Object> steps = new TypeSteps<Object>();
+        // Add a given step
+        steps.given(stepDescription, (Consumer<Object>) null);
+        // Assert the list isn't empty
+        Assert.assertFalse(steps.getSteps().isEmpty());
+        // Assert the list has one step
+        Assert.assertEquals(1, steps.getSteps().size());
+        // Get the step
+        TypeStep<Object> step = steps.getSteps().get(0);
+        // Assert the step description is correct
+        Assert.assertEquals(stepDescription, step.getDescription());
+        // Assert that the keyword is correct
+        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Given);
+        // Assert the behavior is null
+        Assert.assertNull(step.getBehavior());
+        // Assert the status of the step is empty
+        Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
+     * {@link TypeSteps#when(String, Consumer)}.
+     */
+    @Test
+    public void canContainAConsumerWhenStep()
+    {
+        String stepDescription = "A given step";
+        // Create instance of steps
+        TypeSteps<Object> steps = new TypeSteps<Object>();
+        // Add a when step
+        steps.when(stepDescription, (Consumer<Object>) null);
+        // Assert the list isn't empty
+        Assert.assertFalse(steps.getSteps().isEmpty());
+        // Assert the list has one step
+        Assert.assertEquals(1, steps.getSteps().size());
+        // Get the step
+        TypeStep<Object> step = steps.getSteps().get(0);
+        // Assert the step description is correct
+        Assert.assertEquals(stepDescription, step.getDescription());
+        // Assert that the keyword is correct
+        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof When);
+        // Assert the behavior is null
+        Assert.assertNull(step.getBehavior());
+        // Assert the status of the step is empty
+        Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
+     * {@link TypeSteps#and(String, Consumer)}.
+     */
+    @Test
+    public void canContainAnConsumerAndStep()
+    {
+        String stepDescription = "A given step";
+        // Create instance of steps
+        TypeSteps<Object> steps = new TypeSteps<Object>();
+        // Add a and step
+        steps.and(stepDescription, (Consumer<Object>) null);
+        // Assert the list isn't empty
+        Assert.assertFalse(steps.getSteps().isEmpty());
+        // Assert the list has one step
+        Assert.assertEquals(1, steps.getSteps().size());
+        // Get the step
+        TypeStep<Object> step = steps.getSteps().get(0);
+        // Assert the step description is correct
+        Assert.assertEquals(stepDescription, step.getDescription());
+        // Assert that the keyword is correct
+        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof And);
+        // Assert the behavior is null
+        Assert.assertNull(step.getBehavior());
+        // Assert the status of the step is empty
+        Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
+     * {@link TypeSteps#then(String, Consumer)}.
+     */
+    @Test
+    public void canContainAConsumerThenStep()
+    {
+        String stepDescription = "A given step";
+        // Create instance of steps
+        TypeSteps<Object> steps = new TypeSteps<Object>();
+        // Add a then step
+        steps.then(stepDescription, (Consumer<Object>) null);
         // Assert the list isn't empty
         Assert.assertFalse(steps.getSteps().isEmpty());
         // Assert the list has one step
