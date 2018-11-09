@@ -1,4 +1,4 @@
-package bddtester.core.reports;
+package com.ckeiner.testbddy.core.reports;
 
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;

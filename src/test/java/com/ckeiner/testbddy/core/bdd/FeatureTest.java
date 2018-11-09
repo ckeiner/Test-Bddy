@@ -1,4 +1,4 @@
-package bddtester.core.bdd;
+package com.ckeiner.testbddy.core.bdd;
 
 import java.util.ArrayList;
 import java.util.List;

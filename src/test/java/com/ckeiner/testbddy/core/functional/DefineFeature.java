@@ -1,4 +1,4 @@
-package bddtester.core.functional;
+package com.ckeiner.testbddy.core.functional;
 
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.given;

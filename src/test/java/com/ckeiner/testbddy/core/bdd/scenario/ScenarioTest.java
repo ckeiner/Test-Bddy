@@ -1,4 +1,4 @@
-package bddtester.core.bdd.scenario;
+package com.ckeiner.testbddy.core.bdd.scenario;
 
 import org.junit.Assert;
 import org.junit.Test;
