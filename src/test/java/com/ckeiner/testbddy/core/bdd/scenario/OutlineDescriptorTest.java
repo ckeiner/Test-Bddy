@@ -23,10 +23,12 @@ public class OutlineDescriptorTest
         Object testdata = new Object();
         // Create descriptor with the test data
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(testdata);
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
         // Assert the test data is still the same
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
         // Assert there aren't any steps
-        Assert.assertNull(descriptor.getSteps());
+        Assert.assertTrue(descriptor.getSteps().getSteps().isEmpty());
     }
 
     /**
@@ -40,7 +42,7 @@ public class OutlineDescriptorTest
         // Create descriptor with the steps
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps);
         // Verify there are no test data
-        Assert.assertNull(descriptor.getTestdata());
+        Assert.assertTrue(descriptor.getTestdata().isEmpty());
         // Verify the steps are the same
         Assert.assertEquals(steps, descriptor.getSteps());
     }
@@ -57,7 +59,11 @@ public class OutlineDescriptorTest
         TypeSteps<Object> steps = new TypeSteps<Object>();
         // Create descriptor with the steps and test data
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps, testdata);
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
+        // Assert the test data is still the same
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
+        // Assert the step is the same
         Assert.assertEquals(steps, descriptor.getSteps());
     }
 
@@ -77,8 +83,10 @@ public class OutlineDescriptorTest
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps, testdata);
         // Call the given method
         descriptor.given(stepDescription, (Runnable) null);
-        // Verify the test data remains the same
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
+        // Assert the test data is still the same
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
         // Verify the steps remain the same
         Assert.assertEquals(steps, descriptor.getSteps());
         // Verify there is one step
@@ -111,8 +119,10 @@ public class OutlineDescriptorTest
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps, testdata);
         // Call the given method
         descriptor.and(stepDescription, (Runnable) null);
-        // Verify the test data remains the same
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
+        // Assert the test data is still the same
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
         // Verify the steps remain the same
         Assert.assertEquals(steps, descriptor.getSteps());
         // Verify there is one step
@@ -145,8 +155,10 @@ public class OutlineDescriptorTest
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps, testdata);
         // Call the given method
         descriptor.when(stepDescription, (Runnable) null);
-        // Verify the test data remains the same
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
+        // Assert the test data is still the same
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
         // Verify the steps remain the same
         Assert.assertEquals(steps, descriptor.getSteps());
         // Verify there is one step
@@ -179,8 +191,10 @@ public class OutlineDescriptorTest
         OutlineDescriptor<Object> descriptor = new OutlineDescriptor<>(steps, testdata);
         // Call the given method
         descriptor.then(stepDescription, (Runnable) null);
-        // Verify the test data remains the same
-        Assert.assertEquals(testdata, descriptor.getTestdata());
+        // Assert that the size is correct
+        Assert.assertEquals(1, descriptor.getTestdata().size());
+        // Assert the test data is still the same
+        Assert.assertEquals(testdata, descriptor.getTestdata().get(0));
         // Verify the steps remain the same
         Assert.assertEquals(steps, descriptor.getSteps());
         // Verify there is one step
