@@ -26,7 +26,7 @@ public class BddSuite
      * @return A Background as specified by the Steps in the stepsSupplier.
      */
     @SafeVarargs
-    public static Befores before(Supplier<Steps>... stepsSuppliers)
+    public static Befores befores(Supplier<Steps>... stepsSuppliers)
     {
         Befores befores = new Befores(new ArrayList<>(stepsSuppliers.length));
         for (Supplier<Steps> backgroundSupplier : stepsSuppliers)

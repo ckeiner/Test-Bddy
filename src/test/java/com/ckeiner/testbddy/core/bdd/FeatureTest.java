@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
@@ -26,6 +25,7 @@ public class FeatureTest
         Assert.assertEquals(featureDescription, feature.getDescription());
         Assert.assertNull(feature.getScenarios());
         // TODO discuss if test and pending should be part of this
+        // Answer: Yes
     }
 
     /**
