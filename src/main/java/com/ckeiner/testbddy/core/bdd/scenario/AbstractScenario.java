@@ -105,5 +105,4 @@ public abstract class AbstractScenario implements Statusable
         getStatus().add(Status.SKIP);
         return this;
     }
-
 }

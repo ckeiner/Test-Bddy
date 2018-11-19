@@ -39,19 +39,6 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     private final List<T> testdata;
 
-    // @SafeVarargs
-    // public ScenarioOutline(final String description, TypeSteps<T> stepSupplier,
-    // Supplier<T>... testdataSupplier)
-    // {
-    // super(description);
-    // setSteps(stepSupplier);
-    // this.testdata = new ArrayList<>(testdataSupplier.length);
-    // for (Supplier<T> supplier : testdataSupplier)
-    // {
-    // testdata.add(supplier.get());
-    // }
-    // }
-
     public ScenarioOutline(String description, TypeSteps<T> stepSupplier, List<T> testdata)
     {
         super(description);
@@ -85,6 +72,7 @@ public class ScenarioOutline<T> extends AbstractScenario
         {
             return;
         }
+
         // Initialize needed variables
         List<ScenarioException> scenarioExceptions = new ArrayList<>();
         List<ScenarioError> scenarioErrors = new ArrayList<>();
@@ -92,9 +80,27 @@ public class ScenarioOutline<T> extends AbstractScenario
         System.out.println("================\nScenarioOutline: " + getDescription() + "\n================");
 
         // For every test data
-        for (final T testdatum : this.testdata)
+        if (getTestdata() != null)
         {
-            doSingleTest(testdatum, scenarioExceptions, scenarioErrors, postStepFailures);
+            for (final T testdatum : this.testdata)
+            {
+                doSingleTest(testdatum, scenarioExceptions, scenarioErrors, postStepFailures);
+            }
+        }
+        else
+        {
+            // If there are no steps, then the scenario is pending
+            if (getSteps() == null || getSteps().getSteps().isEmpty())
+            {
+                // Add the pending status to the list of stati
+                getStatus().add(Status.PENDING);
+                // Set up reporting
+                final ReportElement scenarioReporter = setUpReporter(getSteps(), null);
+                // Set pending for the reporter
+                scenarioReporter.pending("No steps found");
+                // End execution of feature
+                return;
+            }
         }
         System.out.println("\n\n");
         finishScenario(scenarioExceptions, scenarioErrors, postStepFailures);
@@ -117,6 +123,20 @@ public class ScenarioOutline<T> extends AbstractScenario
     {
         // Set the testdata
         TypeSteps<T> typeSteps = getSteps().withData(testdatum);
+
+        // If there are no steps, then the scenario is pending
+        if (getSteps() == null || getSteps().getSteps().isEmpty())
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            // Set up reporting
+            final ReportElement scenarioReporter = setUpReporter(typeSteps, testdatum);
+            // Set pending for the reporter
+            scenarioReporter.pending("No steps found");
+            // End execution of feature
+            return;
+        }
+
         // Tell the reporter the scenario starts
         ReportElement scenarioReporter = setUpReporter(typeSteps, testdatum);
 
@@ -259,7 +279,7 @@ public class ScenarioOutline<T> extends AbstractScenario
             // We decided, that for a scenario, the test data should simply be printed,
             // without any placeholders
             scenarioReporter = getReporter().scenarioOutline(this.getDescription(), testdatum);
-            if (typeSteps.getReporter() == null)
+            if (typeSteps != null && typeSteps.getReporter() == null)
             {
                 typeSteps.setReporter(this.getReporter());
             }

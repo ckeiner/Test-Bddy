@@ -22,5 +22,9 @@ public enum Status
     /**
      * Implies that it should not be executed but appear in the report
      */
-    SKIP;
+    SKIP,
+    /**
+     * Implies that there is nothing to execute, only a description
+     */
+    PENDING;
 }

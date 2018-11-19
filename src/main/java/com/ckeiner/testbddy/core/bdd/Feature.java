@@ -93,19 +93,26 @@ public class Feature implements Statusable
             return;
         }
 
+        // If there is no scenario, then the feature is pending
+        if (getScenarios() == null || getScenarios().isEmpty())
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            // Set up reporting
+            final ReportElement featureReport = setUpReporter();
+            // Set pending for the reporter
+            featureReport.pending("No scenarios found");
+            // End execution of feature
+            return;
+        }
+
         // Set up list of exceptions and error
         final List<ScenarioException> scenarioExceptions = new ArrayList<ScenarioException>();
         final List<ScenarioError> scenarioErrors = new ArrayList<ScenarioError>();
-
         // Set up reporting
         final ReportElement featureReport = setUpReporter();
         // Print some information to the console
-        String logging = " Feature: " + description;
-        if (getStatus() != null)
-        {
-            logging = getStatus().toString() + logging;
-        }
-        System.out.println(logging);
+        printToConsole();
 
         // For each scenario
         for (final AbstractScenario scenario : getScenarios())
@@ -142,6 +149,20 @@ public class Feature implements Statusable
 
         // Finish the test with proper reporting, and exception, error throwing
         finishTest(featureReport, scenarioExceptions, scenarioErrors);
+    }
+
+    /**
+     * Prints some information to the console.
+     */
+    private void printToConsole()
+    {
+        // Print some information to the console
+        String logging = " Feature: " + description;
+        if (getStatus() != null)
+        {
+            logging = getStatus().toString() + logging;
+        }
+        System.out.println(logging);
     }
 
     /**

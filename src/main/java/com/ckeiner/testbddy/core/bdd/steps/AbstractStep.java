@@ -85,6 +85,19 @@ public abstract class AbstractStep<T> implements Statusable
         {
             return;
         }
+
+        if (behavior == null)
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            // Set up reporting
+            final ReportElement element = setUpReporter();
+            // Set pending for the reporter
+            element.pending("No behavior found");
+            // End execution of feature
+            return;
+        }
+
         // Create the ReportElement
         ReportElement element = setUpReporter();
         // Print the description of the step

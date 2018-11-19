@@ -56,8 +56,23 @@ public class Scenario extends AbstractScenario
         {
             return;
         }
+
+        // If there are no steps, then the scenario is pending
+        if (getSteps() == null || getSteps().getSteps().isEmpty())
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            // Set up reporting
+            final ReportElement scenarioReporter = setUpReporter();
+            // Set pending for the reporter
+            scenarioReporter.pending("No steps found");
+            // End execution of feature
+            return;
+        }
+
         // Set up the report for this element
         ReportElement scenarioReporter = setUpReporter();
+
         // Set up the reporter for the bddSteps if none was supplied
         if (steps.getReporter() == null && this.getReporter() != null)
         {
