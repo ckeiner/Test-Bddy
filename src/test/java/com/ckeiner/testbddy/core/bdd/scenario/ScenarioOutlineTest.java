@@ -8,7 +8,6 @@ import org.junit.Test;
 import com.aventstack.extentreports.KeywordAccessor;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.When;
-import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
@@ -42,10 +41,15 @@ public class ScenarioOutlineTest
         String stepDescription = "Step Description";
         // TODO is this evil?
         TypeSteps<Object> steps = new TypeSteps<Object>().given(stepDescription, (Runnable) null);
+        Object testdata = new Object();
         ScenarioOutline<Object> scenario = new ScenarioOutline<Object>(scenarioDescription, steps, null);
 
         Assert.assertEquals(scenarioDescription, scenario.getDescription());
         Assert.assertTrue(scenario.getStatus().isEmpty());
+        // Assert there is one test datum
+        Assert.assertEquals(1, scenario.getTestdata().size());
+        // Assert the test datum is correct
+        Assert.assertEquals(testdata, scenario.getTestdata().get(0));
         Assert.assertEquals(steps, scenario.getSteps());
         Assert.assertEquals(1, scenario.getSteps().getSteps().size());
         TypeStep<Object> step = scenario.getSteps().getSteps().get(0);

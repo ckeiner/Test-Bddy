@@ -6,7 +6,6 @@ import org.junit.Test;
 import com.aventstack.extentreports.KeywordAccessor;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.When;
-import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
@@ -40,8 +39,11 @@ public class ScenarioTest
         Steps steps = new Steps().given(stepDescription, null);
         Scenario scenario = new Scenario(scenarioDescription, steps);
 
+        // Verify the description is correct
         Assert.assertEquals(scenarioDescription, scenario.getDescription());
+        // Verify there is no status
         Assert.assertTrue(scenario.getStatus().isEmpty());
+        // Verify the steps are the same
         Assert.assertEquals(steps, scenario.getSteps());
         Assert.assertEquals(1, scenario.getSteps().getSteps().size());
         Step step = scenario.getSteps().getSteps().get(0);

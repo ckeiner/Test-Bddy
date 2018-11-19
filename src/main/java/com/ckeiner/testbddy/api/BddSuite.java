@@ -229,7 +229,7 @@ public class BddSuite
     /**
      * Creates a {@link OutlineDescriptor} without any test data.
      * 
-     * @return A OutlineDescriptor with test data.
+     * @return A OutlineDescriptor without test data.
      */
     public static <T> OutlineDescriptor<T> withDataOfType(Class<T> clazz)
     {
