@@ -128,6 +128,12 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
+    public void pending(String description)
+    {
+        this.skip("<b>PENDING</b>: " + description);
+    }
+
+    @Override
     public void assignCategory(String... name)
     {
         getElement().assignCategory(name);

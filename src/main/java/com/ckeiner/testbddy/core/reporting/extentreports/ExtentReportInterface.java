@@ -2,6 +2,7 @@ package com.ckeiner.testbddy.core.reporting.extentreports;
 
 import java.io.File;
 
+import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
@@ -49,12 +50,14 @@ public class ExtentReportInterface implements ReportInterface
         {
             file.mkdirs();
         }
-        // initialize the HtmlReporter
+        // Initialize the HtmlReporter
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("./" + ReportInterface.PATH + "extent.html");
-        // initialize ExtentReports and attach the HtmlReporter
+        // Initialize ExtentReports
         extentReports = new ExtentReports();
+        // Set strategy to BDD
+        extentReports.setAnalysisStrategy(AnalysisStrategy.BDD);
+        // Attach the HtmlReporter
         extentReports.attachReporter(htmlReporter);
-        htmlReporter.setAppendExisting(true);
     }
 
     /**
@@ -110,8 +113,17 @@ public class ExtentReportInterface implements ReportInterface
     {
         try
         {
-            ExtentTest scenarioNode = feature.getElement().createNode(new GherkinKeyword("Scenario"),
-                    description + " with Data: " + testdata.toString());
+            ExtentTest scenarioNode;
+            if (testdata != null)
+            {
+                scenarioNode = feature.getElement().createNode(new GherkinKeyword("Scenario"),
+                        description + " with Data: " + testdata.toString());
+            }
+            else
+            {
+                scenarioNode = feature.getElement().createNode(new GherkinKeyword("Scenario"),
+                        description + " with no Data supplied");
+            }
             scenario = new ExtentElement(scenarioNode);
         } catch (ClassNotFoundException e)
         {

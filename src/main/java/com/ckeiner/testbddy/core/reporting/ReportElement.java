@@ -113,6 +113,14 @@ public interface ReportElement
     public void skip(Throwable throwable);
 
     /**
+     * Reports the element as pending with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void pending(String description);
+
+    /**
      * Assigns categories to the element.
      * 
      * @param categories
