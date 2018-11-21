@@ -23,7 +23,6 @@ public class ScenarioTest
         Assert.assertEquals(scenarioDescription, scenario.getDescription());
         Assert.assertNull(scenario.getSteps());
         Assert.assertTrue(scenario.getStatus().isEmpty());
-        // TODO discuss if test and pending should be part of this
     }
 
     /**

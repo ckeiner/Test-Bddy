@@ -64,8 +64,10 @@ public class Scenario extends AbstractScenario
             getStatus().add(Status.PENDING);
             // Set up reporting
             final ReportElement scenarioReporter = setUpReporter();
-            // Set pending for the reporter
-            scenarioReporter.pending("No steps found");
+            if (scenarioReporter != null)
+            {// Set pending for the reporter
+                scenarioReporter.pending("No steps found");
+            }
             // End execution of feature
             return;
         }
@@ -245,6 +247,27 @@ public class Scenario extends AbstractScenario
     public Steps getPostSteps()
     {
         return postSteps;
+    }
+
+    @Override
+    public Scenario ignore()
+    {
+        super.ignore();
+        return this;
+    }
+
+    @Override
+    public Scenario wip()
+    {
+        super.wip();
+        return this;
+    }
+
+    @Override
+    public Scenario skip()
+    {
+        super.skip();
+        return this;
     }
 
 }

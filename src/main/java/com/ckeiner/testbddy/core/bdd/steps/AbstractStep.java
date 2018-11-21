@@ -92,8 +92,11 @@ public abstract class AbstractStep<T> implements Statusable
             getStatus().add(Status.PENDING);
             // Set up reporting
             final ReportElement element = setUpReporter();
-            // Set pending for the reporter
-            element.pending("No behavior found");
+            if (element != null)
+            {
+                // Set pending for the reporter
+                element.pending("No behavior found");
+            }
             // End execution of feature
             return;
         }

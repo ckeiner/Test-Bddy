@@ -25,7 +25,6 @@ public class ScenarioOutlineTest
         Assert.assertNull(scenario.getTestdata());
         Assert.assertNull(scenario.getSteps());
         Assert.assertTrue(scenario.getStatus().isEmpty());
-        // TODO discuss if test and pending should be part of this
     }
 
     /**

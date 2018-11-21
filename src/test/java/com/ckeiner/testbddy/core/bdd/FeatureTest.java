@@ -24,8 +24,6 @@ public class FeatureTest
 
         Assert.assertEquals(featureDescription, feature.getDescription());
         Assert.assertNull(feature.getScenarios());
-        // TODO discuss if test and pending should be part of this
-        // Answer: Yes
     }
 
     /**

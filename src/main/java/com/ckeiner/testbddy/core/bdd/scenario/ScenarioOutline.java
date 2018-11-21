@@ -96,8 +96,11 @@ public class ScenarioOutline<T> extends AbstractScenario
                 getStatus().add(Status.PENDING);
                 // Set up reporting
                 final ReportElement scenarioReporter = setUpReporter(getSteps(), null);
-                // Set pending for the reporter
-                scenarioReporter.pending("No steps found");
+                if (scenarioReporter != null)
+                {
+                    // Set pending for the reporter
+                    scenarioReporter.pending("No steps found");
+                }
                 // End execution of feature
                 return;
             }
@@ -304,7 +307,10 @@ public class ScenarioOutline<T> extends AbstractScenario
     {
         if (getStatus().contains(Status.SKIP))
         {
-            scenarioReporter.skip(getDescription());
+            if (scenarioReporter != null)
+            {
+                scenarioReporter.skip(getDescription());
+            }
         }
         else
         {
@@ -398,6 +404,27 @@ public class ScenarioOutline<T> extends AbstractScenario
         {
             step.setDescription("POSTSTEP " + step.getDescription());
         }
+        return this;
+    }
+
+    @Override
+    public ScenarioOutline<T> ignore()
+    {
+        super.ignore();
+        return this;
+    }
+
+    @Override
+    public ScenarioOutline<T> wip()
+    {
+        super.wip();
+        return this;
+    }
+
+    @Override
+    public ScenarioOutline<T> skip()
+    {
+        super.skip();
         return this;
     }
 
