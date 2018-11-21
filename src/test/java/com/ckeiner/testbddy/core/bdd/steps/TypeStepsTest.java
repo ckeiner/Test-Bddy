@@ -12,8 +12,6 @@ import com.aventstack.extentreports.gherkin.model.And;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.Then;
 import com.aventstack.extentreports.gherkin.model.When;
-import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
-import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
 public class TypeStepsTest
 {
@@ -51,7 +49,7 @@ public class TypeStepsTest
     // TODO How to handle this case?
     public void canContainAStepWithNullList()
     {
-        // Create instance of steps
+        // Create instance of steps with null
         TypeSteps<Object> steps = new TypeSteps<Object>(null);
         Assert.assertNull(steps.getSteps());
 
@@ -196,7 +194,7 @@ public class TypeStepsTest
     // TODO How to handle this case?
     public void canContainAConsumerStepWithNullList()
     {
-        // Create instance of steps
+        // Create instance of steps with null
         TypeSteps<Object> steps = new TypeSteps<Object>(null);
         Assert.assertNull(steps.getSteps());
 

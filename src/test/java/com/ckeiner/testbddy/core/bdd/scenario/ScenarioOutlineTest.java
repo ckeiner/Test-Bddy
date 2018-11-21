@@ -1,5 +1,7 @@
 package com.ckeiner.testbddy.core.bdd.scenario;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.Assert;
@@ -41,7 +43,9 @@ public class ScenarioOutlineTest
         // TODO is this evil?
         TypeSteps<Object> steps = new TypeSteps<Object>().given(stepDescription, (Runnable) null);
         Object testdata = new Object();
-        ScenarioOutline<Object> scenario = new ScenarioOutline<Object>(scenarioDescription, steps, null);
+        List<Object> testdataList = new ArrayList<>();
+        testdataList.add(testdata);
+        ScenarioOutline<Object> scenario = new ScenarioOutline<Object>(scenarioDescription, steps, testdataList);
 
         Assert.assertEquals(scenarioDescription, scenario.getDescription());
         Assert.assertTrue(scenario.getStatus().isEmpty());
