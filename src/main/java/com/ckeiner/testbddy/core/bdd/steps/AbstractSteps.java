@@ -3,8 +3,6 @@ package com.ckeiner.testbddy.core.bdd.steps;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportInterface;
 import com.ckeiner.testbddy.core.throwables.errors.StepError;
@@ -23,16 +21,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
      * The class responsible for reporting.
      */
     private ReportInterface reporter;
-
-    /**
-     * The steps that happen before all other steps.
-     */
-    private final List<Before> befores;
-
-    /**
-     * The steps that happen after all other steps.
-     */
-    private final List<After> afters;
 
     /**
      * A list of all {@link Step}s.
@@ -55,39 +43,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
      */
     public AbstractSteps(final List<T> steps)
     {
-        this(steps, new ArrayList<Before>());
-    }
-
-    /**
-     * Creates AbstractSteps with the specified reporter and list of {@link Step}s,
-     * {@link Before}s and {@link After}s.
-     * 
-     * @param befores
-     *            The list of steps to execute before each other step.
-     * @param steps
-     *            The list of steps that specify this AbstractSteps
-     */
-    public AbstractSteps(final List<T> steps, final List<Before> befores)
-    {
-        this(steps, befores, new ArrayList<After>());
-    }
-
-    /**
-     * Creates AbstractSteps with the specified list of {@link Step}s,
-     * {@link Before}s and {@link After}s.
-     * 
-     * @param steps
-     *            The list of steps that specify this AbstractSteps
-     * @param befores
-     *            The list of steps to execute before the steps.
-     * @param afters
-     *            The list of steps to execute after the steps.
-     */
-    public AbstractSteps(final List<T> steps, final List<Before> befores, final List<After> afters)
-    {
         this.steps = steps;
-        this.befores = befores;
-        this.afters = afters;
     }
 
     /**
@@ -121,17 +77,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     {
         StepException stepException = null;
         StepError stepError = null;
-        // TODO beautify
-        try
-        {
-            executeBeforeSteps(false);
-        } catch (StepException e)
-        {
-            stepException = e;
-        } catch (StepError e)
-        {
-            stepError = e;
-        }
 
         // Execute each step
         for (final T step : getSteps())
@@ -163,18 +108,12 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
 
         if (stepException != null)
         {
-            executeAfterSteps(true);
             throw stepException;
         }
         else if (stepError != null)
         {
-            executeAfterSteps(true);
             throw stepError;
         }
-
-        // If we reached this point, we want to throw a StepException or StepError that
-        // occurs in the after steps
-        executeAfterSteps(false);
     }
 
     /**
@@ -182,7 +121,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
      */
     public void skipSteps()
     {
-        executeBeforeSteps(true);
         for (final T step : getSteps())
         {
             if (step.getReporter() == null && this.getReporter() != null)
@@ -191,89 +129,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
             }
             skipStep(step);
         }
-        executeAfterSteps(true);
-    }
-
-    /**
-     * Executes the before steps.
-     * 
-     * @param skip
-     *            If true, the steps aren't executed but appear in the report as
-     *            skipped. Else, the steps are executed and they appear in the
-     *            report.
-     */
-    protected void executeBeforeSteps(boolean skip)
-    {
-        for (Before before : befores)
-        {
-            Steps steps = before.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
-    }
-
-    /**
-     * Executes the after steps.
-     * 
-     * @param skip
-     *            If true, the steps aren't executed but appear in the report as
-     *            skipped. Else, the steps are executed and they appear in the
-     *            report.
-     */
-    protected void executeAfterSteps(boolean skip)
-    {
-        for (After after : afters)
-        {
-            Steps steps = after.getSteps();
-            steps.setReporter(this.reporter);
-            if (skip)
-            {
-                steps.skipSteps();
-            }
-            else
-            {
-                steps.test();
-            }
-        }
-    }
-
-    /**
-     * Adds all {@link Before}s to the Steps.
-     * 
-     * @param befores
-     *            The list of {@link Before}s to add.
-     */
-    public void addBefores(List<Before> befores)
-    {
-        this.befores.addAll(befores);
-    }
-
-    /**
-     * Adds all {@link After}s to the Steps.
-     * 
-     * @param afters
-     *            The list of {@link After}s to add.
-     */
-    public void addAfters(List<After> afters)
-    {
-        this.afters.addAll(afters);
-    }
-
-    public List<Before> getBefores()
-    {
-        return befores;
-    }
-
-    public List<After> getAfters()
-    {
-        return afters;
     }
 
     public ReportInterface getReporter()

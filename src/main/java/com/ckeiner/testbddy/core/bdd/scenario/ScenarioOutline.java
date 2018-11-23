@@ -6,8 +6,6 @@ import java.util.function.Supplier;
 
 import org.junit.runners.model.MultipleFailureException;
 
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
@@ -44,18 +42,6 @@ public class ScenarioOutline<T> extends AbstractScenario
         super(description);
         setSteps(stepSupplier);
         this.testdata = testdata;
-    }
-
-    @Override
-    public void addBefores(List<Before> befores)
-    {
-        getSteps().addBefores(befores);
-    }
-
-    @Override
-    public void addAfters(List<After> afters)
-    {
-        getSteps().addAfters(afters);
     }
 
     /**

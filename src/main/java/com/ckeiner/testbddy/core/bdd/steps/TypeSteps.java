@@ -5,9 +5,6 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Afters;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 
 /**
  * Describes a scenario with only one data set.<br>
@@ -41,37 +38,7 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      */
     public TypeSteps(final List<TypeStep<T>> steps)
     {
-        super(steps, new ArrayList<>());
-    }
-
-    /**
-     * Creates a BddTypeScenario with the specified reporter and list of
-     * {@link Step}s and {@link Before}s.
-     * 
-     * @param steps
-     *            The list of steps to execute.
-     * @param befores
-     *            The list of {@link Before}s to execute before each other steps.
-     */
-    public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores)
-    {
-        super(steps, befores, new ArrayList<>());
-    }
-
-    /**
-     * Creates a BddTypeScenario with the specified reporter and list of
-     * {@link Step}s, {@link Before}s and {@link After}s.
-     * 
-     * @param steps
-     *            The list of steps to execute.
-     * @param befores
-     *            The list of {@link Before}s to execute before the other steps.
-     * @param afters
-     *            The list of {@link Afters}s to execute after the other steps.
-     */
-    public TypeSteps(final List<TypeStep<T>> steps, final List<Before> befores, final List<After> afters)
-    {
-        super(steps, befores, afters);
+        super(steps);
     }
 
     @Override

@@ -1,10 +1,7 @@
 package com.ckeiner.testbddy.core.bdd.scenario;
 
-import java.util.List;
 import java.util.function.Supplier;
 
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
@@ -215,18 +212,6 @@ public class Scenario extends AbstractScenario
         }
         // Return scenarioReporter
         return scenarioReporter;
-    }
-
-    @Override
-    public void addBefores(List<Before> befores)
-    {
-        steps.addBefores(befores);
-    }
-
-    @Override
-    public void addAfters(List<After> afters)
-    {
-        steps.addAfters(afters);
     }
 
     public Scenario postSteps(Supplier<Steps> postSteps)

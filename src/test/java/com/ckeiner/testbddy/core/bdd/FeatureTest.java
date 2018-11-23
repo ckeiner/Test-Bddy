@@ -20,7 +20,7 @@ public class FeatureTest
     {
         String featureDescription = "Feature Description";
         // Create feature consisting only of the description
-        Feature feature = new Feature(featureDescription, null, null, null);
+        Feature feature = new Feature(featureDescription, null);
 
         Assert.assertEquals(featureDescription, feature.getDescription());
         Assert.assertNull(feature.getScenarios());
@@ -42,7 +42,7 @@ public class FeatureTest
         List<AbstractScenario> scenarioList = new ArrayList<AbstractScenario>();
         scenarioList.add(scenario);
         // Create feature consisting of the description and the scenarioList
-        Feature feature = new Feature(featureDescription, null, null, scenarioList);
+        Feature feature = new Feature(featureDescription, scenarioList);
 
         // Verify the description remains the same
         Assert.assertEquals(featureDescription, feature.getDescription());
@@ -73,7 +73,7 @@ public class FeatureTest
         Scenario anotherScenario = new Scenario(anotherScenarioDescription, steps);
         scenarioList.add(scenario);
         scenarioList.add(anotherScenario);
-        Feature feature = new Feature(featureDescription, null, null, scenarioList);
+        Feature feature = new Feature(featureDescription, scenarioList);
 
         // Verify the description remains the same
         Assert.assertEquals(featureDescription, feature.getDescription());

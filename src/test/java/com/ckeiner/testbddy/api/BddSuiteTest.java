@@ -1,8 +1,6 @@
 package com.ckeiner.testbddy.api;
 
-import static com.ckeiner.testbddy.api.BddSuite.afters;
 import static com.ckeiner.testbddy.api.BddSuite.and;
-import static com.ckeiner.testbddy.api.BddSuite.befores;
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
@@ -21,8 +19,6 @@ import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.Then;
 import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.Feature;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Afters;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Befores;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.OutlineDescriptor;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
@@ -33,47 +29,6 @@ import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
 public class BddSuiteTest
 {
-    /**
-     * Verifies that {@link Befores} are correctly created via the API.
-     */
-    @Test
-    // TODO as test-bddy test case
-    public void canCreateBefores()
-    {
-        Steps steps = new Steps();
-        Supplier<Steps> stepsSupplier = () -> steps;
-        Befores befores = befores(stepsSupplier);
-
-        // Assert the number of steps is correct
-        Assert.assertEquals(1, befores.getBefores().size());
-        // Assert the steps are the same
-        Assert.assertEquals(steps, befores.getBefores().get(0).getSteps());
-
-        // Assert that they can have more than one steps
-        befores = befores(stepsSupplier, stepsSupplier);
-        Assert.assertEquals(2, befores.getBefores().size());
-    }
-
-    /**
-     * Verifies that {@link Afters} are correctly created via the API.
-     */
-    @Test
-    // TODO as test-bddy test case
-    public void canCreateAfters()
-    {
-        Steps steps = new Steps();
-        Supplier<Steps> stepsSupplier = () -> steps;
-        Afters afters = afters(stepsSupplier);
-
-        // Assert the number of steps is correct
-        Assert.assertEquals(1, afters.getAfters().size());
-        // Assert the steps are the same
-        Assert.assertEquals(steps, afters.getAfters().get(0).getSteps());
-
-        // Assert that they can have more than one steps
-        afters = afters(stepsSupplier, stepsSupplier);
-        Assert.assertEquals(2, afters.getAfters().size());
-    }
 
     /**
      * Verifies that {@link Feature}s are correctly created via the API.

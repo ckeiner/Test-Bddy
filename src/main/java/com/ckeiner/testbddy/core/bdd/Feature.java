@@ -5,8 +5,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
@@ -32,16 +30,6 @@ public class Feature implements Statusable
     public static ReportInterface reporter;
 
     /**
-     * The steps to execute before executing a single scenario
-     */
-    private final List<Before> befores;
-
-    /**
-     * The steps to execute after executing a single scenario
-     */
-    private final List<After> afters;
-
-    /**
      * The description of the feature.
      */
     private final String description;
@@ -57,23 +45,15 @@ public class Feature implements Statusable
     private final Set<Status> status;
 
     /**
-     * Creates a Feature with the specified description, scenarios, backgrounds and
-     * post steps.
+     * Creates a Feature with the specified description and scenarios.
      *
      * @param description
      *            String that describes the Feature.
-     * @param befores
-     *            The list of {@link Before}s to execute before each scenario.
-     * @param afters
-     *            The list of {@link After}s to execute after each scenario.
      * @param scenarios
      *            List of {@link AbstractScenario}s that the feature should execute.
      */
-    public Feature(final String description, final List<Before> befores, final List<After> afters,
-            final List<AbstractScenario> scenarios)
+    public Feature(final String description, final List<AbstractScenario> scenarios)
     {
-        this.befores = befores;
-        this.afters = afters;
         this.description = description;
         this.scenarios = scenarios;
         status = new LinkedHashSet<Status>();
@@ -121,17 +101,6 @@ public class Feature implements Statusable
             if (scenario.getReporter() == null && reporter != null)
             {
                 scenario.setReporter(reporter);
-            }
-            // Add the backgrounds to the scenario
-            if (befores != null && !befores.isEmpty())
-            {
-                scenario.addBefores(befores);
-            }
-
-            // Add the postSteps to the scenario
-            if (afters != null && !afters.isEmpty())
-            {
-                scenario.addAfters(afters);
             }
             // Execute the scenario and catch all exceptions and errors
             try

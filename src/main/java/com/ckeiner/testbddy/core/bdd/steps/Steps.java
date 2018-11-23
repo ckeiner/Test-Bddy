@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 
 /**
  * Describes a BDD Scenario.<br>
@@ -32,37 +30,7 @@ public class Steps extends AbstractSteps<Step>
      */
     public Steps(final List<Step> steps)
     {
-        super(steps, new ArrayList<Before>());
-    }
-
-    /**
-     * Creates a BddScenario with the specified reporter and list of {@link Step}s,
-     * {@link Before}s and {@link After}s.
-     * 
-     * @param befores
-     *            The list of steps to execute before each other step.
-     * @param steps
-     *            The list of BddSteps that specify this BddScenario
-     */
-    public Steps(final List<Step> steps, final List<Before> befores)
-    {
-        super(steps, befores, new ArrayList<After>());
-    }
-
-    /**
-     * Creates a BddScenario with the specified list of {@link Step}s,
-     * {@link Before}s and {@link After}s.
-     * 
-     * @param steps
-     *            The list of BddSteps that specify this BddScenario
-     * @param befores
-     *            The list of steps to execute before the steps.
-     * @param afters
-     *            The list of steps to execute after the steps.
-     */
-    public Steps(final List<Step> steps, final List<Before> befores, final List<After> afters)
-    {
-        super(steps, befores, afters);
+        super(steps);
     }
 
     @Override

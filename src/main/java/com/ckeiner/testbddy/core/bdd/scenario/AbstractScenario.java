@@ -1,11 +1,8 @@
 package com.ckeiner.testbddy.core.bdd.scenario;
 
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportInterface;
@@ -48,22 +45,6 @@ public abstract class AbstractScenario implements Statusable
      * Skips the scenario and reports it as such.
      */
     public abstract void skipScenario();
-
-    /**
-     * Adds all specified backgrounds to the scenario
-     * 
-     * @param befores
-     *            The list of {@link Before}s.
-     */
-    public abstract void addBefores(List<Before> befores);
-
-    /**
-     * Adds all specified postSteps to the scenario
-     * 
-     * @param afters
-     *            The list of {@link After}s.
-     */
-    public abstract void addAfters(List<After> afters);
 
     public String getDescription()
     {

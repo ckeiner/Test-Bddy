@@ -5,10 +5,6 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import com.ckeiner.testbddy.core.bdd.Feature;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.After;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Afters;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Before;
-import com.ckeiner.testbddy.core.bdd.beforeAfter.Befores;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.OutlineDescriptor;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
@@ -18,41 +14,6 @@ import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
 public class BddSuite
 {
-    /**
-     * Specifies a list of {@link Before}s out of a multitude of {@link Steps}.
-     * 
-     * @param stepsSuppliers
-     *            {@link Supplier} of Steps, which specify the background.
-     * @return A Background as specified by the Steps in the stepsSupplier.
-     */
-    @SafeVarargs
-    public static Befores befores(Supplier<Steps>... stepsSuppliers)
-    {
-        Befores befores = new Befores(new ArrayList<>(stepsSuppliers.length));
-        for (Supplier<Steps> backgroundSupplier : stepsSuppliers)
-        {
-            befores.addBefore(new Before(backgroundSupplier.get()));
-        }
-        return befores;
-    }
-
-    /**
-     * Specifies a list of {@link After}s out of a multitude of {@link Steps}.
-     * 
-     * @param stepsSuppliers
-     *            {@link Supplier} of Steps, which specify the background.
-     * @return A Background as specified by the Steps in the stepsSupplier.
-     */
-    @SafeVarargs
-    public static Afters afters(Supplier<Steps>... stepsSuppliers)
-    {
-        Afters afters = new Afters(new ArrayList<>(stepsSuppliers.length));
-        for (Supplier<Steps> postStepSupplier : stepsSuppliers)
-        {
-            afters.addAfter(new After(postStepSupplier.get()));
-        }
-        return afters;
-    }
 
     /**
      * Creates a {@link Feature} with the supplied description and the scenarios
@@ -67,108 +28,15 @@ public class BddSuite
      *            The Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
      *         {@link AbstractScenario}s of the supplier.
-     * @see #feature(String, Befores, Afters, Supplier...)
      */
     @SafeVarargs
     public static Feature feature(final String description, final Supplier<AbstractScenario>... scenarioSuppliers)
-    {
-        return feature(description, null, null, scenarioSuppliers);
-    }
-
-    /**
-     * Creates a {@link Feature} with the supplied description and the scenarios
-     * specified in the {@link Supplier}. The specified backgrounds are run before
-     * each scenario.<br>
-     * A single such supplier describes an {@link AbstractScenario} which is a
-     * {@link Scenario} or {@link ScenarioOutline}. Each other Supplier adds another
-     * Scenario or ScenarioOutline to the Feature.
-     * 
-     * @param description
-     *            The description of the Feature.
-     * @param befores
-     *            The {@link Befores} containing the {@link Before}s for each
-     *            AbstractScenario.
-     * @param scenarioSuppliers
-     *            The Suppliers that contain an AbstractScenario.
-     * @return Feature, that is described by the description and has the
-     *         {@link AbstractScenario}s of the supplier and the specified
-     *         backgrounds.
-     * @see #feature(String, Befores, Afters, Supplier...)
-     */
-    @SafeVarargs
-    public static Feature feature(final String description, final Befores befores,
-            final Supplier<AbstractScenario>... scenarioSuppliers)
-    {
-        return feature(description, befores, null, scenarioSuppliers);
-    }
-
-    /**
-     * Creates a {@link Feature} with the supplied description and the scenarios
-     * specified in the {@link Supplier}. The specified postSteps are run after each
-     * scenario.<br>
-     * A single such supplier describes an {@link AbstractScenario} which is a
-     * {@link Scenario} or {@link ScenarioOutline}. Each other Supplier adds another
-     * Scenario or ScenarioOutline to the Feature.
-     * 
-     * @param description
-     *            The description of the Feature.
-     * @param afters
-     *            The {@link Afters} containing the {@link After}s for each
-     *            AbstractScenario.
-     * @param scenarioSuppliers
-     *            The Suppliers that contain an AbstractScenario.
-     * @return Feature, that is described by the description and has the
-     *         {@link AbstractScenario}s of the supplier and the specified
-     *         backgrounds.
-     * @see #feature(String, Befores, Afters, Supplier...)
-     */
-    @SafeVarargs
-    public static Feature feature(final String description, final Afters afters,
-            final Supplier<AbstractScenario>... scenarioSuppliers)
-    {
-        return feature(description, null, afters, scenarioSuppliers);
-    }
-
-    /**
-     * Creates a {@link Feature} with the supplied description and the scenarios
-     * specified in the {@link Supplier}. It also uses the specified reporter to
-     * generate a report. And the specified backgrounds are run before each
-     * scenario.<br>
-     * A single such supplier describes an {@link AbstractScenario} which is a
-     * {@link Scenario} or {@link ScenarioOutline}. Each other Supplier adds another
-     * Scenario or ScenarioOutline to the Feature.
-     * 
-     * @param description
-     *            The description of the Feature.
-     * @param befores
-     *            The {@link Before}s for each AbstractScenario.
-     * @param afters
-     *            The {@link After}s for each AbstractScenario.
-     * @param scenarioSuppliers
-     *            The Suppliers that contain an AbstractScenario.
-     * 
-     * @return Feature, that is described by the description and has the
-     *         {@link AbstractScenario}s of the supplier.
-     */
-    @SafeVarargs
-    public static Feature feature(final String description, final Befores befores, final Afters afters,
-            final Supplier<AbstractScenario>... scenarioSuppliers)
     {
         // Convert Array of AbstractScenario Suppliers to a list of AbstractScenarios
         List<AbstractScenario> scenarios = new ArrayList<>();
         for (Supplier<AbstractScenario> scenarioSupplier : scenarioSuppliers)
         {
             scenarios.add(scenarioSupplier.get());
-        }
-        List<Before> listOfBefores = new ArrayList<>(1);
-        if (befores != null)
-        {
-            listOfBefores.addAll(befores.getBefores());
-        }
-        List<After> listOfAfters = new ArrayList<>(1);
-        if (afters != null)
-        {
-            listOfAfters.addAll(afters.getAfters());
         }
         String currentClass = Thread.currentThread().getStackTrace()[2].getClassName();
         // If this is the current class, then we have the wrong one, so simply take the
@@ -178,7 +46,7 @@ public class BddSuite
             currentClass = Thread.currentThread().getStackTrace()[3].getClassName();
         }
         // Create the feature and return it
-        return new Feature(currentClass + ": " + description, listOfBefores, listOfAfters, scenarios);
+        return new Feature(currentClass + ": " + description, scenarios);
     }
 
     /**
