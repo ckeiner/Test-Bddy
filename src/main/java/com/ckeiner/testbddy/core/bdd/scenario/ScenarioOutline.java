@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import org.junit.runners.model.MultipleFailureException;
 
 import com.ckeiner.testbddy.core.bdd.status.Status;
-import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
 import com.ckeiner.testbddy.core.throwables.MultipleScenarioWrapperException;
@@ -375,22 +374,6 @@ public class ScenarioOutline<T> extends AbstractScenario
     public void setSteps(TypeSteps<T> steps)
     {
         this.steps = steps;
-    }
-
-    // public ScenarioOutline<T> postSteps(Supplier<Steps> postSteps)
-    // {
-    // this.postSteps = new TypeSteps<T>().given(postSteps.get());
-    // return this;
-    // }
-
-    public ScenarioOutline<T> postSteps(Supplier<OutlineDescriptor<T>> postSteps)
-    {
-        this.postSteps = postSteps.get().getSteps();
-        for (TypeStep<T> step : this.postSteps.getSteps())
-        {
-            step.setDescription("POSTSTEP " + step.getDescription());
-        }
-        return this;
     }
 
     @Override

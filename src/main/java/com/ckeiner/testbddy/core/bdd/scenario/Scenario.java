@@ -3,7 +3,6 @@ package com.ckeiner.testbddy.core.bdd.scenario;
 import java.util.function.Supplier;
 
 import com.ckeiner.testbddy.core.bdd.status.Status;
-import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
 import com.ckeiner.testbddy.core.throwables.errors.ScenarioError;
@@ -212,16 +211,6 @@ public class Scenario extends AbstractScenario
         }
         // Return scenarioReporter
         return scenarioReporter;
-    }
-
-    public Scenario postSteps(Supplier<Steps> postSteps)
-    {
-        this.postSteps = postSteps.get();
-        for (Step step : this.postSteps.getSteps())
-        {
-            step.setDescription("POSTSTEP: " + getDescription());
-        }
-        return this;
     }
 
     public Steps getSteps()

@@ -40,7 +40,7 @@ public abstract class AbstractStep<T> implements Statusable
     /**
      * Describes the step in natural language.
      */
-    private String description;
+    private final String description;
 
     /**
      * Contains the behavior of the step.
@@ -218,11 +218,6 @@ public abstract class AbstractStep<T> implements Statusable
     public String getDescription()
     {
         return description;
-    }
-
-    public void setDescription(String description)
-    {
-        this.description = description;
     }
 
     public T getBehavior()
