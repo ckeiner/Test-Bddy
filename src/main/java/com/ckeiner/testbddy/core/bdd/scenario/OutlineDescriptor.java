@@ -9,6 +9,12 @@ import com.aventstack.extentreports.GherkinKeyword;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenTypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenTypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenTypeSteps;
 
 /**
  * Describes a {@link ScenarioOutline}.<br>
@@ -116,14 +122,14 @@ public class OutlineDescriptor<T> implements Statusable
     /**
      * Adds all steps of the specified scenario to the steps.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param givenSteps
+     *            The {@link GivenSteps} which steps should be added to the steps of
+     *            this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> given(final Steps scenario)
+    public OutlineDescriptor<T> given(final GivenSteps givenSteps)
     {
-        getSteps().given(scenario);
+        getSteps().given(givenSteps);
         return this;
     }
 
@@ -132,14 +138,14 @@ public class OutlineDescriptor<T> implements Statusable
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param givenSteps
+     *            The {@link GivenTypeSteps} with the steps that should be added to
+     *            the steps of this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> given(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> given(final GivenTypeSteps<T> givenSteps)
     {
-        getSteps().given(scenario);
+        getSteps().given(givenSteps);
         return this;
     }
 
@@ -178,14 +184,14 @@ public class OutlineDescriptor<T> implements Statusable
     /**
      * Adds all steps of the specified scenario to the steps.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param thenSteps
+     *            The {@link ThenSteps} which steps should be added to the steps of
+     *            this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> then(final Steps scenario)
+    public OutlineDescriptor<T> then(final ThenSteps thenSteps)
     {
-        getSteps().then(scenario);
+        getSteps().then(thenSteps);
         return this;
     }
 
@@ -194,14 +200,14 @@ public class OutlineDescriptor<T> implements Statusable
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param thenSteps
+     *            The {@link ThenTypeSteps} with the steps that should be added to
+     *            the steps of this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> then(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> then(final ThenTypeSteps<T> thenSteps)
     {
-        getSteps().then(scenario);
+        getSteps().then(thenSteps);
         return this;
     }
 
@@ -240,14 +246,14 @@ public class OutlineDescriptor<T> implements Statusable
     /**
      * Adds all steps of the specified scenario to the steps.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param whenStep
+     *            The {@link WhenSteps} which steps should be added to the steps of
+     *            this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> when(final Steps scenario)
+    public OutlineDescriptor<T> when(final WhenSteps whenStep)
     {
-        getSteps().when(scenario);
+        getSteps().when(whenStep);
         return this;
     }
 
@@ -256,14 +262,14 @@ public class OutlineDescriptor<T> implements Statusable
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param whenStep
+     *            The {@link WhenTypeSteps} with the steps that should be added to
+     *            the steps of this class.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> when(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> when(final WhenTypeSteps<T> whenStep)
     {
-        getSteps().when(scenario);
+        getSteps().when(whenStep);
         return this;
     }
 

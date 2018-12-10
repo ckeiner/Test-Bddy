@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenSteps;
 import com.ckeiner.testbddy.core.reporting.ReportInterface;
 import com.ckeiner.testbddy.core.throwables.errors.StepError;
 import com.ckeiner.testbddy.core.throwables.exceptions.StepException;
@@ -172,12 +175,12 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     /**
      * Adds all steps of the specified parameter to {@link #steps}.
      * 
-     * @param scenario
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
+     * @param givenSteps
+     *            The GivenSteps with the steps that should be added to the steps of
+     *            this class.
      * @return The current Steps.
      */
-    public abstract AbstractSteps<T> given(final Steps scenario);
+    public abstract AbstractSteps<T> given(final GivenSteps givenSteps);
 
     /**
      * Adds the BddStep, specified by the description and runner, to the list of
@@ -195,12 +198,12 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     /**
      * Adds all steps of the specified scenario to the steps of this BddScenario.
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
+     * @param thenSteps
+     *            The ThenSteps which steps should be added to the steps of this
      *            class.
      * @return The current BddScenario.
      */
-    public abstract AbstractSteps<T> then(final Steps scenario);
+    public abstract AbstractSteps<T> then(final ThenSteps thenSteps);
 
     /**
      * Adds the BddStep, specified by the description and runner, to the list of
@@ -218,12 +221,12 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     /**
      * Adds all steps of the specified scenario to the steps of this BddScenario.
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
+     * @param whenSteps
+     *            The WhenSteps which steps should be added to the steps of this
      *            class.
      * @return The current BddScenario.
      */
-    public abstract AbstractSteps<T> when(final Steps scenario);
+    public abstract AbstractSteps<T> when(final WhenSteps whenSteps);
 
     /**
      * Adds the BddStep, specified by the description and runner, to the list of

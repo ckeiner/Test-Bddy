@@ -11,6 +11,9 @@ import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenSteps;
 
 public class BddSuite
 {
@@ -91,6 +94,18 @@ public class BddSuite
     }
 
     /**
+     * Creates a pending {@link Scenario}.
+     * 
+     * @param description
+     *            The description of the Scenario.
+     * @return A Scenario which is pending.
+     */
+    public static Scenario scenario(String description)
+    {
+        return new Scenario(description);
+    }
+
+    /**
      * Creates a {@link OutlineDescriptor} with the specified test data.
      * 
      * @param testdata
@@ -149,14 +164,14 @@ public class BddSuite
      * Creates a {@link Steps} instance and adds every {@link Step} of the parameter
      * to it.
      * 
-     * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     * @param givenSteps
+     *            The {@link GivenSteps} who's {@link Step}s should be added.
      * 
      * @return The {@link Steps} with the specified {@link Step}s inside.
      */
-    public static Steps given(Steps steps)
+    public static Steps given(GivenSteps givenSteps)
     {
-        return new Steps().given(steps);
+        return new Steps().given(givenSteps);
     }
 
     /**
@@ -177,14 +192,14 @@ public class BddSuite
      * Creates a {@link Steps} instance and adds every {@link Step} of the parameter
      * to it.
      * 
-     * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     * @param thenSteps
+     *            The {@link ThenSteps} who's {@link Step}s should be added.
      * 
      * @return The {@link Steps} with the specified {@link Step}s inside.
      */
-    public static Steps then(Steps steps)
+    public static Steps then(ThenSteps thenSteps)
     {
-        return new Steps().then(steps);
+        return new Steps().then(thenSteps);
     }
 
     /**
@@ -205,14 +220,14 @@ public class BddSuite
      * Creates a {@link Steps} instance and adds every {@link Step} of the parameter
      * to it.
      * 
-     * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     * @param whenSteps
+     *            The {@link WhenSteps} who's {@link Step}s should be added.
      * 
      * @return The {@link Steps} with the specified {@link Step}s inside.
      */
-    public static Steps when(Steps steps)
+    public static Steps when(WhenSteps whenSteps)
     {
-        return new Steps().when(steps);
+        return new Steps().when(whenSteps);
     }
 
     /**

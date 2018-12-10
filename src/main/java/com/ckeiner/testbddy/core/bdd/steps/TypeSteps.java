@@ -5,6 +5,12 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenTypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenTypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenTypeSteps;
 
 /**
  * Describes a scenario with only one data set.<br>
@@ -178,15 +184,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Adds all steps of the specified scenario to the steps of this
      * BddTypeScenario.
      * 
-     * @param scenario
+     * @param givenSteps
      *            The {@link Steps} which steps should be added to the steps of this
      *            class.
      * @return The current BddTypeScenario.
      */
     @Override
-    public TypeSteps<T> given(final Steps scenario)
+    public TypeSteps<T> given(final GivenSteps givenSteps)
     {
-        for (final Step step : scenario.getSteps())
+        for (final Step step : givenSteps.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), runnableToConsumer(step.getBehavior()));
         }
@@ -199,14 +205,14 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
+     * @param givenSteps
      *            The BddTypeScenario which steps should be added to the steps of
      *            this class.
      * @return The current BddTypeScenario.
      */
-    public TypeSteps<T> given(final TypeSteps<T> scenario)
+    public TypeSteps<T> given(final GivenTypeSteps<T> givenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(givenSteps);
         return this;
     }
 
@@ -248,15 +254,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Adds all steps of the specified scenario to the steps of this
      * BddTypeScenario.
      * 
-     * @param scenario
+     * @param thenSteps
      *            The {@link Steps} which steps should be added to the steps of this
      *            class.
      * @return The current BddTypeScenario.
      */
     @Override
-    public TypeSteps<T> then(final Steps scenario)
+    public TypeSteps<T> then(final ThenSteps thenSteps)
     {
-        for (final Step step : scenario.getSteps())
+        for (final Step step : thenSteps.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), runnableToConsumer(step.getBehavior()));
         }
@@ -269,14 +275,14 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
+     * @param thenSteps
      *            The BddTypeScenario which steps should be added to the steps of
      *            this class.
      * @return The current BddTypeScenario.
      */
-    public TypeSteps<T> then(final TypeSteps<T> scenario)
+    public TypeSteps<T> then(final ThenTypeSteps<T> thenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(thenSteps);
         return this;
     }
 
@@ -317,15 +323,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Adds all steps of the specified scenario to the steps of this
      * BddTypeScenario.
      * 
-     * @param scenario
+     * @param whenSteps
      *            The {@link Steps} which steps should be added to the steps of this
      *            class.
      * @return The current BddTypeScenario.
      */
     @Override
-    public TypeSteps<T> when(final Steps scenario)
+    public TypeSteps<T> when(final WhenSteps whenSteps)
     {
-        for (final Step step : scenario.getSteps())
+        for (final Step step : whenSteps.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), runnableToConsumer(step.getBehavior()));
         }
@@ -338,14 +344,14 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
+     * @param whenSteps
      *            The BddTypeScenario which steps should be added to the steps of
      *            this class.
      * @return The current BddTypeScenario.
      */
-    public TypeSteps<T> when(final TypeSteps<T> scenario)
+    public TypeSteps<T> when(final WhenTypeSteps<T> whenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(whenSteps);
         return this;
     }
 

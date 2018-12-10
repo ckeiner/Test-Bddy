@@ -26,6 +26,7 @@ import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
 
 public class BddSuiteTest
 {
@@ -192,7 +193,7 @@ public class BddSuiteTest
         Runnable runner = () ->
             {
             };
-        Steps keywordSteps = new Steps();
+        GivenSteps keywordSteps = new GivenSteps();
         Steps steps = given(keywordSteps);
         // Assert nothing was added
         Assert.assertTrue(steps.getSteps().isEmpty());

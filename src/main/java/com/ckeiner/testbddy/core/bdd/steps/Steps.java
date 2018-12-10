@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.ckeiner.testbddy.core.bdd.steps.typed.GivenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.ThenSteps;
+import com.ckeiner.testbddy.core.bdd.steps.typed.WhenSteps;
 
 /**
  * Describes a BDD Scenario.<br>
@@ -133,21 +136,21 @@ public class Steps extends AbstractSteps<Step>
     /**
      * Adds all steps of the specified parameter to the steps of this Steps.
      * 
-     * @param scenario
+     * @param givenSteps
      *            The Steps with the steps that should be added to the steps of this
      *            class.
      * @return The current Steps.
      */
     @Override
-    public Steps given(final Steps scenario)
+    public Steps given(final GivenSteps givenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(givenSteps);
         return this;
     }
 
     /**
      * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
+     * Steps.<br>
      * The GherkinKeyword for the BddStep is "Given".
      * 
      * @param description
@@ -164,17 +167,17 @@ public class Steps extends AbstractSteps<Step>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
+     * Adds all steps of the specified scenario to the steps of this class.
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
+     * @param thenSteps
+     *            The Steps with the steps that should be added to the steps of this
      *            class.
-     * @return The current BddScenario.
+     * @return The current Steps.
      */
     @Override
-    public Steps then(final Steps scenario)
+    public Steps then(final ThenSteps thenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(thenSteps);
         return this;
     }
 
@@ -199,15 +202,15 @@ public class Steps extends AbstractSteps<Step>
     /**
      * Adds all steps of the specified scenario to the steps of this BddScenario.
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
+     * @param whenSteps
+     *            The WhenSteps which steps should be added to the steps of this
      *            class.
      * @return The current BddScenario.
      */
     @Override
-    public Steps when(final Steps scenario)
+    public Steps when(final WhenSteps whenSteps)
     {
-        addAllSteps(scenario);
+        addAllSteps(whenSteps);
         return this;
     }
 
