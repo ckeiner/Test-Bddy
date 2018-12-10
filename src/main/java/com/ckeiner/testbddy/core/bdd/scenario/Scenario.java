@@ -23,15 +23,22 @@ public class Scenario extends AbstractScenario
      */
     final private Steps steps;
 
+    public Scenario(final String description)
+    {
+        super(description);
+        this.steps = new Steps();
+        this.getStatus().add(Status.PENDING);
+    }
+
     public Scenario(final String description, final Steps steps)
     {
-        this(description, () -> steps);
+        super(description);
+        this.steps = steps;
     }
 
     public Scenario(final String description, final Supplier<Steps> stepsSupplier)
     {
-        super(description);
-        this.steps = stepsSupplier.get();
+        this(description, stepsSupplier.get());
     }
 
     /**
