@@ -23,11 +23,6 @@ public class Scenario extends AbstractScenario
      */
     final private Steps steps;
 
-    /**
-     * The steps to always execute after a scenario, even after a failure.
-     */
-    private Steps postSteps;
-
     public Scenario(final String description, final Steps steps)
     {
         this(description, () -> steps);
@@ -47,7 +42,6 @@ public class Scenario extends AbstractScenario
     @Override
     public void test()
     {
-        Throwable throwable;
         if (getStatus().contains(Status.IGNORE))
         {
             return;
@@ -100,37 +94,8 @@ public class Scenario extends AbstractScenario
             }
             // Throws the scenario error
             throw new ScenarioError("Scenario \"" + getDescription() + "\" failed.", e);
-        } finally
-        {
-            throwable = doPostSteps();
         }
         System.out.println("\n\n");
-        // If we are here, then there was some failure in the poststeps, but not in the
-        // main scenario
-        if (throwable != null)
-        {
-            throw new ScenarioError("PostStep of Scenario \"" + getDescription() + "\" failed.", throwable);
-        }
-    }
-
-    /**
-     * Executes postSteps added by {@link #postSteps(Supplier)}.
-     */
-    protected Throwable doPostSteps()
-    {
-        Throwable throwable = null;
-        if (this.postSteps != null)
-        {
-            this.postSteps.setReporter(getReporter());
-            try
-            {
-                this.postSteps.test();
-            } catch (Exception | Error e)
-            {
-                throwable = e;
-            }
-        }
-        return throwable;
     }
 
     @Override
@@ -216,11 +181,6 @@ public class Scenario extends AbstractScenario
     public Steps getSteps()
     {
         return steps;
-    }
-
-    public Steps getPostSteps()
-    {
-        return postSteps;
     }
 
     @Override

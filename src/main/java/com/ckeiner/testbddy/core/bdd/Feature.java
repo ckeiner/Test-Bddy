@@ -52,6 +52,22 @@ public class Feature implements Statusable
      * @param scenarios
      *            List of {@link AbstractScenario}s that the feature should execute.
      */
+    public Feature(final String description)
+    {
+        this.description = description;
+        this.scenarios = new ArrayList<>();
+        status = new LinkedHashSet<Status>();
+        status.add(Status.PENDING);
+    }
+
+    /**
+     * Creates a Feature with the specified description and scenarios.
+     *
+     * @param description
+     *            String that describes the Feature.
+     * @param scenarios
+     *            List of {@link AbstractScenario}s that the feature should execute.
+     */
     public Feature(final String description, final List<AbstractScenario> scenarios)
     {
         this.description = description;
@@ -67,14 +83,63 @@ public class Feature implements Statusable
      */
     public void test()
     {
+        // Execute only if it should be executed
+        if (canAndShouldExecuteFeature())
+        {
+            // Set up list of exceptions and error
+            final List<ScenarioException> scenarioExceptions = new ArrayList<ScenarioException>();
+            final List<ScenarioError> scenarioErrors = new ArrayList<ScenarioError>();
+            // Set up reporting
+            final ReportElement featureReport = setUpReporter();
+            // Print some information to the console
+            printToConsole();
+
+            // For each scenario
+            for (final AbstractScenario scenario : getScenarios())
+            {
+                // Set the reporter of the scenario if the feature has one
+                if (scenario.getReporter() == null && reporter != null)
+                {
+                    scenario.setReporter(reporter);
+                }
+                // Execute the scenario and catch all exceptions and errors
+                try
+                {
+                    // Execute the feature
+                    executeScenario(scenario);
+                } catch (final ScenarioException e)
+                {
+                    scenarioExceptions.add(e);
+                } catch (final ScenarioError e)
+                {
+                    scenarioErrors.add(e);
+                }
+            }
+
+            // Finish the test with proper reporting, and exception, error throwing
+            finishTest(featureReport, scenarioExceptions, scenarioErrors);
+        }
+    }
+
+    /**
+     * Verifies that the feature's can and should be executed.
+     */
+    private boolean canAndShouldExecuteFeature()
+    {
+        boolean shouldDoExecution = true;
         // If we ignore the feature, we neither want to execute nor log it
         if (getStatus().contains(Status.IGNORE))
         {
-            return;
+            shouldDoExecution = false;
+        }
+
+        if (getScenarios() == null)
+        {
+            throw new IllegalStateException("Scenarios are null");
         }
 
         // If there is no scenario, then the feature is pending
-        if (getScenarios() == null || getScenarios().isEmpty())
+        if (getScenarios().isEmpty())
         {
             // Add the pending status to the list of stati
             getStatus().add(Status.PENDING);
@@ -83,41 +148,10 @@ public class Feature implements Statusable
             // Set pending for the reporter
             featureReport.pending("No scenarios found");
             // End execution of feature
-            return;
+            shouldDoExecution = false;
         }
 
-        // Set up list of exceptions and error
-        final List<ScenarioException> scenarioExceptions = new ArrayList<ScenarioException>();
-        final List<ScenarioError> scenarioErrors = new ArrayList<ScenarioError>();
-        // Set up reporting
-        final ReportElement featureReport = setUpReporter();
-        // Print some information to the console
-        printToConsole();
-
-        // For each scenario
-        for (final AbstractScenario scenario : getScenarios())
-        {
-            // Set the reporter of the scenario if the feature has one
-            if (scenario.getReporter() == null && reporter != null)
-            {
-                scenario.setReporter(reporter);
-            }
-            // Execute the scenario and catch all exceptions and errors
-            try
-            {
-                // Execute the feature
-                executeScenario(scenario);
-            } catch (final ScenarioException e)
-            {
-                scenarioExceptions.add(e);
-            } catch (final ScenarioError e)
-            {
-                scenarioErrors.add(e);
-            }
-        }
-
-        // Finish the test with proper reporting, and exception, error throwing
-        finishTest(featureReport, scenarioExceptions, scenarioErrors);
+        return shouldDoExecution;
     }
 
     /**

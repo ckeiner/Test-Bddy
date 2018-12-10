@@ -5,7 +5,7 @@
 
     <groupId>com.ckeiner</groupId>
     <artifactId>test-bddy</artifactId>
-    <version>0.1.1</version>
+    <version>0.1.2</version>
     <packaging>jar</packaging>
     
     <name>test-bddy</name>
@@ -21,7 +21,7 @@
         <surefire.version>2.21.0</surefire.version>
         <serenity.version>1.9.8</serenity.version>
         <serenity.maven.version>1.8.0</serenity.maven.version>
-        <extent.version>4.0.1</extent.version>
+        <extent.version>3.1.5</extent.version>
         <surefire.rerunFailingTestsCount>3</surefire.rerunFailingTestsCount>
         <webdriver.driver>firefox</webdriver.driver>
     </properties>

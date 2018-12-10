@@ -2,7 +2,6 @@ package com.ckeiner.testbddy.core.reporting.extentreports;
 
 import java.io.File;
 
-import com.aventstack.extentreports.AnalysisStrategy;
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.GherkinKeyword;
@@ -54,8 +53,6 @@ public class ExtentReportInterface implements ReportInterface
         ExtentHtmlReporter htmlReporter = new ExtentHtmlReporter("./" + ReportInterface.PATH + "extent.html");
         // Initialize ExtentReports
         extentReports = new ExtentReports();
-        // Set strategy to BDD
-        extentReports.setAnalysisStrategy(AnalysisStrategy.BDD);
         // Attach the HtmlReporter
         extentReports.attachReporter(htmlReporter);
     }
