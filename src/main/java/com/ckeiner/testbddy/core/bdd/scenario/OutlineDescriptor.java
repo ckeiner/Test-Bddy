@@ -37,7 +37,11 @@ public class OutlineDescriptor<T> implements Statusable
     {
         this.steps = steps;
         this.testdata = new ArrayList<>();
-        this.testdata.addAll(Arrays.asList(testdata));
+        // If test data was specified, add it to the list
+        if (testdata != null && testdata.length > 0)
+        {
+            this.testdata.addAll(Arrays.asList(testdata));
+        }
     }
 
     public TypeSteps<T> getSteps()
