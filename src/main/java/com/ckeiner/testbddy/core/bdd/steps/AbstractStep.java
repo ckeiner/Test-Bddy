@@ -42,7 +42,7 @@ public abstract class AbstractStep<T> implements Statusable
     /**
      * Describes the step in natural language.
      */
-    private final String description;
+    private String description;
 
     /**
      * Contains the behavior of the step.
@@ -88,7 +88,7 @@ public abstract class AbstractStep<T> implements Statusable
         if (canAndShouldExecuteStep())
         {
             // Create the ReportElement
-            ReportElement element = setUpReporter();
+            ReportElement stepReporter = setUpReporter();
             // Print the description of the step
             System.out.println(getDescription());
             try
@@ -99,41 +99,44 @@ public abstract class AbstractStep<T> implements Statusable
                     // Execute it
                     executeStep();
                     // Mark the node as passed if it exists
-                    if (element != null)
+                    if (stepReporter != null)
                     {
-                        element.pass(getDescription());
+                        stepReporter.pass(getDescription());
                     }
                 }
                 // If the step should be skipped
                 else
                 {
                     // Mark the node as skipped
-                    if (element != null)
+                    if (stepReporter != null)
                     {
-                        element.skip(getDescription());
+                        stepReporter.skip(getDescription());
                     }
                 }
             } catch (Exception e)
             {
                 // Mark the node as fatal
-                if (element != null)
+                if (stepReporter != null)
                 {
-                    element.fatal(e);
+                    stepReporter.fatal(e);
                 }
                 // Throw an Exception
                 throw new StepException(e);
             } catch (Error e)
             {
                 // Mark the node as failed
-                if (element != null)
+                if (stepReporter != null)
                 {
-                    element.fail(e);
+                    stepReporter.fail(e);
                 }
                 // Throw an Error
                 throw new StepError(e);
             }
         }
-        else if (getStatus().contains(Status.PENDING) || getStatus().contains(Status.SKIP))
+        // If the status does not contain Ignore but either pending or skip, do not
+        // execute the next step
+        else if (getStatus().contains(Status.IGNORE)
+                && (getStatus().contains(Status.PENDING) || getStatus().contains(Status.SKIP)))
         {
             executeNextStep = false;
         }
@@ -160,11 +163,11 @@ public abstract class AbstractStep<T> implements Statusable
             // Add the pending status to the list of stati
             getStatus().add(Status.PENDING);
             // Set up reporting
-            final ReportElement element = setUpReporter();
-            if (element != null)
+            final ReportElement stepReporter = setUpReporter();
+            if (stepReporter != null)
             {
                 // Set pending for the reporter
-                element.pending("No behavior was defined");
+                stepReporter.pending("No behavior was defined");
             }
             // End execution of feature
             executeStep = false;
@@ -237,6 +240,11 @@ public abstract class AbstractStep<T> implements Statusable
             }
         }
         return element;
+    }
+
+    protected void setDescription(String description)
+    {
+        this.description = description;
     }
 
     public String getDescription()

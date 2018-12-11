@@ -17,8 +17,18 @@ import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
-public class Pending extends StatusDefinitions
+public class Pending
 {
+    Feature feature;
+
+    Scenario scenario;
+
+    ScenarioOutline<Object> scenarioOutline;
+
+    Steps steps;
+
+    TypeSteps<Object> typeSteps;
+
     @Test
     public void pending()
     {
@@ -117,6 +127,7 @@ public class Pending extends StatusDefinitions
                             Assert.assertTrue(typeSteps.getSteps().get(0).getStatus().contains(Status.PENDING));
                         })
                 )
+                // TODO Pending with more than one child or sibling element: two steps etc
         ).test();
         //@formatter:on
     }
@@ -126,7 +137,6 @@ public class Pending extends StatusDefinitions
         return feature("Feature without Scenarios");
     }
 
-    @Override
     protected Scenario scenarioWithoutSteps()
     {
         return scenario("Scenario without Steps");
@@ -139,7 +149,7 @@ public class Pending extends StatusDefinitions
 
     protected ScenarioOutline<Object> outlineWithoutSteps()
     {
-        return scenario("Scenario without Steps", withData(null));
+        return scenario("Scenario without Steps", withData((Object) null));
     }
 
     protected ScenarioOutline<Object> outlineWithoutTestdata()
@@ -151,12 +161,12 @@ public class Pending extends StatusDefinitions
 
     protected TypeSteps<Object> typeStepsWithPendingRunnable()
     {
-        return withData(null).given("Given without Steps", new PendingRunnable()).getSteps();
+        return withData((Object) null).given("Given without Steps", new PendingRunnable()).getSteps();
     }
 
     protected TypeSteps<Object> typeStepsWithPendingConsumer()
     {
-        return withData(null).given("Given without Steps", new PendingConsumer<Object>()).getSteps();
+        return withData((Object) null).given("Given without Steps", new PendingConsumer<Object>()).getSteps();
     }
 
 }

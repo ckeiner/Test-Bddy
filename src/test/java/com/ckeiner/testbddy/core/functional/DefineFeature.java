@@ -26,6 +26,7 @@ public class DefineFeature
     @Test
     public void verifyScenarioDescriptionsAreCorrect()
     {
+        final String clazz = this.getClass().getName();
         final String featureDescription = "Define a feature";
         final String scenarioDescription = "Define a scenario";
         final String givenDescription = "Define a given step";
@@ -47,7 +48,8 @@ public class DefineFeature
                                 {
                                     System.out.println("I should define a then step");
                                 })));
-        Assert.assertEquals(this.getClass().getName() + ": " + featureDescription, definedFeature.getDescription());
+        Assert.assertEquals(featureDescription, definedFeature.getDescription());
+        Assert.assertEquals(clazz, definedFeature.getClassFeatureDefinedIn());
         List<AbstractScenario> scenarios = definedFeature.getScenarios();
         Assert.assertEquals(1, scenarios.size());
         Assert.assertTrue(scenarios.get(0) instanceof Scenario);
@@ -67,6 +69,7 @@ public class DefineFeature
     @Test
     public void verifyScenarioOutlineDescriptionsAreCorrect()
     {
+        final String clazz = this.getClass().getName();
         final String featureDescription = "Define a feature";
         final String scenarioDescription = "Define a scenario";
         final String givenDescription = "Define a given step";
@@ -89,7 +92,8 @@ public class DefineFeature
                             {
                                 System.out.println("I should define a then step");
                             })));
-        Assert.assertEquals(this.getClass().getName() + ": " + featureDescription, definedFeature.getDescription());
+        Assert.assertEquals(featureDescription, definedFeature.getDescription());
+        Assert.assertEquals(clazz, definedFeature.getClassFeatureDefinedIn());
         List<AbstractScenario> scenarios = definedFeature.getScenarios();
         Assert.assertEquals(1, scenarios.size());
         Assert.assertTrue(scenarios.get(0) instanceof ScenarioOutline<?>);

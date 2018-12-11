@@ -45,6 +45,11 @@ public class Feature implements Statusable
     private final Set<Status> status;
 
     /**
+     * The class the feature is defined in
+     */
+    private final String classFeatureDefinedIn;
+
+    /**
      * Creates a Feature with the specified description and scenarios.
      *
      * @param description
@@ -54,10 +59,7 @@ public class Feature implements Statusable
      */
     public Feature(final String description)
     {
-        this.description = description;
-        this.scenarios = new ArrayList<>();
-        status = new LinkedHashSet<Status>();
-        status.add(Status.PENDING);
+        this(description, new ArrayList<>());
     }
 
     /**
@@ -70,9 +72,25 @@ public class Feature implements Statusable
      */
     public Feature(final String description, final List<AbstractScenario> scenarios)
     {
+        this(description, scenarios, null);
+    }
+
+    /**
+     * Creates a Feature with the specified description and scenarios.
+     *
+     * @param description
+     *            String that describes the Feature.
+     * @param scenarios
+     *            List of {@link AbstractScenario}s that the feature should execute.
+     * @param classFeatureDefinedIn
+     *            The class the feature is defined in.
+     */
+    public Feature(final String description, final List<AbstractScenario> scenarios, String classFeatureDefinedIn)
+    {
         this.description = description;
         this.scenarios = scenarios;
         status = new LinkedHashSet<Status>();
+        this.classFeatureDefinedIn = classFeatureDefinedIn;
     }
 
     /**
@@ -145,8 +163,11 @@ public class Feature implements Statusable
             getStatus().add(Status.PENDING);
             // Set up reporting
             final ReportElement featureReport = setUpReporter();
-            // Set pending for the reporter
-            featureReport.pending("No scenarios were defined");
+            if (featureReport != null)
+            {
+                // Set pending for the reporter
+                featureReport.pending("No scenarios were defined");
+            }
             // End execution of feature
             shouldDoExecution = false;
         }
@@ -160,7 +181,7 @@ public class Feature implements Statusable
     private void printToConsole()
     {
         // Print some information to the console
-        String logging = " Feature: " + description;
+        String logging = classFeatureDefinedIn + ".Feature: " + description;
         if (getStatus() != null)
         {
             logging = getStatus().toString() + logging;
@@ -200,7 +221,7 @@ public class Feature implements Statusable
         if (reporter != null)
         {
             // Describe the feature
-            featureReport = reporter.feature(description);
+            featureReport = reporter.feature(classFeatureDefinedIn + ": " + description);
             // If the status isn't null
             if (getStatus() != null)
             {
@@ -233,6 +254,7 @@ public class Feature implements Statusable
         // If an exception or error happened
         if (exception || error)
         {
+            String errorMessage = classFeatureDefinedIn + ".Feature \"" + description + "\" failed.";
             // Gather all errors and exceptions
             final MultipleScenarioWrapperException scenarioWrapperException = new MultipleScenarioWrapperException(
                     scenarioExceptions, scenarioErrors);
@@ -248,7 +270,7 @@ public class Feature implements Statusable
                     featureReport.fatal(scenarioWrapperException);
                 }
                 // Throw the FeatureException with the wrapper for all exceptions and errors
-                throw new FeatureException("Feature \"" + description + "\" failed.", scenarioWrapperException);
+                throw new FeatureException(errorMessage, scenarioWrapperException);
             }
             // If no exception but an error happened
             else if (error)
@@ -259,7 +281,7 @@ public class Feature implements Statusable
                     featureReport.fail(scenarioWrapperException);
                 }
                 // Throw the FeatureError with the wrapper for all exceptions and errors
-                throw new FeatureError("Feature \"" + description + "\" failed.", scenarioWrapperException);
+                throw new FeatureError(errorMessage, scenarioWrapperException);
             }
         }
         // If no errors occured and a featureReport exists
@@ -296,6 +318,11 @@ public class Feature implements Statusable
     public Set<Status> getStatus()
     {
         return status;
+    }
+
+    public String getClassFeatureDefinedIn()
+    {
+        return classFeatureDefinedIn;
     }
 
     @Override

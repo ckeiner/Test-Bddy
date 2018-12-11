@@ -36,6 +36,7 @@ public class BddSuiteTest
     @Test
     public void canCreateFeatures()
     {
+        String clazz = this.getClass().getName();
         Steps steps = new Steps();
         String scenarioDescription = "Scenario Description";
         Scenario scenario = new Scenario(scenarioDescription, steps);
@@ -44,8 +45,8 @@ public class BddSuiteTest
         Feature feature = feature(featureDescription, scenarioSupplier);
 
         // Verify the description has the class added
-        String apiAdder = this.getClass().getName() + ": ";
-        Assert.assertEquals(apiAdder + featureDescription, feature.getDescription());
+        Assert.assertEquals(featureDescription, feature.getDescription());
+        Assert.assertEquals(clazz, feature.getClassFeatureDefinedIn());
         // Verify the feature has no status
         Assert.assertTrue(feature.getStatus().isEmpty());
         // Verify the list of scenarios is correct

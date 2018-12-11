@@ -285,12 +285,6 @@ public class ScenarioOutline<T> extends AbstractScenario
         ReportElement scenarioReporter = null;
         if (getReporter() != null)
         {
-            // // Resolves placeholders in the description
-            // String reportDescription = new
-            // ParameterResolver<T>().resolvePlaceholders(getDescription(), testdatum);
-            // scenarioReporter = getReporter().scenarioOutline(reportDescription);
-            // We decided, that for a scenario, the test data should simply be printed,
-            // without any placeholders
             scenarioReporter = getReporter().scenarioOutline(this.getDescription(), testdatum);
             if (typeSteps != null && typeSteps.getReporter() == null)
             {

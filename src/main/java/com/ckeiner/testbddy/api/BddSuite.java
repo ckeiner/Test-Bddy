@@ -46,7 +46,7 @@ public class BddSuite
             currentClass = Thread.currentThread().getStackTrace()[3].getClassName();
         }
         // Create the feature and return it
-        return new Feature(currentClass + ": " + description, scenarios);
+        return new Feature(description, scenarios, currentClass);
     }
 
     /**
