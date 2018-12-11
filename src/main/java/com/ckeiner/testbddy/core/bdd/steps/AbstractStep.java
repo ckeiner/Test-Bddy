@@ -4,6 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.ckeiner.testbddy.core.bdd.status.PendingConsumer;
+import com.ckeiner.testbddy.core.bdd.status.PendingRunnable;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
@@ -80,13 +82,73 @@ public abstract class AbstractStep<T> implements Statusable
      */
     public void test()
     {
+        if (canAndShouldExecuteStep())
+        {
+
+            // Create the ReportElement
+            ReportElement element = setUpReporter();
+            // Print the description of the step
+            System.out.println(getDescription());
+            try
+            {
+                // If it shouldn't be skipped
+                if (!getStatus().contains(Status.SKIP))
+                {
+                    // Execute it
+                    executeStep();
+                    // Mark the node as passed if it exists
+                    if (element != null)
+                    {
+                        element.pass(getDescription());
+                    }
+                }
+                // If the step should be skipped
+                else
+                {
+                    // Mark the node as skipped
+                    if (element != null)
+                    {
+                        element.skip(getDescription());
+                    }
+                }
+            } catch (Exception e)
+            {
+                // Mark the node as fatal
+                if (element != null)
+                {
+                    element.fatal(e);
+                }
+                // Throw an Exception
+                throw new StepException(e);
+            } catch (Error e)
+            {
+                // Mark the node as failed
+                if (element != null)
+                {
+                    element.fail(e);
+                }
+                // Throw an Error
+                throw new StepError(e);
+            }
+        }
+    }
+
+    protected boolean canAndShouldExecuteStep()
+    {
+        boolean executeStep = true;
         // If the status contains the Ignore-Status, simply don't show
         if (getStatus().contains(Status.IGNORE))
         {
-            return;
+            executeStep = false;
         }
 
         if (behavior == null)
+        {
+            throw new IllegalStateException("Null behavior found");
+        }
+
+        // If the behavior is either a pending runnable or pending consumer
+        if (behavior instanceof PendingRunnable || behavior instanceof PendingConsumer<?>)
         {
             // Add the pending status to the list of stati
             getStatus().add(Status.PENDING);
@@ -95,57 +157,12 @@ public abstract class AbstractStep<T> implements Statusable
             if (element != null)
             {
                 // Set pending for the reporter
-                element.pending("No behavior found");
+                element.pending("No behavior was defined");
             }
             // End execution of feature
-            return;
+            executeStep = false;
         }
-
-        // Create the ReportElement
-        ReportElement element = setUpReporter();
-        // Print the description of the step
-        System.out.println(getDescription());
-        try
-        {
-            // If it shouldn't be skipped
-            if (!getStatus().contains(Status.SKIP))
-            {
-                // Execute it
-                executeStep();
-                // Mark the node as passed if it exists
-                if (element != null)
-                {
-                    element.pass(getDescription());
-                }
-            }
-            // If the step should be skipped
-            else
-            {
-                // Mark the node as skipped
-                if (element != null)
-                {
-                    element.skip(getDescription());
-                }
-            }
-        } catch (Exception e)
-        {
-            // Mark the node as fatal
-            if (element != null)
-            {
-                element.fatal(e);
-            }
-            // Throw an Exception
-            throw new StepException(e);
-        } catch (Error e)
-        {
-            // Mark the node as failed
-            if (element != null)
-            {
-                element.fail(e);
-            }
-            // Throw an Error
-            throw new StepError(e);
-        }
+        return executeStep;
     }
 
     /**

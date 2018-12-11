@@ -26,6 +26,7 @@ public class Scenario extends AbstractScenario
     public Scenario(final String description)
     {
         super(description);
+        // TODO this doesn't make sense but there is no other way to get pending here
         this.steps = new Steps();
         this.getStatus().add(Status.PENDING);
     }
@@ -49,13 +50,61 @@ public class Scenario extends AbstractScenario
     @Override
     public void test()
     {
+        // If the scenario should be executed
+        if (canAndShouldExecuteScenario())
+        {
+            // Set up the report for this element
+            ReportElement scenarioReporter = setUpReporter();
+
+            // Set up the reporter for the bddSteps if none was supplied
+            if (steps.getReporter() == null && this.getReporter() != null)
+            {
+                steps.setReporter(this.getReporter());
+            }
+            // Print some information to the console
+            System.out.println("================\nScenario: " + getDescription() + "\n================");
+            // Execute the steps for the scenario and catch every exception and error.
+            try
+            {
+                executeScenario(scenarioReporter);
+            } catch (StepException e)
+            {
+                if (scenarioReporter != null)
+                {
+                    // Logs the scenario as fatal
+                    scenarioReporter.fatal(e);
+                }
+                // Throws the scenario exception
+                throw new ScenarioException("Scenario \"" + getDescription() + "\" failed.", e);
+            } catch (StepError e)
+            {
+                if (scenarioReporter != null)
+                {
+                    // Logs the scenario as failed
+                    scenarioReporter.fail(e);
+                }
+                // Throws the scenario error
+                throw new ScenarioError("Scenario \"" + getDescription() + "\" failed.", e);
+            }
+            System.out.println("\n\n");
+        }
+    }
+
+    protected boolean canAndShouldExecuteScenario()
+    {
+        boolean executeScenario = true;
         if (getStatus().contains(Status.IGNORE))
         {
-            return;
+            executeScenario = false;
+        }
+
+        if (getSteps() == null)
+        {
+            throw new IllegalStateException("Null steps found");
         }
 
         // If there are no steps, then the scenario is pending
-        if (getSteps() == null || getSteps().getSteps().isEmpty())
+        if (getSteps().getSteps().isEmpty())
         {
             // Add the pending status to the list of stati
             getStatus().add(Status.PENDING);
@@ -63,46 +112,13 @@ public class Scenario extends AbstractScenario
             final ReportElement scenarioReporter = setUpReporter();
             if (scenarioReporter != null)
             {// Set pending for the reporter
-                scenarioReporter.pending("No steps found");
+                scenarioReporter.pending("No steps were defined");
             }
             // End execution of feature
-            return;
+            executeScenario = false;
         }
 
-        // Set up the report for this element
-        ReportElement scenarioReporter = setUpReporter();
-
-        // Set up the reporter for the bddSteps if none was supplied
-        if (steps.getReporter() == null && this.getReporter() != null)
-        {
-            steps.setReporter(this.getReporter());
-        }
-        // Print some information to the console
-        System.out.println("================\nScenario: " + getDescription() + "\n================");
-        // Execute the steps for the scenario and catch every exception and error.
-        try
-        {
-            executeScenario(scenarioReporter);
-        } catch (StepException e)
-        {
-            if (scenarioReporter != null)
-            {
-                // Logs the scenario as fatal
-                scenarioReporter.fatal(e);
-            }
-            // Throws the scenario exception
-            throw new ScenarioException("Scenario \"" + getDescription() + "\" failed.", e);
-        } catch (StepError e)
-        {
-            if (scenarioReporter != null)
-            {
-                // Logs the scenario as failed
-                scenarioReporter.fail(e);
-            }
-            // Throws the scenario error
-            throw new ScenarioError("Scenario \"" + getDescription() + "\" failed.", e);
-        }
-        System.out.println("\n\n");
+        return executeScenario;
     }
 
     @Override

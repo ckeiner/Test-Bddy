@@ -146,7 +146,7 @@ public class Feature implements Statusable
             // Set up reporting
             final ReportElement featureReport = setUpReporter();
             // Set pending for the reporter
-            featureReport.pending("No scenarios found");
+            featureReport.pending("No scenarios were defined");
             // End execution of feature
             shouldDoExecution = false;
         }

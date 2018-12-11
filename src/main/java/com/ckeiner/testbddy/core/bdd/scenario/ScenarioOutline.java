@@ -53,10 +53,10 @@ public class ScenarioOutline<T> extends AbstractScenario
     @Override
     public void test()
     {
-        if (getStatus().contains(Status.IGNORE))
-        {
-            return;
-        }
+        // if (getStatus().contains(Status.IGNORE))
+        // {
+        // return;
+        // }
 
         // Initialize needed variables
         List<ScenarioException> scenarioExceptions = new ArrayList<>();
@@ -92,6 +92,77 @@ public class ScenarioOutline<T> extends AbstractScenario
         }
         System.out.println("\n\n");
         finishScenario(scenarioExceptions, scenarioErrors, postStepFailures);
+    }
+
+    /**
+     * Returns whether the {@link ScenarioOutline} can be executed or not.
+     * Typically, a ScenarioOutline musn't be ignores, and must contain non-empty
+     * test data and steps.
+     * 
+     * @return True if the ScenarioOutline can be executed, otherwise false
+     */
+    protected boolean canAndShouldExecuteScenario()
+    {
+        boolean executeScenario = true;
+        if (getStatus().contains(Status.IGNORE))
+        {
+            executeScenario = false;
+        }
+
+        if (getSteps() == null)
+        {
+            throw new IllegalStateException("Null steps found");
+        }
+
+        if (getTestdata() == null)
+        {
+            throw new IllegalStateException("Null Testdata found");
+        }
+
+        if (getTestdata().isEmpty())
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            // Set up reporting
+            final ReportElement scenarioReporter = setUpReporter(getSteps(), null);
+            // If a scenarioReporter could be built
+            if (scenarioReporter != null)
+            {
+                // And there are also no steps
+                if (getSteps().getSteps().isEmpty())
+                {
+                    // Report that both a not found
+                    scenarioReporter.pending("No Testdata and Steps were defined");
+                }
+                // Otherwise
+                else
+                { // Report that no test data was defined
+                    scenarioReporter.pending("No Testdata were defined");
+                }
+            }
+            // End execution of feature
+            executeScenario = false;
+        }
+
+        // If there are no steps, then the scenario is pending
+        else if (getSteps().getSteps().isEmpty())
+        {
+            // Add the pending status to the list of stati
+            getStatus().add(Status.PENDING);
+            for (T testdatum : testdata)
+            {
+                // Set up reporting
+                final ReportElement scenarioReporter = setUpReporter(getSteps(), testdatum);
+                if (scenarioReporter != null)
+                {// Set pending for the reporter
+                    scenarioReporter.pending("No steps were defined");
+                }
+            }
+            // End execution of feature
+            executeScenario = false;
+        }
+
+        return executeScenario;
     }
 
     /**
