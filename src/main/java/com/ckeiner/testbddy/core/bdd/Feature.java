@@ -92,6 +92,14 @@ public class Feature implements Statusable
         this.scenarios = scenarios;
         status = new LinkedHashSet<Status>();
         this.classFeatureDefinedIn = classFeatureDefinedIn;
+        initReporter();
+    }
+
+    /**
+     * Initializes the reporter.
+     */
+    protected void initReporter()
+    {
         this.reporter = ExtentReportInterface.getInstance();
     }
 
