@@ -79,7 +79,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     {
         StepException stepException = null;
         StepError stepError = null;
-        boolean stopExecution = false;
+        boolean continueExecution = true;
 
         // Execute each step
         for (final T step : getSteps())
@@ -91,14 +91,14 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
             try
             {
                 // If an exception or error occured in a previous step, skip this step
-                if (stepException != null || stepError != null || stopExecution)
+                if (stepException != null || stepError != null || !continueExecution)
                 {
                     skipStep(step);
                 }
                 // Otherwise test it
                 else
                 {
-                    stopExecution = testStep(step);
+                    continueExecution = testStep(step);
                 }
             } catch (StepException e)
             {

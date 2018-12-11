@@ -1,10 +1,11 @@
 package com.ckeiner.testbddy.core.bdd.steps;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.ckeiner.testbddy.core.bdd.status.PendingConsumer;
+import com.ckeiner.testbddy.core.bdd.status.PendingRunnable;
 
 /**
  * Describes a scenario with only one data set.<br>
@@ -28,17 +29,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     public TypeSteps()
     {
         super(new ArrayList<>());
-    }
-
-    /**
-     * Creates a BddTypeScenario with the specified list of steps.
-     *
-     * @param steps
-     *            The list of steps to execute.
-     */
-    public TypeSteps(final List<TypeStep<T>> steps)
-    {
-        super(steps);
     }
 
     @Override
@@ -400,22 +390,38 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * 
      * @param runner
      *            The Runnable to transform.
-     * @return A Consumer, that executes the runner.
+     * @return <code>null</code> if the Runnable was null.<br>
+     *         A {@link PendingConsumer} if the Runnable was a
+     *         {@link PendingRunnable}.<br>
+     *         A Consumer that runs the Runnable otherwise.
      */
     private Consumer<T> runnableToConsumer(final Runnable runner)
     {
+        Consumer<T> consumer;
+        // If the runnable was null, return a null consumer
         if (runner == null)
         {
-            return null;
+            consumer = null;
         }
-        return new Consumer<T>()
-            {
-                @Override
-                public void accept(final T t)
+        // If the runnable was a pending runnable, create a pending consumer
+        else if (runner instanceof PendingRunnable)
+        {
+            consumer = new PendingConsumer<T>();
+        }
+        // If the runnable was something else, create a consumer out of the runner
+        else
+        {
+            consumer = new Consumer<T>()
                 {
-                    runner.run();
-                }
-            };
+                    @Override
+                    public void accept(final T t)
+                    {
+                        runner.run();
+                    }
+                };
+        }
+        // Return the created consumer
+        return consumer;
     }
 
     public T getData()

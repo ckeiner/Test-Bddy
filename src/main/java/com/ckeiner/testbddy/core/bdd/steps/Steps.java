@@ -1,7 +1,6 @@
 package com.ckeiner.testbddy.core.bdd.steps;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import com.aventstack.extentreports.GherkinKeyword;
 
@@ -20,17 +19,6 @@ public class Steps extends AbstractSteps<Step>
     public Steps()
     {
         super(new ArrayList<>());
-    }
-
-    /**
-     * Creates a BddScenario with the specified list of {@link Step}s.
-     * 
-     * @param steps
-     *            The list of BddSteps that specify this BddScenario
-     */
-    public Steps(final List<Step> steps)
-    {
-        super(steps);
     }
 
     @Override

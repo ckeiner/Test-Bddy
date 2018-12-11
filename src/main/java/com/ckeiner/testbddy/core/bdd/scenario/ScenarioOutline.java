@@ -2,9 +2,6 @@ package com.ckeiner.testbddy.core.bdd.scenario;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
-
-import org.junit.runners.model.MultipleFailureException;
 
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
@@ -29,11 +26,6 @@ public class ScenarioOutline<T> extends AbstractScenario
 {
     private TypeSteps<T> steps;
 
-    /**
-     * The steps to always execute after a scenario, even after a failure.
-     */
-    private TypeSteps<T> postSteps;
-
     private final List<T> testdata;
 
     public ScenarioOutline(String description, TypeSteps<T> stepSupplier, List<T> testdata)
@@ -53,45 +45,19 @@ public class ScenarioOutline<T> extends AbstractScenario
     @Override
     public void test()
     {
-        // if (getStatus().contains(Status.IGNORE))
-        // {
-        // return;
-        // }
-
-        // Initialize needed variables
-        List<ScenarioException> scenarioExceptions = new ArrayList<>();
-        List<ScenarioError> scenarioErrors = new ArrayList<>();
-        List<Throwable> postStepFailures = new ArrayList<>();
-        System.out.println("================\nScenarioOutline: " + getDescription() + "\n================");
-
-        // For every test data
-        if (getTestdata() != null)
+        if (canAndShouldExecuteScenario())
         {
+            // Initialize needed variables
+            List<ScenarioException> scenarioExceptions = new ArrayList<>();
+            List<ScenarioError> scenarioErrors = new ArrayList<>();
+            System.out.println("================\nScenarioOutline: " + getDescription() + "\n================");
             for (final T testdatum : this.testdata)
             {
-                doSingleTest(testdatum, scenarioExceptions, scenarioErrors, postStepFailures);
+                doSingleTest(testdatum, scenarioExceptions, scenarioErrors);
             }
+            System.out.println("\n\n");
+            finishScenario(scenarioExceptions, scenarioErrors);
         }
-        else
-        {
-            // If there are no steps, then the scenario is pending
-            if (getSteps() == null || getSteps().getSteps().isEmpty())
-            {
-                // Add the pending status to the list of stati
-                getStatus().add(Status.PENDING);
-                // Set up reporting
-                final ReportElement scenarioReporter = setUpReporter(getSteps(), null);
-                if (scenarioReporter != null)
-                {
-                    // Set pending for the reporter
-                    scenarioReporter.pending("No steps found");
-                }
-                // End execution of feature
-                return;
-            }
-        }
-        System.out.println("\n\n");
-        finishScenario(scenarioExceptions, scenarioErrors, postStepFailures);
     }
 
     /**
@@ -174,11 +140,9 @@ public class ScenarioOutline<T> extends AbstractScenario
      *            The list of {@link ScenarioException}s.
      * @param scenarioErrors
      *            The list of {@link ScenarioError}s.
-     * @param postStepFailures
-     *            The list of {@link Throwable}s.
      */
     private void doSingleTest(final T testdatum, final List<ScenarioException> scenarioExceptions,
-            final List<ScenarioError> scenarioErrors, final List<Throwable> postStepFailures)
+            final List<ScenarioError> scenarioErrors)
     {
         // Set the testdata
         TypeSteps<T> typeSteps = getSteps().withData(testdatum);
@@ -209,16 +173,6 @@ public class ScenarioOutline<T> extends AbstractScenario
         } catch (StepError exception)
         {
             scenarioErrors.add(scenarioError(testdatum, exception, scenarioReporter));
-        }
-        // Always execute the PostStep after the scenario is done
-        finally
-        {
-            // First we execute the postSteps
-            Throwable postStepFailure = doPostSteps(testdatum);
-            if (postStepFailure != null)
-            {
-                postStepFailures.add(postStepFailure);
-            }
         }
         System.out.println("\n");
     }
@@ -388,8 +342,7 @@ public class ScenarioOutline<T> extends AbstractScenario
      * @param scenarioErrors
      *            The list of scenarioErrors that happened in the scenario.
      */
-    private void finishScenario(List<ScenarioException> scenarioExceptions, List<ScenarioError> scenarioErrors,
-            List<Throwable> postStepFailures)
+    private void finishScenario(List<ScenarioException> scenarioExceptions, List<ScenarioError> scenarioErrors)
     {
         // Then we collect the throwables
         MultipleScenarioWrapperException scenarioWrapperException = new MultipleScenarioWrapperException(
@@ -404,32 +357,6 @@ public class ScenarioOutline<T> extends AbstractScenario
         {
             throw new ScenarioError(scenarioWrapperException);
         }
-        if (postStepFailures != null && !postStepFailures.isEmpty())
-        {
-            MultipleFailureException multipleFailureException = new MultipleFailureException(postStepFailures);
-            throw new ScenarioException(multipleFailureException);
-        }
-    }
-
-    /**
-     * Executes postSteps added by {@link #postSteps(Supplier)}.
-     */
-    protected Throwable doPostSteps(T testdatum)
-    {
-        Throwable throwable = null;
-        if (this.postSteps != null)
-        {
-            this.postSteps.setReporter(getReporter());
-            this.postSteps.withData(testdatum);
-            try
-            {
-                this.postSteps.test();
-            } catch (Exception | Error e)
-            {
-                throwable = e;
-            }
-        }
-        return throwable;
     }
 
     public List<T> getTestdata()

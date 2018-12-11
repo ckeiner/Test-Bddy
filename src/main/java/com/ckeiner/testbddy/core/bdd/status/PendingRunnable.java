@@ -1,6 +1,12 @@
 package com.ckeiner.testbddy.core.bdd.status;
 
-public interface PendingRunnable extends Runnable
+public class PendingRunnable implements Runnable
 {
+
+    @Override
+    public void run()
+    {
+        throw new UnsupportedOperationException("Should not be executed");
+    }
 
 }
