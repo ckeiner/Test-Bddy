@@ -91,6 +91,18 @@ public class BddSuite
     }
 
     /**
+     * Creates a {@link Scenario} with the specified description.
+     * 
+     * @param description
+     *            The description of the Scenario.
+     * @return A Scenario with the specified description.
+     */
+    public static Scenario scenario(String description)
+    {
+        return new Scenario(description);
+    }
+
+    /**
      * Creates a {@link OutlineDescriptor} with the specified test data.
      * 
      * @param testdata
