@@ -1,7 +1,5 @@
 package com.ckeiner.testbddy.core.bdd.steps;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.function.Consumer;
 
 import org.junit.Assert;
@@ -25,53 +23,6 @@ public class TypeStepsTest
         TypeSteps<Object> steps = new TypeSteps<Object>();
         // Assert there is an empty list of TypeStep
         Assert.assertTrue(steps.getSteps().isEmpty());
-    }
-
-    /**
-     * Verifies that {@link TypeSteps} can contain no {@link TypeStep}s
-     */
-    @Test
-    public void canContainEmptyStep()
-    {
-        // Create list of steps
-        List<TypeStep<Object>> stepList = new ArrayList<TypeStep<Object>>();
-        // Create instance of steps with stepList
-        TypeSteps<Object> steps = new TypeSteps<Object>(stepList);
-        // Assert there is an empty list of TypeStep
-        Assert.assertTrue(steps.getSteps().isEmpty());
-    }
-
-    /**
-     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
-     * {@link TypeSteps#given(String, Runnable)}.
-     */
-    @Test
-    // TODO How to handle this case?
-    public void canContainAStepWithNullList()
-    {
-        // Create instance of steps with null
-        TypeSteps<Object> steps = new TypeSteps<Object>(null);
-        Assert.assertNull(steps.getSteps());
-
-        String stepDescription = "A given step";
-        // Add a given step
-        steps.given(stepDescription, (Runnable) null);
-        // Assert that the list isn't null anymore
-        Assert.assertTrue(steps.getSteps() != null);
-        // Assert the list isn't empty
-        Assert.assertFalse(steps.getSteps().isEmpty());
-        // Assert the list has one step
-        Assert.assertEquals(1, steps.getSteps().size());
-        // Get the step
-        TypeStep<Object> step = steps.getSteps().get(0);
-        // Assert the step description is correct
-        Assert.assertEquals(stepDescription, step.getDescription());
-        // Assert that the keyword is correct
-        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Given);
-        // Assert the behavior is null
-        Assert.assertNull(step.getBehavior());
-        // Assert the status of the step is empty
-        Assert.assertTrue(step.getStatus().isEmpty());
     }
 
     /**
@@ -180,39 +131,6 @@ public class TypeStepsTest
         Assert.assertEquals(stepDescription, step.getDescription());
         // Assert that the keyword is correct
         Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Then);
-        // Assert the behavior is null
-        Assert.assertNull(step.getBehavior());
-        // Assert the status of the step is empty
-        Assert.assertTrue(step.getStatus().isEmpty());
-    }
-
-    /**
-     * Verifies that {@link TypeSteps} can contain a {@link TypeStep} with
-     * {@link TypeSteps#given(String, Consumer)}.
-     */
-    @Test
-    // TODO How to handle this case?
-    public void canContainAConsumerStepWithNullList()
-    {
-        // Create instance of steps with null
-        TypeSteps<Object> steps = new TypeSteps<Object>(null);
-        Assert.assertNull(steps.getSteps());
-
-        String stepDescription = "A given step";
-        // Add a given step
-        steps.given(stepDescription, (Consumer<Object>) null);
-        // Assert that the list isn't null anymore
-        Assert.assertTrue(steps.getSteps() != null);
-        // Assert the list isn't empty
-        Assert.assertFalse(steps.getSteps().isEmpty());
-        // Assert the list has one step
-        Assert.assertEquals(1, steps.getSteps().size());
-        // Get the step
-        TypeStep<Object> step = steps.getSteps().get(0);
-        // Assert the step description is correct
-        Assert.assertEquals(stepDescription, step.getDescription());
-        // Assert that the keyword is correct
-        Assert.assertTrue(KeywordAccessor.getKeyword(step.getKeyword()) instanceof Given);
         // Assert the behavior is null
         Assert.assertNull(step.getBehavior());
         // Assert the status of the step is empty
