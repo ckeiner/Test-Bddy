@@ -79,12 +79,14 @@ public abstract class AbstractStep<T> implements Statusable
      *             If an Exception occurs. The report shows the step as fatal.
      * @throws StepError
      *             If an Error occurs. The report shows the step as failed.
+     * @return boolean which describes whether the next step should be executed or
+     *         not
      */
-    public void test()
+    public boolean test()
     {
+        boolean executeNextStep = true;
         if (canAndShouldExecuteStep())
         {
-
             // Create the ReportElement
             ReportElement element = setUpReporter();
             // Print the description of the step
@@ -131,6 +133,11 @@ public abstract class AbstractStep<T> implements Statusable
                 throw new StepError(e);
             }
         }
+        else if (getStatus().contains(Status.PENDING) || getStatus().contains(Status.SKIP))
+        {
+            executeNextStep = false;
+        }
+        return executeNextStep;
     }
 
     protected boolean canAndShouldExecuteStep()

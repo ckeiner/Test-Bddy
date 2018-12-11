@@ -280,7 +280,7 @@ public class TypeStepsTest
      * {@link TypeSteps#and(String, Consumer)}.
      */
     @Test
-    public void canContainAnConsumerAndStep()
+    public void canContainAConsumerAndStep()
     {
         String stepDescription = "A given step";
         // Create instance of steps
