@@ -10,6 +10,7 @@ import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
 import com.ckeiner.testbddy.core.reporting.ReportInterface;
+import com.ckeiner.testbddy.core.reporting.extentreports.ExtentReportInterface;
 import com.ckeiner.testbddy.core.throwables.MultipleScenarioWrapperException;
 import com.ckeiner.testbddy.core.throwables.errors.FeatureError;
 import com.ckeiner.testbddy.core.throwables.errors.ScenarioError;
@@ -27,7 +28,7 @@ public class Feature implements Statusable
     /**
      * The object responsible for reporting.
      */
-    public static ReportInterface reporter;
+    public ReportInterface reporter;
 
     /**
      * The description of the feature.
@@ -91,6 +92,7 @@ public class Feature implements Statusable
         this.scenarios = scenarios;
         status = new LinkedHashSet<Status>();
         this.classFeatureDefinedIn = classFeatureDefinedIn;
+        this.reporter = ExtentReportInterface.getInstance();
     }
 
     /**
@@ -134,8 +136,17 @@ public class Feature implements Statusable
                 }
             }
 
-            // Finish the test with proper reporting, and exception, error throwing
-            finishTest(featureReport, scenarioExceptions, scenarioErrors);
+            try
+            {
+                // Finish the test with proper reporting, and exception, error throwing
+                finishTest(featureReport, scenarioExceptions, scenarioErrors);
+            } finally
+            {
+                if (reporter != null)
+                {
+                    reporter.finishReport();
+                }
+            }
         }
     }
 
@@ -348,7 +359,7 @@ public class Feature implements Statusable
 
     public Feature withReporter(ReportInterface reporter)
     {
-        Feature.reporter = reporter;
+        this.reporter = reporter;
         return this;
     }
 }

@@ -40,6 +40,7 @@ public class Wip extends StatusDefinitions
                 () -> scenario("A feature is wip", 
                         given("A feature is wip", () -> {
                             feature  = featureWithEmtpyBehavior().wip();
+                            feature.withReporter(null);
                         })
                         .when("The feature is executed", () -> {
                             feature.test();

@@ -5,7 +5,6 @@ import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
 import static com.ckeiner.testbddy.api.BddSuite.withData;
 
-import com.ckeiner.testbddy.api.AbstractExtentReportTest;
 import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.OutlineDescriptor;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
@@ -13,7 +12,7 @@ import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
-public abstract class StatusDefinitions extends AbstractExtentReportTest
+public abstract class StatusDefinitions
 {
 
     protected Steps stepsWithEmtpyBehavior()

@@ -40,6 +40,7 @@ public class Pending
                 () -> scenario("A feature without scenarios is defined",
                         given("A feature with neither scenarios nor reporter is defined", () -> {
                             feature  = featureWithoutScenarios();
+                            feature.withReporter(null);
                         })
                         .when("The feature is executed", () -> {
                             feature.test();

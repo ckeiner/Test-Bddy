@@ -133,7 +133,10 @@ public class Scenario extends AbstractScenario
         }
         // Skip the steps
         steps.skipSteps();
-        scenarioReporter.skip(getDescription());
+        if (scenarioReporter != null)
+        {
+            scenarioReporter.skip(getDescription());
+        }
     }
 
     /**

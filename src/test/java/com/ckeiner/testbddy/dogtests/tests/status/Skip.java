@@ -28,6 +28,7 @@ public class Skip extends StatusDefinitions
                         withData(featureWithEmtpyBehavior(), featureThatThrowsAnError())
                         .given("A <data.getDescription()> is skipped", data -> {
                             data.skip();
+                            data.withReporter(null);
                         })
                         .when("The <data.getDescription()> is executed", data -> {
                             data.test();

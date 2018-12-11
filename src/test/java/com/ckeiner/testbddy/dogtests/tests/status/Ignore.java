@@ -27,6 +27,7 @@ public class Ignore extends StatusDefinitions
                         withData(featureWithEmtpyBehavior(), featureThatThrowsAnError())
                         .given("<data.getDescription()> is ignored", data -> {
                             data.ignore();
+                            data.withReporter(null);
                         })
                         .when("<data.getDescription()> is executed", data -> {
                             data.test();

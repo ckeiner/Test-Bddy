@@ -30,7 +30,7 @@ public class DefineStringFeature
                                 {
                                     throw new AssertionError(data + " does not match any of the teststrings");
                                 }
-                            }))).test();
+                            }))).withReporter(null).test();
     }
 
 }
