@@ -130,7 +130,7 @@ public class ExtentElement implements ReportElement
     @Override
     public void pending(String description)
     {
-        this.skip("<b>PENDING</b>: " + description);
+        this.skip(description);
     }
 
     @Override

@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.status.PendingConsumer;
-import com.ckeiner.testbddy.core.bdd.status.PendingRunnable;
+import com.ckeiner.testbddy.api.PendingConsumer;
+import com.ckeiner.testbddy.api.PendingRunnable;
 
 /**
  * Describes a scenario with only one data set.<br>

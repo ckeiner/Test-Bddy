@@ -4,8 +4,8 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.status.PendingConsumer;
-import com.ckeiner.testbddy.core.bdd.status.PendingRunnable;
+import com.ckeiner.testbddy.api.PendingConsumer;
+import com.ckeiner.testbddy.api.PendingRunnable;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
@@ -133,9 +133,10 @@ public abstract class AbstractStep<T> implements Statusable
                 throw new StepError("Step " + getDescription() + " failed.", e);
             }
         }
+
         // If the status does not contain Ignore but either pending or skip, do not
         // execute the next step
-        else if (getStatus().contains(Status.IGNORE)
+        if (!getStatus().contains(Status.IGNORE)
                 && (getStatus().contains(Status.PENDING) || getStatus().contains(Status.SKIP)))
         {
             executeNextStep = false;

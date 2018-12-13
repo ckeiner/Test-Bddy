@@ -8,11 +8,11 @@ import static com.ckeiner.testbddy.api.BddSuite.withData;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.ckeiner.testbddy.api.PendingConsumer;
+import com.ckeiner.testbddy.api.PendingRunnable;
 import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
-import com.ckeiner.testbddy.core.bdd.status.PendingConsumer;
-import com.ckeiner.testbddy.core.bdd.status.PendingRunnable;
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;

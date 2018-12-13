@@ -1,4 +1,4 @@
-package com.ckeiner.testbddy.core.bdd.status;
+package com.ckeiner.testbddy.api;
 
 public class PendingRunnable implements Runnable
 {

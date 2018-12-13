@@ -1,4 +1,4 @@
-package com.ckeiner.testbddy.core.bdd.status;
+package com.ckeiner.testbddy.api;
 
 import java.util.function.Consumer;
 
