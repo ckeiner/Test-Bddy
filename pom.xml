@@ -46,7 +46,7 @@
                 <configuration>
                     <forkCount>2</forkCount>
                     <includes>
-                            <include>**/reporting/*.java</include>
+                            <include>**/*.java</include>
                     </includes>
                     <testFailureIgnore>true</testFailureIgnore>
                 </configuration>
