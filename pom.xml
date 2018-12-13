@@ -5,7 +5,7 @@
 
     <groupId>com.ckeiner</groupId>
     <artifactId>test-bddy</artifactId>
-    <version>0.1.2</version>
+    <version>0.2.0</version>
     <packaging>jar</packaging>
     
     <name>test-bddy</name>
