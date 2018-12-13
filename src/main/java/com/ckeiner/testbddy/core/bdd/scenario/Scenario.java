@@ -1,7 +1,5 @@
 package com.ckeiner.testbddy.core.bdd.scenario;
 
-import java.util.function.Supplier;
-
 import com.ckeiner.testbddy.core.bdd.status.Status;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
@@ -35,11 +33,6 @@ public class Scenario extends AbstractScenario
     {
         super(description);
         this.steps = steps;
-    }
-
-    public Scenario(final String description, final Supplier<Steps> stepsSupplier)
-    {
-        this(description, stepsSupplier.get());
     }
 
     /**
@@ -100,7 +93,8 @@ public class Scenario extends AbstractScenario
 
         if (getSteps() == null)
         {
-            throw new IllegalStateException("Null steps found");
+            throw new ScenarioException("Scenario " + getDescription() + " failed.",
+                    new IllegalStateException("Null steps found"));
         }
 
         // If there are no steps, then the scenario is pending

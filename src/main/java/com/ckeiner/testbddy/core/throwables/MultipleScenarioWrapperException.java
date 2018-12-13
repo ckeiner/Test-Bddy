@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.runners.model.MultipleFailureException;
+import org.junit.internal.runners.model.MultipleFailureException;
 
 import com.ckeiner.testbddy.core.throwables.errors.ScenarioError;
 import com.ckeiner.testbddy.core.throwables.exceptions.ScenarioException;

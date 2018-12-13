@@ -18,7 +18,7 @@ public class ScenarioTest
     public void canContainNoSteps()
     {
         String scenarioDescription = "Scenario Description";
-        Scenario scenario = new Scenario(scenarioDescription, () -> null);
+        Scenario scenario = new Scenario(scenarioDescription, null);
 
         Assert.assertEquals(scenarioDescription, scenario.getDescription());
         Assert.assertNull(scenario.getSteps());

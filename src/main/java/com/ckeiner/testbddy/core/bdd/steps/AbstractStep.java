@@ -121,7 +121,7 @@ public abstract class AbstractStep<T> implements Statusable
                     stepReporter.fatal(e);
                 }
                 // Throw an Exception
-                throw new StepException(e);
+                throw new StepException("Step " + getDescription() + " failed.", e);
             } catch (Error e)
             {
                 // Mark the node as failed
@@ -130,7 +130,7 @@ public abstract class AbstractStep<T> implements Statusable
                     stepReporter.fail(e);
                 }
                 // Throw an Error
-                throw new StepError(e);
+                throw new StepError("Step " + getDescription() + " failed.", e);
             }
         }
         // If the status does not contain Ignore but either pending or skip, do not
@@ -154,7 +154,8 @@ public abstract class AbstractStep<T> implements Statusable
 
         if (behavior == null)
         {
-            throw new IllegalStateException("Null behavior found");
+            throw new StepException("Step " + getDescription() + " failed.",
+                    new IllegalStateException("Null behavior found"));
         }
 
         // If the behavior is either a pending runnable or pending consumer

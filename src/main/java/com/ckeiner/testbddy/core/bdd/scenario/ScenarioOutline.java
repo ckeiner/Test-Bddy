@@ -28,10 +28,10 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     private final List<T> testdata;
 
-    public ScenarioOutline(String description, TypeSteps<T> stepSupplier, List<T> testdata)
+    public ScenarioOutline(String description, TypeSteps<T> steps, List<T> testdata)
     {
         super(description);
-        setSteps(stepSupplier);
+        this.steps = steps;
         this.testdata = testdata;
     }
 
@@ -77,12 +77,14 @@ public class ScenarioOutline<T> extends AbstractScenario
 
         if (getSteps() == null)
         {
-            throw new IllegalStateException("Null steps found");
+            throw new ScenarioException("Scenario " + getDescription() + " failed.",
+                    new IllegalStateException("Null steps found"));
         }
 
         if (getTestdata() == null)
         {
-            throw new IllegalStateException("Null Testdata found");
+            throw new ScenarioException("Scenario " + getDescription() + " failed.",
+                    new IllegalStateException("Null Testdata found"));
         }
 
         if (getTestdata().isEmpty())

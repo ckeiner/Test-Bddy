@@ -9,14 +9,19 @@ import org.junit.Test;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
+import com.ckeiner.testbddy.core.throwables.MultipleScenarioWrapperException;
+import com.ckeiner.testbddy.core.throwables.exceptions.FeatureException;
+import com.ckeiner.testbddy.core.throwables.exceptions.ScenarioException;
+import com.ckeiner.testbddy.util.BddComponentDefinitions;
 
 public class FeatureTest
 {
     /**
-     * Verifies that a features can contain no scenarios
+     * Verifies that a features fails during the execution if it the
+     * {@link Feature#getScenarios()} is <code>null</code>.
      */
     @Test
-    public void canContainNoScenarios()
+    public void cannotRunWithNullScenarios()
     {
         String featureDescription = "Feature Description";
         // Create feature consisting only of the description
@@ -89,6 +94,83 @@ public class FeatureTest
         Assert.assertEquals(scenarioDescription, feature.getScenarios().get(0).getDescription());
         // Verify the description of the second scenario remains the same
         Assert.assertEquals(anotherScenarioDescription, feature.getScenarios().get(1).getDescription());
+    }
+
+    /**
+     * Verifies a fully defined feature runs without issues.
+     */
+    @Test
+    public void canRunFullFeature()
+    {
+        BddComponentDefinitions.fullFeature().test();
+    }
+
+    /**
+     * Verifies a feature executes all scenarios.
+     */
+    @Test
+    public void canRunFeatureWithThreeScenarios()
+    {
+        BddComponentDefinitions.fullFeatureWithThreeScenarios().test();
+    }
+
+    /**
+     * Verifies, that a feature without scenarios returns an error
+     */
+    @Test
+    public void failsWithNullScenarioFeature()
+    {
+        try
+        {
+            BddComponentDefinitions.nullScenarioFeature().test();
+            Assert.fail("Should have thrown a FeatureException");
+        } catch (FeatureException e)
+        {
+            Assert.assertTrue(e.getCause() instanceof IllegalStateException);
+        }
+    }
+
+    /**
+     * Verifies that a feature runs all scenarios regardless of whether one fails or
+     * not.
+     */
+    @Test
+    public void verifyAllScenariosRunWhenOneFails()
+    {
+        try
+        {
+            BddComponentDefinitions.featureContainingAFailingScenario().test();
+            Assert.fail("Should have thrown a FeatureException");
+        } catch (FeatureException e)
+        {
+            Assert.assertTrue(e.getCause() instanceof MultipleScenarioWrapperException);
+            MultipleScenarioWrapperException mswe = (MultipleScenarioWrapperException) e.getCause();
+            Assert.assertEquals(1, mswe.getFailures().size());
+            Assert.assertTrue(mswe.getFailures().get(0) instanceof ScenarioException);
+            ScenarioException scenarioException = (ScenarioException) mswe.getFailures().get(0);
+            Assert.assertTrue(scenarioException.getCause() instanceof IllegalStateException);
+        }
+    }
+
+    /**
+     * Verifies that a feature runs all scenarios even if one is null.
+     */
+    @Test
+    public void verifyAllScenariosRunWhenOneIsNull()
+    {
+        try
+        {
+            BddComponentDefinitions.featureContainingANullScenario().test();
+            Assert.fail("Should have thrown a FeatureException");
+        } catch (FeatureException e)
+        {
+            Assert.assertTrue(e.getCause() instanceof MultipleScenarioWrapperException);
+            MultipleScenarioWrapperException mswe = (MultipleScenarioWrapperException) e.getCause();
+            Assert.assertEquals(1, mswe.getFailures().size());
+            Assert.assertTrue(mswe.getFailures().get(0) instanceof ScenarioException);
+            ScenarioException scenarioException = (ScenarioException) mswe.getFailures().get(0);
+            Assert.assertTrue(scenarioException.getCause() instanceof IllegalStateException);
+        }
     }
 
 }

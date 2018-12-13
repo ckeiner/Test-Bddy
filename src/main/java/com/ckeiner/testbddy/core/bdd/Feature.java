@@ -125,22 +125,30 @@ public class Feature implements Statusable
             // For each scenario
             for (final AbstractScenario scenario : getScenarios())
             {
-                // Set the reporter of the scenario if the feature has one
-                if (scenario.getReporter() == null && reporter != null)
+                // If the scenario is not null
+                if (scenario != null)
                 {
-                    scenario.setReporter(reporter);
+                    // Set the reporter of the scenario if the feature has one
+                    if (scenario.getReporter() == null && reporter != null)
+                    {
+                        scenario.setReporter(reporter);
+                    }
+                    // Execute the scenario and catch all exceptions and errors
+                    try
+                    {
+                        // Execute the feature
+                        executeScenario(scenario);
+                    } catch (final ScenarioException e)
+                    {
+                        scenarioExceptions.add(e);
+                    } catch (final ScenarioError e)
+                    {
+                        scenarioErrors.add(e);
+                    }
                 }
-                // Execute the scenario and catch all exceptions and errors
-                try
+                else
                 {
-                    // Execute the feature
-                    executeScenario(scenario);
-                } catch (final ScenarioException e)
-                {
-                    scenarioExceptions.add(e);
-                } catch (final ScenarioError e)
-                {
-                    scenarioErrors.add(e);
+                    scenarioExceptions.add(new ScenarioException(new IllegalStateException("Scenario is null")));
                 }
             }
 
@@ -172,7 +180,8 @@ public class Feature implements Statusable
 
         if (getScenarios() == null)
         {
-            throw new IllegalStateException("Scenarios are null");
+            throw new FeatureException(classFeatureDefinedIn + ".Feature \"" + description + "\" failed.",
+                    new IllegalStateException("Scenarios are null"));
         }
 
         // If there is no scenario, then the feature is pending
