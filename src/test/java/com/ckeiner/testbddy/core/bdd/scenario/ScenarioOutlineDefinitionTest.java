@@ -14,7 +14,7 @@ import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
-public class ScenarioOutlineTest
+public class ScenarioOutlineDefinitionTest
 {
     /**
      * Verifies that a {@link ScenarioOutline} can contain no steps

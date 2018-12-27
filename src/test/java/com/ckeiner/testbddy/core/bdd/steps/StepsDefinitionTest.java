@@ -11,7 +11,7 @@ import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
-public class StepsTest
+public class StepsDefinitionTest
 {
     /**
      * Verifies that {@link Steps} can contain no {@link Step}s

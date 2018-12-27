@@ -13,7 +13,7 @@ import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
-public class TypeStepsTest
+public class TypeStepsDefinitionTest
 {
     /**
      * Verifies that {@link TypeSteps} can contain no {@link TypeStep}s

@@ -10,7 +10,7 @@ import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
-public class ScenarioTest
+public class ScenarioDefinitionTest
 {
     /**
      * Verifies that a {@link Scenario} can contain no {@link Steps}.

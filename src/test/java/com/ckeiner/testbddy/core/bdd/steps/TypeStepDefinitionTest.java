@@ -1,14 +1,18 @@
 package com.ckeiner.testbddy.core.bdd.steps;
 
+import java.util.function.Consumer;
+
 import org.junit.Assert;
 import org.junit.Test;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.ckeiner.testbddy.core.bdd.steps.Step;
+import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 
-public class StepTest
+public class TypeStepDefinitionTest
 {
     /**
-     * Verifies that a {@link Step} can contain no behavior.
+     * Verifies that a {@link TypeStep} can contain no behavior.
      * 
      * @throws ClassNotFoundException
      */
@@ -22,7 +26,7 @@ public class StepTest
         // Create the description for a step
         String stepDescription = "Step Description";
         // Create Step with the keyword, description and no behavior
-        Step step = new Step(keyword, stepDescription, null);
+        TypeStep<Object> step = new TypeStep<Object>(keyword, stepDescription, null);
         // Assert the keyword is correct
         Assert.assertEquals(keyword, step.getKeyword());
         // Assert the description is correct
@@ -45,17 +49,49 @@ public class StepTest
         // Create instance of steps
         GherkinKeyword keyword = new GherkinKeyword(keywordString);
         String stepDescription = "Step Description";
-        Runnable runner = () ->
+        Consumer<Object> consumer = (data) ->
             {
             };
-        Step step = new Step(keyword, stepDescription, runner);
+        TypeStep<Object> step = new TypeStep<Object>(keyword, stepDescription, consumer);
         // Assert the keyword is correct
         Assert.assertEquals(keyword, step.getKeyword());
         // Assert the description is correct
         Assert.assertEquals(stepDescription, step.getDescription());
         // Assert the behavior is correct
-        Assert.assertEquals(runner, step.getBehavior());
+        Assert.assertEquals(consumer, step.getBehavior());
         // Assert that the status is empty
         Assert.assertTrue(step.getStatus().isEmpty());
+    }
+
+    /**
+     * Verifies that a {@link TypeStep} can contain test data.
+     * 
+     * @throws ClassNotFoundException
+     */
+    @Test
+    public void canContainTestdata() throws ClassNotFoundException
+    {
+        // Create String containing the keyword
+        String keywordString = "Given";
+        // Create a GherkinKeyword for the step
+        GherkinKeyword keyword = new GherkinKeyword(keywordString);
+        // Create the description for a step
+        String stepDescription = "Step Description";
+        // Create Step with the keyword, description and no behavior
+        TypeStep<Object> step = new TypeStep<Object>(keyword, stepDescription, null);
+        // Assert there is no test data
+        Assert.assertNull(step.getTestdata());
+        // Add test data
+        Object someObject = new Object();
+        step.withData(someObject);
+        // Assert the test data is set
+        Assert.assertEquals(someObject, step.getTestdata());
+
+        // Create new object
+        someObject = new Object();
+        // Replace old test data with the new one
+        step.withData(someObject);
+        // Assert the new test data replaced the old one
+        Assert.assertEquals(someObject, step.getTestdata());
     }
 }
