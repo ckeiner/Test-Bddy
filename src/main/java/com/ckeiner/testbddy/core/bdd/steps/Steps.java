@@ -22,9 +22,9 @@ public class Steps extends AbstractSteps<Step>
     }
 
     @Override
-    protected boolean testStep(Step step)
+    protected void testStep(Step step)
     {
-        return step.test();
+        step.test();
     }
 
     @Override

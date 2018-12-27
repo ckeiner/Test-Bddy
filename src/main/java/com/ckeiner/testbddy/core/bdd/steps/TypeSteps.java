@@ -32,9 +32,9 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     @Override
-    protected boolean testStep(TypeStep<T> step)
+    protected void testStep(TypeStep<T> step)
     {
-        return step.withData(data).test();
+        step.withData(data).test();
     }
 
     @Override

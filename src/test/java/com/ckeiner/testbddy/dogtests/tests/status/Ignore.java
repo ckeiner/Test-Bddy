@@ -2,7 +2,7 @@ package com.ckeiner.testbddy.dogtests.tests.status;
 
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -24,7 +24,7 @@ public class Ignore extends StatusDefinitions
                  * Feature
                  */
                 () -> scenario("A feature is ignored", 
-                        withData(featureWithEmtpyBehavior(), featureThatThrowsAnError())
+                        with(featureWithEmtpyBehavior(), featureThatThrowsAnError())
                         .given("<data.getDescription()> is ignored", data -> {
                             data.ignore();
                             data.withReporter(null);
@@ -51,7 +51,7 @@ public class Ignore extends StatusDefinitions
                  * Scenario
                  */
                 () -> scenario("A scenario is ignored",
-                        withData(scenarioWithEmtpyBehavior(), scenarioThatThrowsAnError())
+                        with(scenarioWithEmtpyBehavior(), scenarioThatThrowsAnError())
                         .given("A <data.getDescription()> is ignored", data -> {
                             data.ignore();
                             data.setReporter(null);
@@ -69,7 +69,7 @@ public class Ignore extends StatusDefinitions
                         })
                 ),
                 () -> scenario("A scenario outline is ignored",
-                        withData(outlineWithEmtpyBehavior(), outlineThatThrowsAnError())
+                        with(outlineWithEmtpyBehavior(), outlineThatThrowsAnError())
                         .given("A <data.getDescription()> is ignored", data -> {
                             data.ignore();
                             data.setReporter(null);
@@ -90,7 +90,7 @@ public class Ignore extends StatusDefinitions
                  * Step
                  */
                 () -> scenario("A step is ignored",
-                        withData(stepsWithEmtpyBehavior(), stepsThatThrowsAnError())
+                        with(stepsWithEmtpyBehavior(), stepsThatThrowsAnError())
                         .given("A <data.getSteps().get(0).getDescription()> is ignored", data -> {
                             data.ignore();
                             data.setReporter(null);
@@ -103,7 +103,7 @@ public class Ignore extends StatusDefinitions
                         })
                 ),
                 () -> scenario("A typeStep is ignored",
-                        withData(typeStepsWithEmtpyBehavior(), typeStepsThatThrowsAnError())
+                        with(typeStepsWithEmtpyBehavior(), typeStepsThatThrowsAnError())
                         .given("A <data.getSteps().get(0).getDescription()> is ignored", data -> {
                             data.ignore();
                             data.setReporter(null);
@@ -115,7 +115,7 @@ public class Ignore extends StatusDefinitions
                             Assert.assertTrue(data.getSteps().get(0).getStatus().contains(Status.IGNORE));
                         })
                 )
-                // TODO Skip with multiple sibling and childs: two steps, etc
+                // TODO Ignore with multiple sibling and childs: two steps, etc
         ).test();
         //@formatter:on
     }

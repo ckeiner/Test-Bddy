@@ -3,7 +3,7 @@ package com.ckeiner.testbddy.dogtests.tests.status;
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -150,24 +150,24 @@ public class Pending
 
     protected ScenarioOutline<Object> outlineWithoutSteps()
     {
-        return scenario("Scenario without Steps", withData((Object) null));
+        return scenario("Scenario without Steps", with((Object) null));
     }
 
     protected ScenarioOutline<Object> outlineWithoutTestdata()
     {
-        return scenario("Scenario with no Testdata", withData().given("Given without Steps", () ->
+        return scenario("Scenario with no Testdata", with().given("Given without Steps", () ->
             {
             }));
     }
 
     protected TypeSteps<Object> typeStepsWithPendingRunnable()
     {
-        return withData((Object) null).given("Given without Steps", new PendingRunnable()).getSteps();
+        return with((Object) null).given("Given without Steps", new PendingRunnable()).getSteps();
     }
 
     protected TypeSteps<Object> typeStepsWithPendingConsumer()
     {
-        return withData((Object) null).given("Given without Steps", new PendingConsumer<Object>()).getSteps();
+        return with((Object) null).given("Given without Steps", new PendingConsumer<Object>()).getSteps();
     }
 
 }

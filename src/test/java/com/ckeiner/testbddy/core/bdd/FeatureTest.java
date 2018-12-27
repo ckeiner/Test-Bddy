@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
@@ -135,7 +136,7 @@ public class FeatureTest
      * not.
      */
     @Test
-    public void verifyAllScenariosRunWhenOneFails()
+    public void shouldRunAllScenariosEvenWhenOneFails()
     {
         try
         {
@@ -156,7 +157,7 @@ public class FeatureTest
      * Verifies that a feature runs all scenarios even if one is null.
      */
     @Test
-    public void verifyAllScenariosRunWhenOneIsNull()
+    public void shouldRunAllScenariosEvenWhenOneIsNull()
     {
         try
         {

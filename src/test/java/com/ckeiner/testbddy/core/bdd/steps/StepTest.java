@@ -4,7 +4,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.steps.Step;
 
 public class StepTest
 {
@@ -59,5 +58,4 @@ public class StepTest
         // Assert that the status is empty
         Assert.assertTrue(step.getStatus().isEmpty());
     }
-
 }

@@ -3,7 +3,7 @@ package com.ckeiner.testbddy.core.functional;
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import java.util.List;
 
@@ -78,7 +78,7 @@ public class DefineFeature
         final String thenDescription = "Define a then step";
 
         Feature definedFeature = feature(featureDescription,
-                () -> scenario(scenarioDescription, withData("Some Data").given(givenDescription, () ->
+                () -> scenario(scenarioDescription, with("Some Data").given(givenDescription, () ->
                     {
                         System.out.println("Given I define some step");
                     }).when(whenDescription, () ->

@@ -2,7 +2,7 @@ package com.ckeiner.testbddy.dogtests.tests.status;
 
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import org.junit.Assert;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class Skip extends StatusDefinitions
                  * Feature
                  */
                 () -> scenario("A feature is skipped", 
-                        withData(featureWithEmtpyBehavior(), featureThatThrowsAnError())
+                        with(featureWithEmtpyBehavior(), featureThatThrowsAnError())
                         .given("A <data.getDescription()> is skipped", data -> {
                             data.skip();
                             data.withReporter(null);
@@ -52,7 +52,7 @@ public class Skip extends StatusDefinitions
                  * Scenario
                  */
                 () -> scenario("A scenario is skipped",
-                        withData(scenarioWithEmtpyBehavior(), scenarioThatThrowsAnError())
+                        with(scenarioWithEmtpyBehavior(), scenarioThatThrowsAnError())
                         .given("A <data.getDescription()> is skipped", data -> {
                             data.skip();
                             data.setReporter(null);
@@ -70,7 +70,7 @@ public class Skip extends StatusDefinitions
                         })
                 ),
                 () -> scenario("A scenario outline is skipped",
-                        withData(outlineWithEmtpyBehavior(), outlineThatThrowsAnError())
+                        with(outlineWithEmtpyBehavior(), outlineThatThrowsAnError())
                         .given("A <data.getDescription()> is skipped", data -> {
                             data.skip();
                             data.setReporter(null);
@@ -91,7 +91,7 @@ public class Skip extends StatusDefinitions
                  * Step
                  */
                 () -> scenario("A step is skipped",
-                        withData(stepsWithEmtpyBehavior(), stepsThatThrowsAnError())
+                        with(stepsWithEmtpyBehavior(), stepsThatThrowsAnError())
                         .given("A <data.getSteps().get(0).getDescription()> is skipped", data -> {
                             data.skip();
                             data.setReporter(null);
@@ -104,7 +104,7 @@ public class Skip extends StatusDefinitions
                         })
                 ),
                 () -> scenario("A typeStep is skipped",
-                        withData(typeStepsWithEmtpyBehavior(), typeStepsThatThrowsAnError())
+                        with(typeStepsWithEmtpyBehavior(), typeStepsThatThrowsAnError())
                         .given("A <data.getSteps().get(0).getDescription()> is skipped", data -> {
                             data.skip();
                             data.setReporter(null);

@@ -8,6 +8,8 @@ import com.aventstack.extentreports.gherkin.model.And;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.Then;
 import com.aventstack.extentreports.gherkin.model.When;
+import com.ckeiner.testbddy.core.bdd.steps.Step;
+import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
 public class StepsTest
 {

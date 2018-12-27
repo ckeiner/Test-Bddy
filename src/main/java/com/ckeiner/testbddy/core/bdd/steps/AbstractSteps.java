@@ -51,10 +51,8 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
      * 
      * @param step
      *            The step to execute.
-     * @return boolean which describes whether the next step should be executed or
-     *         not
      */
-    protected abstract boolean testStep(T step);
+    protected abstract void testStep(T step);
 
     /**
      * Skips the specified step.
@@ -79,7 +77,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     {
         StepException stepException = null;
         StepError stepError = null;
-        boolean continueExecution = true;
 
         // Execute each step
         for (final T step : getSteps())
@@ -91,14 +88,14 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
             try
             {
                 // If an exception or error occured in a previous step, skip this step
-                if (stepException != null || stepError != null || !continueExecution)
+                if (stepException != null || stepError != null)
                 {
                     skipStep(step);
                 }
                 // Otherwise test it
                 else
                 {
-                    continueExecution = testStep(step);
+                    testStep(step);
                 }
             } catch (StepException e)
             {

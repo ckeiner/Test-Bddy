@@ -3,7 +3,7 @@ package com.ckeiner.testbddy.dogtests.tests.status;
 import static com.ckeiner.testbddy.api.BddSuite.feature;
 import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.OutlineDescriptor;
@@ -24,7 +24,7 @@ public abstract class StatusDefinitions
 
     protected OutlineDescriptor<Object> descriptorWithEmtpyBehavior()
     {
-        return withData(new Object()).given("Type Step with emtpy behavior", data ->
+        return with(new Object()).given("Type Step with emtpy behavior", data ->
             {
             });
     }
@@ -79,7 +79,7 @@ public abstract class StatusDefinitions
 
     protected OutlineDescriptor<Object> descriptorThatThrowsAnError()
     {
-        return withData(new Object()).given("TypeStep that throws an error", () ->
+        return with(new Object()).given("TypeStep that throws an error", () ->
             {
                 throw new IllegalStateException("Should not be thrown but is");
             });

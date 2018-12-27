@@ -10,6 +10,7 @@ import org.junit.Test;
 import com.aventstack.extentreports.KeywordAccessor;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.When;
+import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
@@ -40,7 +41,7 @@ public class ScenarioOutlineTest
     {
         String scenarioDescription = "Scenario Description";
         String stepDescription = "Step Description";
-        // TODO is this evil?
+        // TODO is this evil? -> Null immer Fehler, also schöner das zu def'fen
         TypeSteps<Object> steps = new TypeSteps<Object>().given(stepDescription, (Runnable) null);
         Object testdata = new Object();
         List<Object> testdataList = new ArrayList<>();

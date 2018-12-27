@@ -110,7 +110,7 @@ public class BddSuite
      * @return A OutlineDescriptor with the specified test data.
      */
     @SafeVarargs
-    public static <T> OutlineDescriptor<T> withData(T... testdata)
+    public static <T> OutlineDescriptor<T> with(T... testdata)
     {
         return new OutlineDescriptor<T>(testdata);
     }
@@ -120,7 +120,7 @@ public class BddSuite
      * 
      * @return A OutlineDescriptor without test data.
      */
-    public static <T> OutlineDescriptor<T> withDataOfType(Class<T> clazz)
+    public static <T> OutlineDescriptor<T> withTypeOf(Class<T> clazz)
     {
         return new OutlineDescriptor<T>();
     }

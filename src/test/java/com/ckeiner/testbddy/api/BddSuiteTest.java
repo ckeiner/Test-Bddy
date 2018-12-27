@@ -6,7 +6,7 @@ import static com.ckeiner.testbddy.api.BddSuite.given;
 import static com.ckeiner.testbddy.api.BddSuite.scenario;
 import static com.ckeiner.testbddy.api.BddSuite.then;
 import static com.ckeiner.testbddy.api.BddSuite.when;
-import static com.ckeiner.testbddy.api.BddSuite.withData;
+import static com.ckeiner.testbddy.api.BddSuite.with;
 
 import java.util.function.Supplier;
 
@@ -97,14 +97,14 @@ public class BddSuiteTest
     }
 
     /**
-     * Verifies that {@link BddSuite#withData(Object...)} creates an
+     * Verifies that {@link BddSuite#with(Object...)} creates an
      * {@link OutlineDescriptor} with the specified test data.
      */
     @Test
     public void canCreateOutlineDescriptor()
     {
         Object testdata = new Object();
-        OutlineDescriptor<Object> descriptor = withData(testdata);
+        OutlineDescriptor<Object> descriptor = with(testdata);
 
         // Assert that the size is correct
         Assert.assertEquals(1, descriptor.getTestdata().size());
