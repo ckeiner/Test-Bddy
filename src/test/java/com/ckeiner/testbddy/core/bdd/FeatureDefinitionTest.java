@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.Scenario;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
@@ -15,14 +14,13 @@ import com.ckeiner.testbddy.core.throwables.exceptions.FeatureException;
 import com.ckeiner.testbddy.core.throwables.exceptions.ScenarioException;
 import com.ckeiner.testbddy.util.BddComponentDefinitions;
 
-public class FeatureTest
+public class FeatureDefinitionTest
 {
     /**
-     * Verifies that a features fails during the execution if it the
-     * {@link Feature#getScenarios()} is <code>null</code>.
+     * Verifies that a features can contain <code>null</code> scenarios.
      */
     @Test
-    public void cannotRunWithNullScenarios()
+    public void canContainANullScenario()
     {
         String featureDescription = "Feature Description";
         // Create feature consisting only of the description

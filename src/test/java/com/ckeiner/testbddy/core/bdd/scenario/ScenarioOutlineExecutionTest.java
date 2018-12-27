@@ -13,6 +13,7 @@ import com.ckeiner.testbddy.util.ExecutionTest;
 
 public class ScenarioOutlineExecutionTest extends ExecutionTest
 {
+    // TODO Null Testdata in between
     /**
      * Verifies that a {@link ScenarioOutline} does not execute without steps or
      * test data.
