@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import com.aventstack.extentreports.gherkin.model.And;
+import com.aventstack.extentreports.gherkin.model.Given;
+import com.aventstack.extentreports.gherkin.model.Then;
+import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.Feature;
 import com.ckeiner.testbddy.core.bdd.scenario.AbstractScenario;
 import com.ckeiner.testbddy.core.bdd.scenario.OutlineDescriptor;
@@ -16,16 +20,16 @@ public class BddSuite
 {
 
     /**
-     * Creates a {@link Feature} with the supplied description and the scenarios
-     * specified in the {@link Supplier}.<br>
-     * A single such supplier describes an {@link AbstractScenario} which is a
-     * {@link Scenario} or {@link ScenarioOutline}. Each other Supplier adds another
-     * Scenario or ScenarioOutline to the Feature.
+     * Creates a {@link Feature} with the supplied description and each scenario
+     * specified in the array of {@link Supplier}s.<br>
+     * A supplier describes an {@link AbstractScenario} which is either a
+     * {@link Scenario} or {@link ScenarioOutline}. Each Supplier then adds exactly
+     * one Scenario or ScenarioOutline to the Feature.
      * 
      * @param description
      *            The description of the Feature.
      * @param scenarioSuppliers
-     *            The Suppliers that contain an AbstractScenario.
+     *            The array of Suppliers that contain an AbstractScenario.
      * @return Feature, that is described by the description and has the
      *         {@link AbstractScenario}s of the supplier.
      */
@@ -38,20 +42,26 @@ public class BddSuite
         {
             scenarios.add(scenarioSupplier.get());
         }
+
+        /*
+         * Add the defining class to the name of the feature. The defining class is
+         * either the second or third element on the stack, depending on where the
+         * feature is defined.
+         */
         String currentClass = Thread.currentThread().getStackTrace()[2].getClassName();
-        // If this is the current class, then we have the wrong one, so simply take the
-        // next one
         if (currentClass.equals(BddSuite.class.getName()))
         {
             currentClass = Thread.currentThread().getStackTrace()[3].getClassName();
         }
+
         // Create the feature and return it
         return new Feature(description, scenarios, currentClass);
     }
 
     /**
-     * Creates a {@link ScenarioOutline} with the specified description.<br>
-     * The behavior and test data of the ScenarioOutline is inside the
+     * Creates a {@link ScenarioOutline} with the specified description and
+     * descriptor.<br>
+     * The behavior and test data of the ScenarioOutline is contained in the
      * {@link OutlineDescriptor}.
      * 
      * @param description
@@ -65,6 +75,11 @@ public class BddSuite
     public static <T> ScenarioOutline<T> scenario(String description, OutlineDescriptor<T> descriptor)
     {
         ScenarioOutline<T> outline;
+
+        /*
+         * If the descriptor wasn't null, create the ScenarioOutline with the content of
+         * the descriptor. Otherwise initialize it with null.
+         */
         if (descriptor != null)
         {
             outline = new ScenarioOutline<T>(description, descriptor.getSteps(), descriptor.getTestdata());
@@ -91,11 +106,11 @@ public class BddSuite
     }
 
     /**
-     * Creates a {@link Scenario} with the specified description.
+     * Creates a pending {@link Scenario} with the specified description.
      * 
      * @param description
      *            The description of the Scenario.
-     * @return A Scenario with the specified description.
+     * @return A pending scenario with the specified description.
      */
     public static Scenario scenario(String description)
     {
@@ -103,11 +118,11 @@ public class BddSuite
     }
 
     /**
-     * Creates a {@link OutlineDescriptor} with the specified test data.
+     * Creates an {@link OutlineDescriptor} with the specified test data.
      * 
      * @param testdata
      *            The test data for the OutlineDescriptor.
-     * @return A OutlineDescriptor with the specified test data.
+     * @return An OutlineDescriptor with the specified test data.
      */
     @SafeVarargs
     public static <T> OutlineDescriptor<T> with(T... testdata)
@@ -116,9 +131,9 @@ public class BddSuite
     }
 
     /**
-     * Creates a {@link OutlineDescriptor} without any test data.
+     * Creates an {@link OutlineDescriptor} without any test data.
      * 
-     * @return A OutlineDescriptor without test data.
+     * @return An OutlineDescriptor without test data.
      */
     public static <T> OutlineDescriptor<T> withTypeOf(Class<T> clazz)
     {
@@ -134,9 +149,9 @@ public class BddSuite
      * to it.
      * 
      * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     *            The {@link Steps} whose {@link Step}s should be added.
      * 
-     * @return The {@link Steps} with the specified {@link Step}s inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps and(Steps steps)
     {
@@ -144,13 +159,15 @@ public class BddSuite
     }
 
     /**
-     * Describes a single {@link Step} and returns it as {@link Steps}.
+     * Creates a new instance of {@link Steps} which contains the {@link Step}
+     * specified with the description and runnable. <br>
+     * The keyword of the Step is {@link And}.
      * 
      * @param description
      *            The description of the Step.
      * @param runner
      *            The behavior of the Step.
-     * @return An instance of {@link Steps} with the specified {@link Step} inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps and(String description, Runnable runner)
     {
@@ -162,9 +179,9 @@ public class BddSuite
      * to it.
      * 
      * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     *            The {@link Steps} whose {@link Step}s should be added.
      * 
-     * @return The {@link Steps} with the specified {@link Step}s inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps given(Steps steps)
     {
@@ -172,13 +189,15 @@ public class BddSuite
     }
 
     /**
-     * Describes a single {@link Step} and returns it as {@link Steps}.
+     * Creates a new instance of {@link Steps} which contains the {@link Step}
+     * specified with the description and runnable. <br>
+     * The keyword of the Step is {@link Given}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return An instance of {@link Steps} with the specified {@link Step} inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps given(String description, Runnable runner)
     {
@@ -190,9 +209,9 @@ public class BddSuite
      * to it.
      * 
      * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     *            The {@link Steps} whose {@link Step}s should be added.
      * 
-     * @return The {@link Steps} with the specified {@link Step}s inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps then(Steps steps)
     {
@@ -200,13 +219,15 @@ public class BddSuite
     }
 
     /**
-     * Describes a single {@link Step} and returns it as {@link Steps}.
+     * Creates a new instance of {@link Steps} which contains the {@link Step}
+     * specified with the description and runnable. <br>
+     * The keyword of the Step is {@link Then}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return An instance of {@link Steps} with the specified {@link Step} inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps then(String description, Runnable runner)
     {
@@ -218,9 +239,9 @@ public class BddSuite
      * to it.
      * 
      * @param steps
-     *            The {@link Steps} who's {@link Step}s should be added.
+     *            The {@link Steps} whose {@link Step}s should be added.
      * 
-     * @return The {@link Steps} with the specified {@link Step}s inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps when(Steps steps)
     {
@@ -228,13 +249,15 @@ public class BddSuite
     }
 
     /**
-     * Describes a single {@link Step} and returns it as {@link Steps}.
+     * Creates a new instance of {@link Steps} which contains the {@link Step}
+     * specified with the description and runnable. <br>
+     * The keyword of the Step is {@link When}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return An instance of {@link Steps} with the specified {@link Step} inside.
+     * @return New {@link Steps} with the specified {@link Step}s inside.
      */
     public static Steps when(String description, Runnable runner)
     {

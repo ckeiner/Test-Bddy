@@ -2,6 +2,15 @@ package com.ckeiner.testbddy.api;
 
 import java.util.function.Consumer;
 
+import com.ckeiner.testbddy.core.bdd.steps.AbstractStep;
+
+/**
+ * Shows that an {@link AbstractStep} should be treated as pending.
+ * 
+ * @author ckeiner
+ *
+ * @param <T>
+ */
 public class PendingConsumer<T> implements Consumer<T>
 {
 
