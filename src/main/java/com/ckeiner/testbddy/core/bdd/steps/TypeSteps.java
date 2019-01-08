@@ -32,7 +32,7 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     @Override
-    protected void testStep(TypeStep<T> step)
+    protected void executeStep(TypeStep<T> step)
     {
         step.withData(data).test();
     }

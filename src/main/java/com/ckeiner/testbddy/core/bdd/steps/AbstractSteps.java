@@ -28,7 +28,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     private final List<T> steps;
 
     /**
-     * Creates AbstractSteps with the lists initialized as <code>ArrayList</code>.
+     * Creates an AbstractSteps with an empty list.
      */
     public AbstractSteps()
     {
@@ -47,14 +47,6 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     }
 
     /**
-     * Executes the specified step.
-     * 
-     * @param step
-     *            The step to execute.
-     */
-    protected abstract void testStep(T step);
-
-    /**
      * Skips the specified step.
      * 
      * @param step
@@ -63,15 +55,23 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     protected abstract void skipStep(T step);
 
     /**
-     * Executes the {@link Step}s.<br>
-     * If an exception or error occurs in the steps, the steps which weren't
-     * executed yet, are set to be skipped and the throwable is re-thrown.<br>
+     * Executes the specified step.
+     * 
+     * @param step
+     *            The step to execute.
+     */
+    protected abstract void executeStep(T step);
+
+    /**
+     * Executes all {@link Step}s.<br>
+     * If an exception or error occurs in any step, the steps which weren't executed
+     * yet, are set to be skipped and the throwable is re-thrown.<br>
      * Should both, an exception and an error, occur, a StepException is thrown.
      * 
      * @throws StepException
-     *             If a StepException occured in any Step.
+     *             If a StepException occurred in any Step.
      * @throws StepError
-     *             If an StepError and no StepExceptions occured in any Step.
+     *             If an StepError and no StepExceptions occurred in any Step.
      */
     public void test()
     {
@@ -95,7 +95,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
                 // Otherwise test it
                 else
                 {
-                    testStep(step);
+                    executeStep(step);
                 }
             } catch (StepException e)
             {
@@ -146,6 +146,7 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
         return steps;
     }
 
+    // TODO continue here
     /**
      * Adds all steps of the specified parameter to the steps.
      * 
@@ -180,9 +181,9 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     public abstract AbstractSteps<T> given(final Steps scenario);
 
     /**
-     * Adds the BddStep, specified by the description and runner, to the list of
+     * Adds the Step, specified by the description and runner, to the list of
      * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "Given".
+     * The GherkinKeyword for the Step is "Given".
      * 
      * @param description
      *            The description of the step.

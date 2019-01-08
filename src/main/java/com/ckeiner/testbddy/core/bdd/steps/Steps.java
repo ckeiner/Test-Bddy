@@ -22,7 +22,7 @@ public class Steps extends AbstractSteps<Step>
     }
 
     @Override
-    protected void testStep(Step step)
+    protected void executeStep(Step step)
     {
         step.test();
     }

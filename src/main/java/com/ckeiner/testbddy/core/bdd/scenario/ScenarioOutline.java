@@ -289,7 +289,8 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     /**
      * Creates a {@link ReportElement} for the scenario if a reporter is set.<br>
-     * Also assigns the scenario's status as the report element's category.
+     * Also assigns the scenario's status as the report element's category if
+     * reportStatus is true.
      * 
      * @param typeSteps
      *            The {@link TypeSteps} for which to create the reporter.

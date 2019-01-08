@@ -15,22 +15,23 @@ import com.ckeiner.testbddy.core.throwables.exceptions.StepException;
 
 /**
  * Describes a step in the BDD Hierarchy.<br>
- * That means, it contains the actual behavior.
+ * Hence, it contains the actual behavior.
  * 
  * @author ckeiner
  *
  * @param <T>
- *            The type of the behavior.
+ *            The type of the behavior. This is typically a functional interface
+ *            like {@link Runnable}.
  */
 public abstract class AbstractStep<T> implements Statusable
 {
     /**
-     * Shows the status of the step
+     * The status of the step
      */
     private final Set<Status> status;
 
     /**
-     * The object responsible for reporting.
+     * The reporter responsible for reporting.
      */
     private ReportInterface reporter;
 
@@ -40,7 +41,7 @@ public abstract class AbstractStep<T> implements Statusable
     private final GherkinKeyword keyword;
 
     /**
-     * Describes the step in natural language.
+     * Describes the step in a natural language.
      */
     private String description;
 
@@ -58,7 +59,7 @@ public abstract class AbstractStep<T> implements Statusable
      * @param description
      *            A String describing what this step does.
      * @param behavior
-     *            Contains the actual execution.
+     *            The behavior of the step.
      */
     public AbstractStep(final GherkinKeyword keyword, final String description, final T behavior)
     {
@@ -69,11 +70,13 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * The method called when the step should be executed.<br>
-     * If {@link #reporter} was specified, it first prepares the report. Then, it
-     * executes the behavior. <br>
-     * If {@link #skip} is set, the behavior isn't execute and the report marks the
-     * step as skipped.
+     * Executes the step.<br>
+     * It first verifies if the step can and should be run. Then sets up the
+     * reporter If {@link #reporter} was specified, it first prepares the report. If
+     * {@link #skip} is set, the {@link #skipStep()} method is called, otherwise
+     * {@link #executeStep()} is called. <br>
+     * If an Exception or Error occurs, it is re-thrown as {@link StepException} and
+     * {@link StepError} respectively.
      * 
      * @throws StepException
      *             If an Exception occurs. The report shows the step as fatal.
@@ -82,7 +85,6 @@ public abstract class AbstractStep<T> implements Statusable
      */
     public void test()
     {
-        boolean executeNextStep = true;
         if (canAndShouldExecuteStep())
         {
             // Create the ReportElement
@@ -133,6 +135,13 @@ public abstract class AbstractStep<T> implements Statusable
         }
     }
 
+    /**
+     * Verifies if the step can and should be executed. If a step is ignores, has a
+     * null behavior or the behavior is either {@link PendingRunnable} or
+     * {@link PendingConsumer}, it is not executed.
+     * 
+     * @return True if it should be executed. Otherwise false.
+     */
     protected boolean canAndShouldExecuteStep()
     {
         boolean executeStep = true;
@@ -167,7 +176,7 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * Skips the step
+     * Skips the step.
      */
     public void skipStep()
     {
@@ -181,12 +190,13 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * Defines how a single step is executed.
+     * Executes a single step.
      */
     protected abstract void executeStep();
 
     /**
-     * Sets the reporter up and shows the {@link Status} defined in {@link #status}.
+     * Creates a {@link ReportElement} for the step if a reporter is set.<br>
+     * Also assigns the step's status as the report element's category.
      * 
      * @return The {@link ReportElement} representing the step.
      */
@@ -196,35 +206,40 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * Sets the reporter up.
+     * Creates a {@link ReportElement} for the step if a reporter is set.<br>
+     * Also assigns the step's status as the report element's category if
+     * reportStatus is true.
      * 
-     * @param showStatus
+     * @param reportStatus
      *            Whether the status should be shown in the report.
      * @return The ReportElement for a Step. <code>null</code> if
      *         {@link #getReporter()} returns <code>null</code>.
      */
-    protected ReportElement setUpReporter(boolean showStatus)
+    protected ReportElement setUpReporter(boolean reportStatus)
     {
-        return setUpReporter(showStatus, getDescription());
+        return setUpReporter(reportStatus, getDescription());
     }
 
     /**
-     * Sets the reporter up with a custom description.
+     * Creates a {@link ReportElement} with a custom description for the step if a
+     * reporter is set.<br>
+     * Also assigns the step's status as the report element's category if
+     * reportStatus is true.
      * 
-     * @param showStatus
+     * @param reportStatus
      *            Whether the status should be shown in the report.
      * @param description
      *            The description of the {@link ReportElement}.
      * @return The ReportElement for a Step. <code>null</code> if
      *         {@link #getReporter()} returns <code>null</code>.
      */
-    protected ReportElement setUpReporter(boolean showStatus, String description)
+    protected ReportElement setUpReporter(boolean reportStatus, String description)
     {
         ReportElement element = null;
         if (reporter != null)
         {
             element = reporter.step(keyword, description);
-            if (getStatus() != null && showStatus)
+            if (getStatus() != null && reportStatus)
             {
                 // Assign the status as category
                 element.assignCategory(getStatus());
@@ -283,7 +298,7 @@ public abstract class AbstractStep<T> implements Statusable
     }
 
     /**
-     * Skip this component.<br>
+     * Skip the step.<br>
      * This means, it appears in the report, but is not executed. The following
      * steps are executed regardless.
      */
