@@ -282,6 +282,11 @@ public abstract class AbstractStep<T> implements Statusable
         return this;
     }
 
+    /**
+     * Skip this component.<br>
+     * This means, it appears in the report, but is not executed. The following
+     * steps are executed regardless.
+     */
     @Override
     public AbstractStep<T> skip()
     {

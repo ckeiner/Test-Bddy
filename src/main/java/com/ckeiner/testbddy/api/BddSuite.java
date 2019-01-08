@@ -16,6 +16,7 @@ import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 
+// TODO Examples for each API method would be nice
 public class BddSuite
 {
 

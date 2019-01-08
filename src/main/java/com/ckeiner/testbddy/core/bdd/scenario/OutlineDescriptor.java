@@ -5,8 +5,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
 
-import com.aventstack.extentreports.GherkinKeyword;
+import com.aventstack.extentreports.gherkin.model.And;
+import com.aventstack.extentreports.gherkin.model.Given;
+import com.aventstack.extentreports.gherkin.model.Then;
+import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
+import com.ckeiner.testbddy.core.bdd.steps.Step;
 import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
@@ -22,16 +26,35 @@ import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
  */
 public class OutlineDescriptor<T> implements Statusable
 {
+    /**
+     * The steps containing the behavior of the {@link ScenarioOutline}.
+     */
     private final TypeSteps<T> steps;
 
+    /**
+     * The list of test data
+     */
     private final List<T> testdata;
 
+    /**
+     * Creates a new instance of {@link OutlineDescriptor} with empty
+     * {@link TypeSteps} and the specified array of test data.
+     * 
+     * @param testdata
+     */
     @SafeVarargs
     public OutlineDescriptor(T... testdata)
     {
         this(new TypeSteps<T>(), testdata);
     }
 
+    /**
+     * Creates a new instance of {@link OutlineDescriptor} with the supplied
+     * {@link TypeSteps} and the specified array of test data.
+     * 
+     * @param steps
+     * @param testdata
+     */
     @SafeVarargs
     public OutlineDescriptor(TypeSteps<T> steps, T... testdata)
     {
@@ -55,38 +78,39 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.<br>
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
+     * The keyword of the Step is {@link And}.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> and(final Steps scenario)
+    public OutlineDescriptor<T> and(final Steps steps)
     {
-        getSteps().and(scenario);
+        getSteps().and(steps);
         return this;
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
-     * this class.
+     * this class.<br>
+     * The keyword of the TypeStep is {@link And}.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> and(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> and(final TypeSteps<T> steps)
     {
-        getSteps().and(scenario);
+        getSteps().and(steps);
         return this;
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link And}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -101,8 +125,9 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link And}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -118,38 +143,39 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
+     * The keyword of the Step is {@link Given}.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> given(final Steps scenario)
+    public OutlineDescriptor<T> given(final Steps steps)
     {
-        getSteps().given(scenario);
+        getSteps().given(steps);
         return this;
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
-     * this class.
+     * this class.<br>
+     * The keyword of the TypeStep is {@link Given}.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> given(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> given(final TypeSteps<T> steps)
     {
-        getSteps().given(scenario);
+        getSteps().given(steps);
         return this;
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Given".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Given}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -164,8 +190,9 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Given".
+     * Adds the step specified by the description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Given}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -180,38 +207,39 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
+     * The keyword of the Step is {@link Then}.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> then(final Steps scenario)
+    public OutlineDescriptor<T> then(final Steps steps)
     {
-        getSteps().then(scenario);
+        getSteps().then(steps);
         return this;
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
-     * this class.
+     * this class.<br>
+     * The keyword of the TypeStep is {@link Then}.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> then(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> then(final TypeSteps<T> steps)
     {
-        getSteps().then(scenario);
+        getSteps().then(steps);
         return this;
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Then".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Then}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -226,8 +254,9 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Then".
+     * Adds the step specified by the description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Then}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -242,38 +271,39 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
+     * The keyword of the Step is {@link When}.
      * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> when(final Steps scenario)
+    public OutlineDescriptor<T> when(final Steps steps)
     {
-        getSteps().when(scenario);
+        getSteps().when(steps);
         return this;
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
-     * this class.
+     * this class.<br>
+     * The keyword of the TypeStep is {@link When}.
      * 
-     * @param scenario
-     *            The {@link TypeSteps} with the steps that should be added to the
-     *            steps of this class.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current OutlineDescriptor.
      */
-    public OutlineDescriptor<T> when(final TypeSteps<T> scenario)
+    public OutlineDescriptor<T> when(final TypeSteps<T> steps)
     {
-        getSteps().when(scenario);
+        getSteps().when(steps);
         return this;
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "When".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link When}.
      * 
      * @param description
      *            The description of the step in a natural language.
@@ -288,8 +318,9 @@ public class OutlineDescriptor<T> implements Statusable
     }
 
     /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "When".
+     * Adds the step specified by the description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link When}.
      * 
      * @param description
      *            The description of the step in a natural language.

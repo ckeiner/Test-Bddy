@@ -39,6 +39,7 @@ public class FeatureExecutionTest extends ExecutionTest
         String stepDescription = "Step Description";
         String scenarioDescription = "Scenario Description";
         String featureDescription = "Feature Description";
+
         // Create steps
         Steps steps = new Steps().given(stepDescription, () ->
             {
@@ -49,8 +50,15 @@ public class FeatureExecutionTest extends ExecutionTest
         // Create list to give to the feature
         List<AbstractScenario> scenarioList = new ArrayList<AbstractScenario>();
         scenarioList.add(scenario);
+
+        // TODO blöcke kommentieren vllt auch nice, dann hat man keine kommentare
+        // dazwischen
+        // TODO Assert no execution happened yet; precondition
+        Assert.assertEquals(0, execution);
+
         // Create feature consisting of the description and the scenarioList
         new Feature(featureDescription, scenarioList).test();
+
         // Assert one execution happened
         Assert.assertEquals(1, execution);
     }

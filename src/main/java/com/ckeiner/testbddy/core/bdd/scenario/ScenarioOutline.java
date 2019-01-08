@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ckeiner.testbddy.core.bdd.status.Status;
+import com.ckeiner.testbddy.core.bdd.steps.Steps;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
 import com.ckeiner.testbddy.core.throwables.MultipleScenarioWrapperException;
@@ -24,10 +25,27 @@ import com.ckeiner.testbddy.core.throwables.exceptions.StepException;
  */
 public class ScenarioOutline<T> extends AbstractScenario
 {
+    /**
+     * The steps to execute.
+     */
     private TypeSteps<T> steps;
 
+    /**
+     * The list of test data
+     */
     private final List<T> testdata;
 
+    /**
+     * Creates a new ScenarioOutline with the specified description, steps and test
+     * data.
+     * 
+     * @param description
+     *            The description of the Scenario.
+     * @param steps
+     *            The {@link Steps} of the scenario.
+     * @param testdata
+     *            The list of test data.
+     */
     public ScenarioOutline(String description, TypeSteps<T> steps, List<T> testdata)
     {
         super(description);
@@ -40,7 +58,7 @@ public class ScenarioOutline<T> extends AbstractScenario
      * Exceptions and errors get caught and the scenario is executed with the rest
      * of the test data. In the end, the exceptions and errors are re-thrown as
      * {@link ScenarioException} and {@link ScenarioError} respectively.<br>
-     * Should both, an exception and an error, occur, a FeatureException is thrown.
+     * Should both, an exception and an error, occur, a ScenarioException is thrown.
      */
     @Override
     public void test()
@@ -61,11 +79,11 @@ public class ScenarioOutline<T> extends AbstractScenario
     }
 
     /**
-     * Returns whether the {@link ScenarioOutline} can be executed or not.
-     * Typically, a ScenarioOutline musn't be ignores, and must contain non-empty
-     * test data and steps.
+     * Verifies if the {@link ScenarioOutline} should and can be executed. A
+     * ScenarioOutline should not be executed if it is ignored, and cannot be
+     * executed if it has no steps, test data, or either is empty.
      * 
-     * @return True if the ScenarioOutline can be executed, otherwise false
+     * @return True if the ScenarioOutline can be executed, otherwise false.
      */
     protected boolean canAndShouldExecuteScenario()
     {
@@ -137,7 +155,7 @@ public class ScenarioOutline<T> extends AbstractScenario
      * Executes a test with a single test datum.
      * 
      * @param testdatum
-     *            The test datum.
+     *            The test datum to execute the steps with.
      * @param scenarioExceptions
      *            The list of {@link ScenarioException}s.
      * @param scenarioErrors
@@ -184,17 +202,18 @@ public class ScenarioOutline<T> extends AbstractScenario
      * 
      * @param testdatum
      *            The used test datum.
-     * @param e
-     *            The {@link StepError} that occured.
+     * @param stepError
+     *            The {@link StepError} that occurred.
      * @param scenarioReporter
      *            The reporter for reporting.
-     * @return The ScenarioError with a proper description and the StepError.
+     * @return The ScenarioError with a proper description and the causing
+     *         StepError.
      */
-    private ScenarioError scenarioError(T testdatum, StepError e, ReportElement scenarioReporter)
+    private ScenarioError scenarioError(T testdatum, StepError stepError, ReportElement scenarioReporter)
     {
         // Create a ScenarioError
         ScenarioError scenarioError = new ScenarioError(
-                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
+                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), stepError);
         if (scenarioReporter != null)
         {
             // Mark the scenario as failed with the error
@@ -204,22 +223,23 @@ public class ScenarioOutline<T> extends AbstractScenario
     }
 
     /**
-     * Creates and logs a {@link ScenarioException}
+     * Creates and logs a {@link ScenarioException}.
      * 
      * @param testdatum
      *            The used test datum.
-     * @param e
-     *            The {@link StepException} that occured.
+     * @param stepException
+     *            The {@link StepException} that occurred.
      * @param scenarioReporter
      *            The reporter for reporting.
-     * @return The ScenarioException with a proper description and the
+     * @return The ScenarioException with a proper description and the causing
      *         StepException.
      */
-    private ScenarioException scenarioException(T testdatum, StepException e, ReportElement scenarioReporter)
+    private ScenarioException scenarioException(T testdatum, StepException stepException,
+            ReportElement scenarioReporter)
     {
         // Create a ScenarioError
         ScenarioException scenarioException = new ScenarioException(
-                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), e);
+                "Scenario \"" + getDescription() + "\" failed with data:\n" + testdatum.toString(), stepException);
         if (scenarioReporter != null)
         {
             // Mark the scenario as fatal with the exception
@@ -252,12 +272,12 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     /**
      * Creates a {@link ReportElement} for the scenario if a reporter is set.<br>
-     * Assigns the status as category.
+     * Also assigns the scenario's status as the report element's category.
      * 
      * @param typeSteps
-     *            The scenario for which to create the reporter.
+     *            The {@link TypeSteps} for which to create the reporter.
      * @param testdatum
-     *            The test datum for the scenario.
+     *            The test datum to execute the steps with.
      * @return The ReportElement for the Scenario specified by typeSteps.
      *         <code>null</code> if {@link #getReporter()} returns
      *         <code>null</code>.
@@ -269,12 +289,12 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     /**
      * Creates a {@link ReportElement} for the scenario if a reporter is set.<br>
-     * Also assigns the status as category.
+     * Also assigns the scenario's status as the report element's category.
      * 
      * @param typeSteps
-     *            The scenario for which to create the reporter.
+     *            The {@link TypeSteps} for which to create the reporter.
      * @param testdatum
-     *            The test datum for the scenario.
+     *            The test datum to execute the steps with.
      * @param reportStatus
      *            Whether the status should be reported or not.
      * 
@@ -301,13 +321,12 @@ public class ScenarioOutline<T> extends AbstractScenario
     }
 
     /**
-     * Executes the supplied steps if the Status is not {@link Status#IGNORE}.<br>
-     * If the Status is on ignore, the ReportElement is marked as skipped.
+     * Executes the supplied steps.<br>
      * 
      * @param scenarioReporter
      *            The ReportElement of the scenario.
      * @param typeSteps
-     *            The {@link BddTypeSteps} to execute.
+     *            The {@link TypeSteps} to execute.
      */
     protected void executeScenario(ReportElement scenarioReporter, TypeSteps<T> typeSteps)
     {
@@ -330,13 +349,13 @@ public class ScenarioOutline<T> extends AbstractScenario
 
     /**
      * Throws {@link ScenarioException} or {@link ScenarioError} if the respective
-     * parameter isn't emtpy.<br>
+     * parameter isn't empty.<br>
      * If both, an exception and error, occur, a ScenarioException is thrown.
      * 
      * @param scenarioExceptions
-     *            The list of scenarioExceptions that happened in the scenario.
+     *            The list of scenarioExceptions that happened during the scenario.
      * @param scenarioErrors
-     *            The list of scenarioErrors that happened in the scenario.
+     *            The list of scenarioErrors that happened during the scenario.
      */
     private void finishScenario(List<ScenarioException> scenarioExceptions, List<ScenarioError> scenarioErrors)
     {

@@ -21,14 +21,29 @@ public class Scenario extends AbstractScenario
      */
     final private Steps steps;
 
+    /**
+     * Creates a new, pending Scenario with a description.
+     * 
+     * @param description
+     *            The description of the scenario.
+     */
     public Scenario(final String description)
     {
         super(description);
-        // TODO this doesn't make sense but there is no other way to get pending here
         this.steps = new Steps();
+        // TODO implement this as a base state and clear it if something is defined
+        // TODO Is this even necessary?
         this.getStatus().add(Status.PENDING);
     }
 
+    /**
+     * Creates a new Scenario with the specified description and steps.
+     * 
+     * @param description
+     *            The description of the Scenario.
+     * @param steps
+     *            The {@link Steps} of the scenario.
+     */
     public Scenario(final String description, final Steps steps)
     {
         super(description);
@@ -83,6 +98,12 @@ public class Scenario extends AbstractScenario
         }
     }
 
+    /**
+     * Verifies whether the scenario can and should be executed. A scenario should
+     * not be executed if it is ignored, has no steps or if they contain no items.
+     * 
+     * @return true if the ScenarioOutline can be executed, otherwise false.
+     */
     protected boolean canAndShouldExecuteScenario()
     {
         boolean executeScenario = true;
@@ -134,8 +155,7 @@ public class Scenario extends AbstractScenario
     }
 
     /**
-     * Executes the steps if the Status is not {@link Status#IGNORE}.<br>
-     * If the Status is on ignore, the ReportElement is marked as skipped.
+     * Executes the steps if the scenario should be run.<br>
      * 
      * @param scenarioReporter
      *            The ReportElement of the scenario.
@@ -162,7 +182,7 @@ public class Scenario extends AbstractScenario
 
     /**
      * Creates a {@link ReportElement} for the scenario if a reporter is set.<br>
-     * Also assigns the status as category.
+     * Also assigns the scenario's status as the report element's category.
      * 
      * @return {@link ReportElement} if a reporter was set, else <code>null</code>.
      */
@@ -173,7 +193,7 @@ public class Scenario extends AbstractScenario
 
     /**
      * Creates a {@link ReportElement} for the scenario if a reporter is set.<br>
-     * Also assigns the status as category.
+     * Also assigns the scenario's status as the report element's category.
      * 
      * @param reportStatus
      *            Whether the status should be reported or not.
