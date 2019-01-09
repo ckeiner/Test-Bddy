@@ -5,14 +5,10 @@
 
     <groupId>com.ckeiner</groupId>
     <artifactId>test-bddy</artifactId>
-    <version>0.2.0</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
     
     <name>test-bddy</name>
-    <organization>
-        <name>Xceptance Software Technologies</name>
-        <url>https://www.xceptance.com/</url>
-    </organization>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -53,14 +49,6 @@
             </plugin>
         </plugins>
     </build>
-    
-    
-    <repositories>
-        <repository>
-            <id>xc-nexus</id>
-            <url>https://lab.xceptance.de/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
 
     <dependencies>
         <dependency>
