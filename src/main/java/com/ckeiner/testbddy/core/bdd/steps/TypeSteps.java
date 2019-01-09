@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
+import com.aventstack.extentreports.gherkin.model.And;
+import com.aventstack.extentreports.gherkin.model.Given;
+import com.aventstack.extentreports.gherkin.model.Then;
+import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.api.PendingConsumer;
 import com.ckeiner.testbddy.api.PendingRunnable;
 
@@ -19,12 +23,12 @@ import com.ckeiner.testbddy.api.PendingRunnable;
 public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
 {
     /**
-     * The used test data.
+     * The test data.
      */
     private T data;
 
     /**
-     * Creates a BddTypeScenario.
+     * Creates new steps with an empty list.
      */
     public TypeSteps()
     {
@@ -44,22 +48,7 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds a step to the list of BddSteps.
-     * 
-     * @param keyword
-     *            The {@link GherkinKeyword} of the step.
-     * @param description
-     *            The description of the step in a natural language.
-     * @param consumer
-     *            The behavior of the step.
-     */
-    private void addStep(GherkinKeyword keyword, String description, Consumer<T> consumer)
-    {
-        getSteps().add(new TypeStep<T>(keyword, description, consumer));
-    }
-
-    /**
-     * Adds a step to the list of BddSteps.
+     * Adds a new {@link Step} with the specified keyword, description and runner.
      * 
      * @param keyword
      *            The String, that describes the {@link GherkinKeyword}.
@@ -67,6 +56,7 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      *            The description of the step in a natural language.
      * @param consumer
      *            The behavior of the step.
+     * @see GherkinKeyword GherkinKeyword for possible options.
      */
     private void addStep(String keyword, String description, Consumer<T> consumer)
     {
@@ -80,11 +70,26 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
+     * Adds a new {@link Step} with the specified keyword, description and runner.
+     * 
+     * @param keyword
+     *            The {@link GherkinKeyword} of the step.
+     * @param description
+     *            The description of the step in a natural language.
+     * @param consumer
+     *            The behavior of the step.
+     * @see GherkinKeyword GherkinKeyword for possible options.
+     */
+    private void addStep(GherkinKeyword keyword, String description, Consumer<T> consumer)
+    {
+        getSteps().add(new TypeStep<T>(keyword, description, consumer));
+    }
+
+    /**
+     * Adds all {@link Step}s of the specified parameter to the steps of this class.
      * 
      * @param steps
-     *            The BddScenario which steps should be added to the steps of this
-     *            class.
+     *            The {@link Steps} whose {@link Step}s should be added.
      */
     private void addAllSteps(TypeSteps<T> steps)
     {
@@ -94,15 +99,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         }
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.
-     * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> and(final Steps scenario)
     {
@@ -114,15 +110,13 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the steps.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The BddTypeScenario which steps should be added to the steps of
-     *            this class.
-     * @return The current BddTypeScenario.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> and(final TypeSteps<T> scenario)
     {
@@ -131,14 +125,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link And}.
      * 
      * @param description
      *            The description of the step in a natural language.
      * @param consumer
      *            The behavior of this step.
-     * @return The current BddTypeScenario.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> and(final String description, final Consumer<T> consumer)
     {
@@ -146,16 +141,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
-     * 
-     * @param description
-     *            The description of the step in a natural language.
-     * @param runner
-     *            The behavior of this step.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> and(final String description, final Runnable runner)
     {
@@ -164,15 +149,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.
-     * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> given(final Steps scenario)
     {
@@ -184,15 +160,13 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the steps.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The BddTypeScenario which steps should be added to the steps of
-     *            this class.
-     * @return The current BddTypeScenario.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> given(final TypeSteps<T> scenario)
     {
@@ -201,14 +175,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Given}.
      * 
      * @param description
      *            The description of the step in a natural language.
      * @param consumer
      *            The behavior of this step.
-     * @return The current BddTypeScenario.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> given(final String description, final Consumer<T> consumer)
     {
@@ -216,16 +191,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Given".
-     * 
-     * @param description
-     *            The description of the step in a natural language.
-     * @param runner
-     *            The behavior of this step.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> given(final String description, final Runnable runner)
     {
@@ -234,15 +199,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.
-     * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> then(final Steps scenario)
     {
@@ -254,15 +210,13 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the steps.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The BddTypeScenario which steps should be added to the steps of
-     *            this class.
-     * @return The current BddTypeScenario.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> then(final TypeSteps<T> scenario)
     {
@@ -271,14 +225,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link Then}.
      * 
      * @param description
      *            The description of the step in a natural language.
      * @param consumer
      *            The behavior of this step.
-     * @return The current BddTypeScenario.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> then(final String description, final Consumer<T> consumer)
     {
@@ -286,16 +241,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "Then".
-     * 
-     * @param description
-     *            The description of the step in a natural language.
-     * @param runner
-     *            The behavior of this step.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> then(final String description, final Runnable runner)
     {
@@ -303,15 +248,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.
-     * 
-     * @param scenario
-     *            The {@link Steps} which steps should be added to the steps of this
-     *            class.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> when(final Steps scenario)
     {
@@ -323,15 +259,13 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds all steps of the specified scenario to the steps of this
-     * BddTypeScenario.<br>
+     * Adds all steps of the specified {@link TypeSteps} to the steps.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.
      * 
-     * @param scenario
-     *            The BddTypeScenario which steps should be added to the steps of
-     *            this class.
-     * @return The current BddTypeScenario.
+     * @param steps
+     *            The {@link TypeSteps} whose {@link Step}s should be added.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> when(final TypeSteps<T> scenario)
     {
@@ -340,14 +274,15 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Adds the step specified by the description and consumer to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "And".
+     * Adds the step specified by the description and consumer to the
+     * {@link #steps}.<br>
+     * The keyword of the TypeStep is {@link When}.
      * 
      * @param description
      *            The description of the step in a natural language.
      * @param consumer
      *            The behavior of this step.
-     * @return The current BddTypeScenario.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> when(final String description, final Consumer<T> consumer)
     {
@@ -355,16 +290,6 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
         return this;
     }
 
-    /**
-     * Adds the step specified by the description and runner to this scenario.<br>
-     * The {@link GherkinKeyword} of the step is "When".
-     * 
-     * @param description
-     *            The description of the step in a natural language.
-     * @param runner
-     *            The behavior of this step.
-     * @return The current BddTypeScenario.
-     */
     @Override
     public TypeSteps<T> when(final String description, final Runnable runner)
     {
@@ -373,11 +298,11 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
     }
 
     /**
-     * Specifies the data of the BddTypeScenario.
+     * Specifies the data used during the execution.
      * 
      * @param data
      *            The test data for the scenario.
-     * @return The current BddTypeScenario.
+     * @return The current TypeSteps.
      */
     public TypeSteps<T> withData(final T data)
     {
@@ -393,7 +318,7 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      * @return <code>null</code> if the Runnable was null.<br>
      *         A {@link PendingConsumer} if the Runnable was a
      *         {@link PendingRunnable}.<br>
-     *         A Consumer that runs the Runnable otherwise.
+     *         Otherwise, a Consumer that runs the Runnable.
      */
     private Consumer<T> runnableToConsumer(final Runnable runner)
     {

@@ -14,7 +14,7 @@ import com.aventstack.extentreports.GherkinKeyword;
 public class Steps extends AbstractSteps<Step>
 {
     /**
-     * Creates a BddScenario.
+     * Creates new steps with an empty list.
      */
     public Steps()
     {
@@ -34,7 +34,7 @@ public class Steps extends AbstractSteps<Step>
     }
 
     /**
-     * Adds a step to the list of BddSteps.
+     * Adds a new {@link Step} with the specified keyword, description and runner.
      * 
      * @param keyword
      *            The String, that describes the {@link GherkinKeyword}.
@@ -42,6 +42,7 @@ public class Steps extends AbstractSteps<Step>
      *            The description of the step in a natural language.
      * @param runner
      *            The behavior of the step.
+     * @see GherkinKeyword GherkinKeyword for possible options.
      */
     private void addStep(String keyword, String description, Runnable runner)
     {
@@ -55,7 +56,7 @@ public class Steps extends AbstractSteps<Step>
     }
 
     /**
-     * Adds a step to the list of {@link Step}s.
+     * Adds a new {@link Step} with the specified keyword, description and runner.
      * 
      * @param keyword
      *            The {@link GherkinKeyword} of the step.
@@ -63,6 +64,7 @@ public class Steps extends AbstractSteps<Step>
      *            The description of the step in a natural language.
      * @param runner
      *            The behavior of the step.
+     * @see GherkinKeyword GherkinKeyword for possible options.
      */
     private void addStep(GherkinKeyword keyword, String description, Runnable runner)
     {
@@ -70,47 +72,26 @@ public class Steps extends AbstractSteps<Step>
     }
 
     /**
-     * Adds all steps of the specified parameter to the steps of this class.
+     * Adds all {@link Step}s of the specified parameter to the steps of this class.
      * 
-     * @param scenario
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      */
-    private void addAllSteps(Steps scenario)
+    private void addAllSteps(Steps steps)
     {
-        for (Step step : scenario.getSteps())
+        for (Step step : steps.getSteps())
         {
             addStep(step.getKeyword(), step.getDescription(), step.getBehavior());
         }
     }
 
-    /**
-     * Adds all steps of the specified parameter to the steps.
-     * 
-     * @param scenario
-     *            The additional steps to add to the existing steps.<br>
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
-     * @return The current Steps.
-     */
     @Override
-    public Steps and(final Steps scenario)
+    public Steps and(final Steps steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
-    /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "And".
-     * 
-     * @param description
-     *            The description of the step.
-     * @param runner
-     *            The behavior of the step.
-     * @return The current Steps.
-     */
     @Override
     public Steps and(final String description, final Runnable runner)
     {
@@ -118,32 +99,13 @@ public class Steps extends AbstractSteps<Step>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified parameter to the steps of this Steps.
-     * 
-     * @param scenario
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
-     * @return The current Steps.
-     */
     @Override
-    public Steps given(final Steps scenario)
+    public Steps given(final Steps steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
-    /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "Given".
-     * 
-     * @param description
-     *            The description of the step.
-     * @param runner
-     *            The behavior of the step.
-     * @return The current Scenario.
-     */
     @Override
     public Steps given(final String description, final Runnable runner)
     {
@@ -151,32 +113,13 @@ public class Steps extends AbstractSteps<Step>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
-     * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
-     *            class.
-     * @return The current BddScenario.
-     */
     @Override
-    public Steps then(final Steps scenario)
+    public Steps then(final Steps steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
-    /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "Then".
-     * 
-     * @param description
-     *            The description of the step.
-     * @param runner
-     *            The behavior of the step.
-     * @return The current Scenario.
-     */
     @Override
     public Steps then(final String description, final Runnable runner)
     {
@@ -184,32 +127,13 @@ public class Steps extends AbstractSteps<Step>
         return this;
     }
 
-    /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
-     * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
-     *            class.
-     * @return The current BddScenario.
-     */
     @Override
-    public Steps when(final Steps scenario)
+    public Steps when(final Steps steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
-    /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "When".
-     * 
-     * @param description
-     *            The description of the step.
-     * @param runner
-     *            The behavior of the step.
-     * @return The current Scenario.
-     */
     @Override
     public Steps when(final String description, final Runnable runner)
     {

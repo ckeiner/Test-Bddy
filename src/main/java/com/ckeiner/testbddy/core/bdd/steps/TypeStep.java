@@ -7,7 +7,7 @@ import com.ckeiner.testbddy.core.reporting.ReportElement;
 import com.ckeiner.testbddy.core.util.ParameterResolver;
 
 /**
- * Describes a BDD Step with some test data.
+ * Describes a BDD Step with a test datum.
  *
  * @param <T>
  *            The type of the test data.
@@ -16,22 +16,22 @@ import com.ckeiner.testbddy.core.util.ParameterResolver;
 public class TypeStep<T> extends AbstractStep<Consumer<T>>
 {
     /**
-     * The testdata for this step.
+     * The test datum for this step.
      */
     protected T testdata;
 
     /**
-     * Creates a TypeStep with the specified keyword, description, behavior and
+     * Creates a TypeStep with the specified keyword, description, behavior but
      * without test data.
      * 
      * @param keyword
-     *            The {@link GherkinKeyword} describing whether its a given, when,
-     *            then or and step.
+     *            The {@link GherkinKeyword} of the step.
      * @param description
      *            A String describing what this step does.
      * @param behavior
      *            A consumer containing the behavior.
      * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     * @see GherkinKeyword
      */
     public TypeStep(final GherkinKeyword keyword, final String description, final Consumer<T> behavior)
     {
@@ -39,12 +39,11 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     }
 
     /**
-     * Creates a TypeStep with the specified keyword, description, behavior and test
-     * data.
+     * Creates a TypeStep with the specified keyword, description, behavior but
+     * without test data.
      * 
      * @param keyword
-     *            The {@link GherkinKeyword} describing whether its a given, when,
-     *            then or and step.
+     *            The {@link GherkinKeyword} of the step.
      * @param description
      *            A String describing what this step does.
      * @param behavior
@@ -52,6 +51,7 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
      * @param testdata
      *            The test data for this step.
      * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     * @see GherkinKeyword
      */
     public TypeStep(final GherkinKeyword keyword, final String description, final Consumer<T> behavior,
             final T testdata)
@@ -61,11 +61,11 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     }
 
     /**
-     * Defines the test data for the step.
+     * Specifies the data used during the execution.
      * 
-     * @param testdata
-     *            The test data of the step.
-     * @return This TypeStep.
+     * @param data
+     *            The test data for the scenario.
+     * @return The current TypeStep.
      */
     public TypeStep<T> withData(T testdata)
     {
@@ -74,10 +74,10 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     }
 
     /**
-     * Tests the step with the supplied test data.
+     * Sets the test data to the parameter and then calls {@link #test()}.
      * 
      * @param testdata
-     *            The test data of the step.
+     *            The test data that should be used during the execution.
      */
     public void test(T testdata)
     {
@@ -86,9 +86,11 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     }
 
     /**
-     * Sets the report element up with the resolved description.<br>
-     * In other words, the report element receives a description, in which all
-     * placeholders have been resolved.
+     * First, resolves the placeholders in the description, then sets up the
+     * {@link ReportElement} for this component.<br>
+     * Also assigns the step's status as the report element's category.
+     * 
+     * @return The {@link ReportElement} representing the step.
      */
     @Override
     protected ReportElement setUpReporter()
@@ -97,17 +99,6 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
         setDescription(resolver.resolvePlaceholders(getDescription(), testdata));
         return super.setUpReporter(true, getDescription());
     }
-
-    // @Override
-    // public void skip()
-    // {
-    // ReportElement element = setUpReporter();
-    // // Mark the node as skipped
-    // if (element != null)
-    // {
-    // element.skip(getDescription() + " with Data " + getTestdata());
-    // }
-    // }
 
     /**
      * Executes the consumer with {@link #testdata} as parameter.

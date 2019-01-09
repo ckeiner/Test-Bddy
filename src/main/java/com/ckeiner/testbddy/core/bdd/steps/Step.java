@@ -14,13 +14,13 @@ public class Step extends AbstractStep<Runnable>
      * Creates a Step with the specified keyword, description and behavior.
      * 
      * @param keyword
-     *            The {@link GherkinKeyword} describing whether its a given, when,
-     *            then or and step.
+     *            The {@link GherkinKeyword} of the step.
      * @param description
      *            A String describing what this step does.
      * @param behavior
      *            A Runnable containing the behavior.
      * @see AbstractStep#AbstractStep(GherkinKeyword, String, Object)
+     * @see GherkinKeyword
      */
     public Step(GherkinKeyword keyword, String description, Runnable behavior)
     {

@@ -3,6 +3,10 @@ package com.ckeiner.testbddy.core.bdd.steps;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.aventstack.extentreports.gherkin.model.And;
+import com.aventstack.extentreports.gherkin.model.Given;
+import com.aventstack.extentreports.gherkin.model.Then;
+import com.aventstack.extentreports.gherkin.model.When;
 import com.ckeiner.testbddy.core.bdd.status.Statusable;
 import com.ckeiner.testbddy.core.reporting.ReportInterface;
 import com.ckeiner.testbddy.core.throwables.errors.StepError;
@@ -146,21 +150,19 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
         return steps;
     }
 
-    // TODO continue here
     /**
-     * Adds all steps of the specified parameter to the steps.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
      * 
-     * @param scenario
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current Steps.
      */
-    public abstract AbstractSteps<T> and(final Steps scenario);
+    public abstract AbstractSteps<T> and(final Steps steps);
 
     /**
-     * Adds the step, specified by the description and runner, to the list of
+     * Adds the step with the supplied description and runner to the
      * {@link #steps}.<br>
-     * The GherkinKeyword for the step is "And".
+     * The keyword of the Step is {@link And}.
      * 
      * @param description
      *            The description of the step.
@@ -171,80 +173,86 @@ public abstract class AbstractSteps<T extends AbstractStep<?>> implements Status
     public abstract AbstractSteps<T> and(final String description, final Runnable runner);
 
     /**
-     * Adds all steps of the specified parameter to {@link #steps}.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
      * 
-     * @param scenario
-     *            The Steps with the steps that should be added to the steps of this
-     *            class.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
      * @return The current Steps.
      */
-    public abstract AbstractSteps<T> given(final Steps scenario);
+    public abstract AbstractSteps<T> given(final Steps steps);
 
     /**
-     * Adds the Step, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the Step is "Given".
+     * Adds the step with the supplied description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the Step is {@link Given}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return The current Scenario.
+     * @return The current {@link AbstractSteps}.
      */
     public abstract AbstractSteps<T> given(final String description, final Runnable runner);
 
     /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
-     *            class.
-     * @return The current BddScenario.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
+     * @return The current Steps.
      */
-    public abstract AbstractSteps<T> then(final Steps scenario);
+    public abstract AbstractSteps<T> then(final Steps steps);
 
     /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "Then".
+     * Adds the step with the supplied description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the Step is {@link Then}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return The current Scenario.
+     * @return The current {@link AbstractSteps}.
      */
     public abstract AbstractSteps<T> then(final String description, final Runnable runner);
 
     /**
-     * Adds all steps of the specified scenario to the steps of this BddScenario.
+     * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
      * 
-     * @param scenario
-     *            The BddScenario which steps should be added to the steps of this
-     *            class.
-     * @return The current BddScenario.
+     * @param steps
+     *            The {@link Steps} whose {@link Step}s should be added.
+     * @return The current Steps.
      */
-    public abstract AbstractSteps<T> when(final Steps scenario);
+    public abstract AbstractSteps<T> when(final Steps steps);
 
     /**
-     * Adds the BddStep, specified by the description and runner, to the list of
-     * BddSteps.<br>
-     * The GherkinKeyword for the BddStep is "When".
+     * Adds the step with the supplied description and runner to the
+     * {@link #steps}.<br>
+     * The keyword of the Step is {@link When}.
      * 
      * @param description
      *            The description of the step.
      * @param runner
      *            The behavior of the step.
-     * @return The current Scenario.
+     * @return The current {@link AbstractSteps}.
      */
     public abstract AbstractSteps<T> when(final String description, final Runnable runner);
 
+    /**
+     * The last added step is ignored.
+     */
     @Override
     public abstract AbstractSteps<T> ignore();
 
+    /**
+     * The last added step is marked as a work in progress.
+     */
     @Override
     public abstract AbstractSteps<T> wip();
 
+    /**
+     * The last added step is skipped.
+     */
     @Override
     public abstract AbstractSteps<T> skip();
 

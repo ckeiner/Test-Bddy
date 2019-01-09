@@ -79,7 +79,6 @@ public class OutlineDescriptor<T> implements Statusable
 
     /**
      * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
-     * The keyword of the Step is {@link And}.
      * 
      * @param steps
      *            The {@link Steps} whose {@link Step}s should be added.
@@ -95,7 +94,6 @@ public class OutlineDescriptor<T> implements Statusable
      * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.<br>
-     * The keyword of the TypeStep is {@link And}.
      * 
      * @param steps
      *            The {@link TypeSteps} whose {@link Step}s should be added.
@@ -144,7 +142,6 @@ public class OutlineDescriptor<T> implements Statusable
 
     /**
      * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
-     * The keyword of the Step is {@link Given}.
      * 
      * @param steps
      *            The {@link Steps} whose {@link Step}s should be added.
@@ -160,7 +157,6 @@ public class OutlineDescriptor<T> implements Statusable
      * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.<br>
-     * The keyword of the TypeStep is {@link Given}.
      * 
      * @param steps
      *            The {@link TypeSteps} whose {@link Step}s should be added.
@@ -208,7 +204,6 @@ public class OutlineDescriptor<T> implements Statusable
 
     /**
      * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
-     * The keyword of the Step is {@link Then}.
      * 
      * @param steps
      *            The {@link Steps} whose {@link Step}s should be added.
@@ -224,7 +219,6 @@ public class OutlineDescriptor<T> implements Statusable
      * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.<br>
-     * The keyword of the TypeStep is {@link Then}.
      * 
      * @param steps
      *            The {@link TypeSteps} whose {@link Step}s should be added.
@@ -272,7 +266,6 @@ public class OutlineDescriptor<T> implements Statusable
 
     /**
      * Adds all steps of the specified {@link Steps} to the {@link #steps}.<br>
-     * The keyword of the Step is {@link When}.
      * 
      * @param steps
      *            The {@link Steps} whose {@link Step}s should be added.
@@ -288,7 +281,6 @@ public class OutlineDescriptor<T> implements Statusable
      * Adds all steps of the specified {@link TypeSteps} to the {@link #steps}.<br>
      * Note, that the generic type of the parameter has to fit the generic type of
      * this class.<br>
-     * The keyword of the TypeStep is {@link When}.
      * 
      * @param steps
      *            The {@link TypeSteps} whose {@link Step}s should be added.
