@@ -15,11 +15,8 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <surefire.version>2.21.0</surefire.version>
-        <serenity.version>1.9.8</serenity.version>
-        <serenity.maven.version>1.8.0</serenity.maven.version>
         <extent.version>3.1.5</extent.version>
         <surefire.rerunFailingTestsCount>3</surefire.rerunFailingTestsCount>
-        <webdriver.driver>firefox</webdriver.driver>
     </properties>
     
     
