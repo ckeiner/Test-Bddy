@@ -13,7 +13,8 @@ import com.ckeiner.testbddy.api.PendingRunnable;
 
 /**
  * Describes a scenario with only one data set.<br>
- * Thus, it has the given, when, then, and methods.
+ * Thus, it has the given, when, then, and methods. To execute it, see the
+ * {@link #test()} method.
  * 
  * @author ckeiner
  *
@@ -118,9 +119,9 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current TypeSteps.
      */
-    public TypeSteps<T> and(final TypeSteps<T> scenario)
+    public TypeSteps<T> and(final TypeSteps<T> steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
@@ -168,9 +169,9 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current TypeSteps.
      */
-    public TypeSteps<T> given(final TypeSteps<T> scenario)
+    public TypeSteps<T> given(final TypeSteps<T> steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
@@ -218,9 +219,9 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current TypeSteps.
      */
-    public TypeSteps<T> then(final TypeSteps<T> scenario)
+    public TypeSteps<T> then(final TypeSteps<T> steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 
@@ -267,9 +268,9 @@ public class TypeSteps<T> extends AbstractSteps<TypeStep<T>>
      *            The {@link TypeSteps} whose {@link Step}s should be added.
      * @return The current TypeSteps.
      */
-    public TypeSteps<T> when(final TypeSteps<T> scenario)
+    public TypeSteps<T> when(final TypeSteps<T> steps)
     {
-        addAllSteps(scenario);
+        addAllSteps(steps);
         return this;
     }
 

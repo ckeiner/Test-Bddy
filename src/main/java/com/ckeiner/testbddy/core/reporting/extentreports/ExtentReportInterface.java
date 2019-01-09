@@ -69,7 +69,7 @@ public class ExtentReportInterface implements ReportInterface
     }
 
     /**
-     * Creates and gets the instace from the LazyHolder
+     * Creates and gets the instance from the LazyHolder
      * 
      * @return The Singleton Instance of the ExtentReportInterface.
      */

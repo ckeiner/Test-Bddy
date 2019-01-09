@@ -9,7 +9,8 @@ import com.ckeiner.testbddy.core.throwables.exceptions.ScenarioException;
 import com.ckeiner.testbddy.core.throwables.exceptions.StepException;
 
 /**
- * Represents a scenario in the BDD Hierarchy.
+ * Represents a scenario in the BDD Hierarchy.<br>
+ * To execute it, see the {@link #test()} method.
  * 
  * @author ckeiner
  *

@@ -70,6 +70,8 @@ public class BddSuite
      * @param descriptor
      *            The OutlineDescriptor with the behavior and test data of the
      *            scenario.
+     * @param <T>
+     *            The type of the test data.
      * @return A ScenarioOutline with the test data and behavior specified in the
      *         descriptor.
      */
@@ -123,6 +125,8 @@ public class BddSuite
      * 
      * @param testdata
      *            The test data for the OutlineDescriptor.
+     * @param <T>
+     *            The type of the test data.
      * @return An OutlineDescriptor with the specified test data.
      */
     @SafeVarargs
@@ -134,6 +138,10 @@ public class BddSuite
     /**
      * Creates an {@link OutlineDescriptor} without any test data.
      * 
+     * @param clazz
+     *            The class of the test datum.
+     * @param <T>
+     *            The type of the test datum.
      * @return An OutlineDescriptor without test data.
      */
     public static <T> OutlineDescriptor<T> withTypeOf(Class<T> clazz)

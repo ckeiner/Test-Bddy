@@ -6,6 +6,7 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.aventstack.extentreports.GherkinKeyword;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 import com.ckeiner.testbddy.core.throwables.errors.ScenarioError;
 import com.ckeiner.testbddy.core.throwables.exceptions.ScenarioException;
@@ -51,6 +52,7 @@ public class ScenarioOutlineExecutionTest extends ExecutionTest
      * Verifies that a {@link ScenarioOutline} executes its steps.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void shouldExecuteSteps() throws ClassNotFoundException
@@ -74,6 +76,7 @@ public class ScenarioOutlineExecutionTest extends ExecutionTest
      * datum.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void shouldExecuteOnceForEachTestdatum() throws ClassNotFoundException
@@ -99,6 +102,7 @@ public class ScenarioOutlineExecutionTest extends ExecutionTest
      * datum, even if one fails.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test(expected = ScenarioError.class)
     public void shouldExecuteAllTestdatumsEvenIfOneThrowsError() throws ClassNotFoundException
@@ -133,6 +137,7 @@ public class ScenarioOutlineExecutionTest extends ExecutionTest
      * datum, even if one fails.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test(expected = ScenarioException.class)
     public void shouldExecuteAllTestdatumsEvenIfOneThrowsException() throws ClassNotFoundException

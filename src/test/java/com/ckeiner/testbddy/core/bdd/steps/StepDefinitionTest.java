@@ -11,6 +11,7 @@ public class StepDefinitionTest
      * Verifies that a {@link Step} can contain no behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainNoBehavior() throws ClassNotFoundException
@@ -37,6 +38,7 @@ public class StepDefinitionTest
      * Verifies that a {@link Step} can contain behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainBehavior() throws ClassNotFoundException

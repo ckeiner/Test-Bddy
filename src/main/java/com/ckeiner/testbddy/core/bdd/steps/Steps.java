@@ -6,7 +6,8 @@ import com.aventstack.extentreports.GherkinKeyword;
 
 /**
  * Describes a BDD Scenario.<br>
- * Thus, it has the given, when, then, and methods.
+ * Thus, it has the given, when, then, and methods. To execute it, see the
+ * {@link #test()} method.
  * 
  * @author ckeiner
  *

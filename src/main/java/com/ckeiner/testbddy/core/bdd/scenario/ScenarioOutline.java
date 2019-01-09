@@ -16,7 +16,8 @@ import com.ckeiner.testbddy.core.throwables.exceptions.StepException;
 /**
  * Represents a Scenario Outline in the BDD Hierarchy.<br>
  * It is the same as a {@link Scenario} except that it has test data. This
- * means, that the scenario gets executed once with each test data.
+ * means, that the scenario gets executed once with each test data. To execute
+ * it, see the {@link #test()} method.
  *
  * @author ckeiner
  *

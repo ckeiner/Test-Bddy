@@ -41,6 +41,8 @@ public class OutlineDescriptor<T> implements Statusable
      * {@link TypeSteps} and the specified array of test data.
      * 
      * @param testdata
+     *            The test data for each execution. One element is exactly one test
+     *            datum.
      */
     @SafeVarargs
     public OutlineDescriptor(T... testdata)
@@ -53,7 +55,10 @@ public class OutlineDescriptor<T> implements Statusable
      * {@link TypeSteps} and the specified array of test data.
      * 
      * @param steps
+     *            The {@link Steps} of the scenario.
      * @param testdata
+     *            The test data for each execution. One element is exactly one test
+     *            datum.
      */
     @SafeVarargs
     public OutlineDescriptor(TypeSteps<T> steps, T... testdata)

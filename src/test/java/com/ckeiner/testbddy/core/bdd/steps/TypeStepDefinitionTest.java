@@ -6,8 +6,6 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import com.aventstack.extentreports.GherkinKeyword;
-import com.ckeiner.testbddy.core.bdd.steps.Step;
-import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 
 public class TypeStepDefinitionTest
 {
@@ -15,6 +13,7 @@ public class TypeStepDefinitionTest
      * Verifies that a {@link TypeStep} can contain no behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainNoBehavior() throws ClassNotFoundException
@@ -41,6 +40,7 @@ public class TypeStepDefinitionTest
      * Verifies that a {@link Step} can contain behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainBehavior() throws ClassNotFoundException
@@ -67,6 +67,7 @@ public class TypeStepDefinitionTest
      * Verifies that a {@link TypeStep} can contain test data.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainTestdata() throws ClassNotFoundException

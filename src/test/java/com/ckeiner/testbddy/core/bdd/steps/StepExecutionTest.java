@@ -14,6 +14,7 @@ public class StepExecutionTest extends ExecutionTest
      * Verifies that a {@link Step} cannot execute without behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test(expected = StepException.class)
     public void shouldNotExecuteWithoutBehavior() throws ClassNotFoundException
@@ -33,6 +34,7 @@ public class StepExecutionTest extends ExecutionTest
      * Verifies that a {@link Step} executes the behavior.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void shouldExecuteBehavior() throws ClassNotFoundException

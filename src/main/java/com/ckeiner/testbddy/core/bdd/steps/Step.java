@@ -3,7 +3,8 @@ package com.ckeiner.testbddy.core.bdd.steps;
 import com.aventstack.extentreports.GherkinKeyword;
 
 /**
- * Describes a BDD Step without test data.
+ * Describes a BDD Step without test data. <br>
+ * To execute it, see the {@link #test()} method.
  * 
  * @author ckeiner
  */

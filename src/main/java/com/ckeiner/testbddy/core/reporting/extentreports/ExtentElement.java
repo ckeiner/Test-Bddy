@@ -1,14 +1,11 @@
 package com.ckeiner.testbddy.core.reporting.extentreports;
 
-import java.io.IOException;
-
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.ExtentTest;
-import com.aventstack.extentreports.MediaEntityBuilder;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
 
 /**
- * Depicts a test element for {@link ExtentReports}, which is a
+ * Depicts a test element for {@link ExtentReports}, which is an
  * {@link ExtentTest}.
  *
  * @author ckeiner
@@ -33,39 +30,15 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
+    public void assignCategory(String... name)
+    {
+        getElement().assignCategory(name);
+    }
+
+    @Override
     public void fail(String description)
     {
         extentElement.fail(description);
-    }
-
-    @Override
-    public void fail(String description, String pathToScreenshot)
-    {
-        try
-        {
-            extentElement.fail(description, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
-        } catch (IOException e)
-        {
-            extentElement.fail(description + " and no Screenshot due to: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void fatal(String description)
-    {
-        extentElement.fatal(description);
-    }
-
-    @Override
-    public void pass(String description)
-    {
-        extentElement.pass(description);
-    }
-
-    @Override
-    public void skip(String description)
-    {
-        extentElement.skip(description);
     }
 
     @Override
@@ -75,15 +48,9 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
-    public void fail(Throwable throwable, String pathToScreenshot)
+    public void fatal(String description)
     {
-        try
-        {
-            extentElement.fail(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
-        } catch (IOException e)
-        {
-            extentElement.fatal(throwable);
-        }
+        extentElement.fatal(description);
     }
 
     @Override
@@ -92,39 +59,15 @@ public class ExtentElement implements ReportElement
         extentElement.fatal(throwable);
     }
 
-    @Override
-    public void fatal(String description, String pathToScreenshot)
-    {
-        try
-        {
-            extentElement.fatal(description, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
-        } catch (IOException e)
-        {
-            extentElement.fatal(description + " and no Screenshot due to: " + e.getMessage());
-        }
-    }
-
-    @Override
-    public void fatal(Throwable throwable, String pathToScreenshot)
-    {
-        try
-        {
-            extentElement.fatal(throwable, MediaEntityBuilder.createScreenCaptureFromPath(pathToScreenshot).build());
-        } catch (IOException e)
-        {
-            extentElement.fatal(throwable);
-        }
-    }
-
     public ExtentTest getElement()
     {
         return this.extentElement;
     }
 
     @Override
-    public void skip(Throwable throwable)
+    public void pass(String description)
     {
-        extentElement.skip(throwable);
+        extentElement.pass(description);
     }
 
     @Override
@@ -134,9 +77,15 @@ public class ExtentElement implements ReportElement
     }
 
     @Override
-    public void assignCategory(String... name)
+    public void skip(String description)
     {
-        getElement().assignCategory(name);
+        extentElement.skip(description);
+    }
+
+    @Override
+    public void skip(Throwable throwable)
+    {
+        extentElement.skip(throwable);
     }
 
 }

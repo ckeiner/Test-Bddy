@@ -7,10 +7,10 @@ import java.util.function.Consumer;
 import org.junit.Assert;
 import org.junit.Test;
 
+import com.aventstack.extentreports.GherkinKeyword;
 import com.aventstack.extentreports.KeywordAccessor;
 import com.aventstack.extentreports.gherkin.model.Given;
 import com.aventstack.extentreports.gherkin.model.When;
-import com.ckeiner.testbddy.core.bdd.scenario.ScenarioOutline;
 import com.ckeiner.testbddy.core.bdd.steps.TypeStep;
 import com.ckeiner.testbddy.core.bdd.steps.TypeSteps;
 
@@ -35,6 +35,7 @@ public class ScenarioOutlineDefinitionTest
      * {@link Runnable} that is <code>null</code> and doesn't change its values
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainARunnableStep() throws ClassNotFoundException
@@ -68,6 +69,7 @@ public class ScenarioOutlineDefinitionTest
      * {@link Consumer} that is <code>null</code> and doesn't change its values
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void canContainAConsumerStep() throws ClassNotFoundException

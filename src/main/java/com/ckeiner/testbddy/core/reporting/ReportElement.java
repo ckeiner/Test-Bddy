@@ -8,126 +8,14 @@ import com.ckeiner.testbddy.core.bdd.status.Status;
 
 /**
  * Depicts an element, that is created by the {@link ReportInterface}. This way,
- * each feature, scenario, etc. can be logged depending on whether it failed,
- * was skipped, etc.
+ * each BDD component can be logged depending on whether it failed or was
+ * skipped among others.
  *
  * @author ckeiner
  *
  */
 public interface ReportElement
 {
-    /**
-     * Reports the element as failed with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     */
-    public void fail(String description);
-
-    /**
-     * Reports the element as failed with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     * @param pathToScreenshot
-     *            The path to the screenshot.
-     */
-    public void fail(String description, String pathToScreenshot);
-
-    /**
-     * Reports the element as failed due to the specified cause.
-     *
-     * @param throwable
-     *            The cause of the failure.
-     */
-    public void fail(Throwable throwable);
-
-    /**
-     * Reports the element as failed due to the specified cause.
-     *
-     * @param throwable
-     *            The cause of the failure.
-     * @param pathToScreenshot
-     *            The path to the screenshot.
-     */
-    public void fail(Throwable throwable, String pathToScreenshot);
-
-    /**
-     * Reports the element as passed with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     */
-    public void pass(String description);
-
-    /**
-     * Reports the element as fatal with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     */
-    public void fatal(String description);
-
-    /**
-     * Reports the element as fatal with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     * @param pathToScreenshot
-     *            The path to the screenshot.
-     */
-    public void fatal(String description, String pathToScreenshot);
-
-    /**
-     * Reports the element as fatal due to the specified cause.
-     *
-     * @param throwable
-     *            The cause of the fatal error.
-     */
-    public void fatal(Throwable throwable);
-
-    /**
-     * Reports the element as fatal due to the specified cause.
-     *
-     * @param throwable
-     *            The cause of the failure.
-     * @param pathToScreenshot
-     *            The path to the screenshot.
-     */
-    public void fatal(Throwable throwable, String pathToScreenshot);
-
-    /**
-     * Reports the element as skipped with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     */
-    public void skip(String description);
-
-    /**
-     * Reports the element as skipped due to the specified cause.
-     *
-     * @param throwable
-     *            The cause of being skipped.
-     */
-    public void skip(Throwable throwable);
-
-    /**
-     * Reports the element as pending with the additional message.
-     *
-     * @param description
-     *            The additional message.
-     */
-    public void pending(String description);
-
-    /**
-     * Assigns categories to the element.
-     * 
-     * @param categories
-     *            A String Array containing all categories.
-     */
-    public void assignCategory(String... categories);
-
     /**
      * Assigns the status as categories to the element.
      * 
@@ -147,5 +35,78 @@ public interface ReportElement
         // Call the assignCategory-method taking arrays as parameter
         assignCategory(categoryArray);
     }
+
+    /**
+     * Assigns categories to the element.
+     * 
+     * @param categories
+     *            A String describing the category. Each element describes one such
+     *            category.
+     */
+    public void assignCategory(String... categories);
+
+    /**
+     * Reports the element as failed with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void fail(String description);
+
+    /**
+     * Reports the element as failed due to the specified cause.
+     *
+     * @param throwable
+     *            The cause of the failure.
+     */
+    public void fail(Throwable throwable);
+
+    /**
+     * Reports the element as fatal with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void fatal(String description);
+
+    /**
+     * Reports the element as fatal due to the specified cause.
+     *
+     * @param throwable
+     *            The cause of the fatal error.
+     */
+    public void fatal(Throwable throwable);
+
+    /**
+     * Reports the element as passed with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void pass(String description);
+
+    /**
+     * Reports the element as pending with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void pending(String description);
+
+    /**
+     * Reports the element as skipped with the additional message.
+     *
+     * @param description
+     *            The additional message.
+     */
+    public void skip(String description);
+
+    /**
+     * Reports the element as skipped due to the specified cause.
+     *
+     * @param throwable
+     *            The cause of being skipped.
+     */
+    public void skip(Throwable throwable);
 
 }

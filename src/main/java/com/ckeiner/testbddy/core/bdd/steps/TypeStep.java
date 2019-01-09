@@ -4,10 +4,11 @@ import java.util.function.Consumer;
 
 import com.aventstack.extentreports.GherkinKeyword;
 import com.ckeiner.testbddy.core.reporting.ReportElement;
-import com.ckeiner.testbddy.core.util.ParameterResolver;
+import com.ckeiner.testbddy.core.util.PlaceholderResolver;
 
 /**
- * Describes a BDD Step with a test datum.
+ * Describes a BDD Step with a test datum. <br>
+ * To execute it, see the {@link #test()} method.
  *
  * @param <T>
  *            The type of the test data.
@@ -63,8 +64,8 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     /**
      * Specifies the data used during the execution.
      * 
-     * @param data
-     *            The test data for the scenario.
+     * @param testdata
+     *            The test datum for the scenario.
      * @return The current TypeStep.
      */
     public TypeStep<T> withData(T testdata)
@@ -95,7 +96,7 @@ public class TypeStep<T> extends AbstractStep<Consumer<T>>
     @Override
     protected ReportElement setUpReporter()
     {
-        ParameterResolver<T> resolver = new ParameterResolver<>();
+        PlaceholderResolver<T> resolver = new PlaceholderResolver<>();
         setDescription(resolver.resolvePlaceholders(getDescription(), testdata));
         return super.setUpReporter(true, getDescription());
     }

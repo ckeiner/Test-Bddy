@@ -10,6 +10,7 @@ import com.ckeiner.testbddy.core.bdd.steps.AbstractStep;
  * @author ckeiner
  *
  * @param <T>
+ *            The type of the test datum.
  */
 public class PendingConsumer<T> implements Consumer<T>
 {

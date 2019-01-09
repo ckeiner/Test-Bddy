@@ -17,6 +17,7 @@ public class TypeStepExecutionTest extends ExecutionTest
      * data.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test(expected = StepException.class)
     public void shouldNotExecuteWithoutBehavior() throws ClassNotFoundException
@@ -37,6 +38,7 @@ public class TypeStepExecutionTest extends ExecutionTest
      * data.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test(expected = StepException.class)
     public void shouldNotExecuteWithoutTestdata() throws ClassNotFoundException
@@ -57,6 +59,7 @@ public class TypeStepExecutionTest extends ExecutionTest
      * data.
      * 
      * @throws ClassNotFoundException
+     *             If the {@link GherkinKeyword} does not exist.
      */
     @Test
     public void shouldExecuteBehavior() throws ClassNotFoundException

@@ -2,9 +2,11 @@ package com.ckeiner.testbddy.core.bdd.status;
 
 /**
  * Contains multiple Stati. Possible Stati are:
+ * <ul>
  * <li>{@link Status#IGNORE}</li>
  * <li>{@link Status#WIP}</li>
  * <li>{@link Status#SKIP}</li>
+ * </ul>
  * 
  * @author ckeiner
  *
