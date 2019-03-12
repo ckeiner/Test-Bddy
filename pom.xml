@@ -3,12 +3,12 @@
 
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.ckeiner</groupId>
+    <groupId>com.xceptance</groupId>
     <artifactId>test-bddy</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
     
-    <name>test-bddy</name>
+    <name>Test-Bddy</name>
     
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
